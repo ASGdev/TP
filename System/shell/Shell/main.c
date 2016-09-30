@@ -3,6 +3,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "readcmd.h"
 //#define DEBUG
@@ -49,11 +51,28 @@ int main()
                 pid = fork();            }while(pid == -1);
 
             if(pid == 0){
-                for (i=0; l->seq[i]!=0; i++) {
-                    char **cmd = l->seq[i];
-                    execvp(cmd[0],cmd);
 
-                }
+                    char **cmd = l->seq[0];
+//                    if(l->in){
+//                        int filedesc;
+//                        if(open(l->in,O_CREAT | S_IRWXU)!= -1){
+//                            printf("file opening sucess");
+//                        }
+//                        filedesc = open(l->in,O_CREAT | S_IRWXU);
+//                        dup2(filedesc,STDIN_FILENO);
+//                        close(filedesc);
+//                    }
+                    if(l->out){
+                        int filedesc2;
+                        filedesc2 = open(l->out,O_CREAT|O_RDWR);
+                        dup2(filedesc2,STDOUT_FILENO);
+                        close(filedesc2);
+                    }
+
+
+                       execvp(cmd[0],cmd);
+
+
 
             }else{
                 int status;
