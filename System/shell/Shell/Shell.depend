@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1475239622 source:/home/shad/TP/System/shell/Shell/main.c
+	<stdio.h>
+	"readcmd.h"
+
+1254825558 /home/shad/TP/System/shell/Shell/readcmd.h
+
+1254825558 source:/home/shad/TP/System/shell/Shell/readcmd.c
+	<stdio.h>
+	<stddef.h>
+	<stdlib.h>
+	<errno.h>
+	<limits.h>
+	<string.h>
+	"readcmd.h"
+

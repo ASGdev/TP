@@ -1,7 +1,11 @@
-
+#include <stdlib.h>
 #include <stdio.h>
-#include "readcmd.h"
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
+#include "readcmd.h"
+//#define DEBUG
 
 int main()
 {
@@ -22,19 +26,48 @@ int main()
 			/* Syntax error, read another command */
 			printf("error: %s\n", l->err);
 			continue;
-		}
+		}else{
+            #ifdef DEBUG
 
-		if (l->in) printf("in: %s\n", l->in);
-		if (l->out) printf("out: %s\n", l->out);
+            if (l->in) printf("in: %s\n", l->in);
+            if (l->out) printf("out: %s\n", l->out);
 
-		/* Display each command of the pipe */
-		for (i=0; l->seq[i]!=0; i++) {
-			char **cmd = l->seq[i];
-			printf("seq[%d]: ", i);
-			for (j=0; cmd[j]!=0; j++) {
-				printf("%s ", cmd[j]);
-			}
-			printf("\n");
-		}
-	}
+            /* Display each command of the pipe */
+            for (i=0; l->seq[i]!=0; i++) {}
+                char **cmd = l->seq[i];
+                printf("seq[%d]: ", i);
+                for (j=0; cmd[j]!=0; j++) {
+                    printf("%s ", cmd[j]);
+                }
+                printf("\n");
+            }
+            #endif // DEBUG
+
+
+            pid_t pid ;
+            do{
+                pid = fork();            }while(pid == -1);
+
+            if(pid == 0){
+                for (i=0; l->seq[i]!=0; i++) {
+                    char **cmd = l->seq[i];
+                    execvp(cmd[0],cmd);
+
+                }
+
+            }else{
+                int status;
+                pid_t res = wait(&status);
+            }
+
+
+
+
+
+
+
+
 }
+}
+}
+
