@@ -61,7 +61,7 @@ int main()
                     }
                     if(l->out){
                         int filedesc2;
-                        filedesc2 = open(l->out,O_CREAT|O_RDWR);
+                        filedesc2 = open(l->out,O_CREAT|O_RDWR,S_IRWXU);
                         dup2(filedesc2,STDOUT_FILENO);
                         close(filedesc2);
                     }
