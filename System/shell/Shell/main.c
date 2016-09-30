@@ -53,15 +53,12 @@ int main()
             if(pid == 0){
 
                     char **cmd = l->seq[0];
-//                    if(l->in){
-//                        int filedesc;
-//                        if(open(l->in,O_CREAT | S_IRWXU)!= -1){
-//                            printf("file opening sucess");
-//                        }
-//                        filedesc = open(l->in,O_CREAT | S_IRWXU);
-//                        dup2(filedesc,STDIN_FILENO);
-//                        close(filedesc);
-//                    }
+                    if(l->in){
+                       int filedesc;
+                        filedesc = open(l->out,O_CREAT|O_RDWR);
+                        dup2(filedesc,STDIN_FILENO);
+                        close(filedesc);
+                    }
                     if(l->out){
                         int filedesc2;
                         filedesc2 = open(l->out,O_CREAT|O_RDWR);
