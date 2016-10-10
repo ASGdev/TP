@@ -7,7 +7,7 @@
 #include <fcntl.h>
 
 #include "readcmd.h"
-//#define DEBUG
+#define DEBUG
 
 int main()
 {
@@ -35,7 +35,7 @@ int main()
             if (l->out) printf("out: %s\n", l->out);
 
             /* Display each command of the pipe */
-            for (i=0; l->seq[i]!=0; i++) {}
+            for (i=0; l->seq[i]!=0; i++) {
                 char **cmd = l->seq[i];
                 printf("seq[%d]: ", i);
                 for (j=0; cmd[j]!=0; j++) {
@@ -55,7 +55,7 @@ int main()
                     char **cmd = l->seq[0];
                     if(l->in){
                        int filedesc;
-                        filedesc = open(l->out,O_CREAT|O_RDWR);
+                        filedesc = open(l->out,O_CREAT|O_RDWR,S_IRWXU);
                         dup2(filedesc,STDIN_FILENO);
                         close(filedesc);
                     }
@@ -86,4 +86,3 @@ int main()
 }
 }
 }
-
