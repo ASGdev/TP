@@ -4,11 +4,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.BasicStroke;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 
 import java.awt.Point;
-
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 
 import static java.lang.Math.*;
@@ -16,7 +20,7 @@ import static java.lang.Math.*;
 import grapher.fc.*;
 
 
-public class Grapher extends JPanel {
+public class Grapher extends JPanel implements MouseListener,MouseMotionListener{
 	static final int MARGIN = 40;
 	static final int STEP = 5;
 	
@@ -39,6 +43,8 @@ public class Grapher extends JPanel {
 		ymin = -1.5;   ymax = 1.5;
 		
 		functions = new Vector<Function>();
+		this.addMouseMotionListener(this);
+		this.addMouseListener(this);
 	}
 	
 	public void add(String expression) {
@@ -119,8 +125,13 @@ public class Grapher extends JPanel {
 		for(double x = -xstep; x > xmin; x -= xstep) { drawXTick(g2, x); }
 		for(double y = ystep; y < ymax; y += ystep)  { drawYTick(g2, y); }
 		for(double y = -ystep; y > ymin; y -= ystep) { drawYTick(g2, y); }
-	}
-	
+		
+		if (this.button==MouseEvent.BUTTON3){
+			int xPoints[] = {drag.x,newpoint.x,newpoint.x,drag.x};
+			int yPoints[] = {drag.y,drag.y,newpoint.y,newpoint.y};
+			g2.drawPolygon(xPoints, yPoints, 4);
+		}
+	}	
 	protected double dx(int dX) { return  (double)((xmax-xmin)*dX/W); }
 	protected double dy(int dY) { return -(double)((ymax-ymin)*dY/H); }
 
@@ -187,5 +198,69 @@ public class Grapher extends JPanel {
 		xmin = min(x0, x1); xmax = max(x0, x1);
 		ymin = min(y0, y1); ymax = max(y0, y1);
 		repaint();	
+	}
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	private int button;
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getButton()==MouseEvent.BUTTON1){
+			drag=e.getPoint();
+			this.button=e.getButton();}
+		else if (e.getButton()==MouseEvent.BUTTON3){
+			drag=e.getPoint();
+			this.button=e.getButton();}
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if (this.button==MouseEvent.BUTTON3){
+			this.zoom(drag, newpoint);
+			this.repaint();}
+		this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		this.drag=null;
+		this.button=-1;
+	}
+	
+	
+	private Point drag;
+	private Point newpoint;
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		if (button==MouseEvent.BUTTON1){
+			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			int X = arg0.getX();
+			int Y = arg0.getY();
+			int dragX = drag.x;
+			int dragY= drag.y;
+			this.translate(X-dragX,Y-dragY);
+			drag=arg0.getPoint();
+			this.repaint();
+		}
+		else if (button==MouseEvent.BUTTON3){
+			this.newpoint=arg0.getPoint();
+			this.repaint();
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
