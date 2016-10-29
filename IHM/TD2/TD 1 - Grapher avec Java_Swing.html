@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0057)http://iihm.imag.fr/blanch/RICM4/IHM/tps/1-grapher-swing/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<style type="text/css" media="screen, print">
+		<!--
+			body { margin: 30px 50px; font-family: sans-serif; }
+			img { margin: 15px; border: 0px; display: block }
+			pre  { margin: 10px; padding: 10px; background: #EEE; overflow:auto; font-size:small; font-family:monospace; }
+			pre.file { background: white; border: solid 1px black;}
+			.cr  { font-size: 9pt; }
+			.update { font-size: 10px; margin: 30px 0 0 0; border-top: 1px solid #000; }
+			body { counter-reset: q; }
+			h2 { padding-top: .5em; border-top: solid 1px black; }
+			p.question:before { content: counter(q) ". "; counter-increment: q; }
+		-->		
+		</style>		
+		<title> TD 1 - Grapher avec Java/Swing </title>
+	</head>
+	<body>
+		<p><a href="http://iihm.imag.fr/blanch/">~</a> / <a href="http://iihm.imag.fr/blanch/RICM4/">RICM4</a> / <a href="http://iihm.imag.fr/blanch/RICM4/IHM/">IHM</a> / <a href="http://iihm.imag.fr/blanch/RICM4/IHM/tps/">tps</a> / <a href="http://iihm.imag.fr/blanch/RICM4/IHM/tps/1-grapher-swing/">1-grapher-swing</a> /</p>
+		
+		<h1> TP 1 - Grapher avec Java/Swing </h1>
+		<p class="cr">© 2007—2016 - <a href="http://iihm.imag.fr/blanch/">Renaud Blanch</a></p>
+		
+		<p>
+Le but de ce Td est d'apprendre à programmer une application interactice avec la boîte à outils Swing de Java.
+Vous allez réaliser un visualisateur du graphe d'une fonction.
+Dans un premier temps vous vous familiariserez avec le modèle graphique 2D de Swing.
+Vous rendrez ensuite le visualisateur interactif en utilisant différentes techniques (e.g., widgets, manipulation directe).
+		</p>
+		
+		<h2>Squelette d'application</h2>
+		<p class="question">
+Récupérez les <a href="http://iihm.imag.fr/blanch/RICM4/IHM/tps/1-grapher-swing/grapher.src.tgz">sources du squelette</a> de l'application.
+Celles-ci fournissent dans le répertoire <code>graphser/src/</code> 2&nbsp;<i>packages</i>&nbsp;: <code>grapher.fc</code> et <code>grapher.ui</code> (respectivement le noyau fonctionnel et l'interface graphique de notre programme).
+Explorez le code pour comprendre ce qu'il fait.
+		</p>
+<pre>% <b>tar xzvf grapher.src.tgz</b>
+ou
+% <b>gunzip grapher.src.tgz</b>
+% <b>tar xvf grapher.src.tar</b>
+</pre>
+
+		<p class="question">
+Dans le répertoire <code>grapher/</code>, un fichier <code>build.xml</code> est fourni.
+Il permet de gérer la compilation du programme à l'aide de <a href="http://ant.apache.org/">ant</a>.
+Lisez ce fichier et testez la compilation et l'exécution&nbsp;:
+		</p>
+<pre>% <b>cd grapher</b>
+grapher% <b>ant run-fc</b>
+grapher% <b>ant run</b>
+</pre>
+
+
+		<h2>Interaction graphique</h2>
+		<p class="question">
+Modifiez la classe <code>Grapher</code> pour permettre l'interaction à la souris avec le graphique (voir les <code>Listeners</code> réalisés par <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/event/MouseInputAdapter.html"><code>MouseInputAdapter</code></a> et <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/awt/event/MouseWheelListener.html"><code>MouseWheelListener</code></a>)&nbsp;:
+		</p>
+<ul>
+	<li>le <i>drag</i>, bouton gauche enfoncé, doit permettre de <b>déplacer</b> le repère, avec une petite main à la place du curseur par défaut pendant l'interaction (voir la classe <a href="http://java.sun.com/j2se/1.5.0/docs/api/java/awt/Cursor.html"><code>Cursor</code></a>)&nbsp;;</li>
+	<li>le <i>drag</i>, bouton droit enfoncé, doit permettre de sélectionner une zone rectangulaire marquée par un rectangle pointillé, pour <b>zoomer</b> sur cette sélection lorsque le bouton est relâché&nbsp;;</li>
+	<li>le clic gauche (resp. droit) permette de <b>zoomer</b> (resp. <b>dézoomer</b>) de 5%, centré sur le curseur&nbsp;; et</li>
+	<li>la molette (ou le <i>drag</i> bouton du milieu) doit permettre de <b>zoomer</b> ou <b>dézoomer</b>, centré sur le curseur.</li>
+</ul>
+		
+		<h2>Placement</h2>
+		<p class="question">
+Rendez la liste des fonctions visibles dans une bande redimensionnable à gauche de la fenêtre (<a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/JSplitPane.html"><code>JSplitPane</code></a>, <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/JList.html"><code>JList</code></a>).
+		</p>
+		
+		<h2>Interaction avec la liste</h2>
+		<p class="question">
+Faites en sorte que les fonctions sélectionnées dans la liste soient affichées en gras sur le graphique.
+		</p>
+		
+		<p class="question">
+Permettez la suppression des fonctions sélectionnées et l'ajout de nouvelles fonctions grâce à une barre de boutons (<a href="http://java.sun.com/docs/books/tutorial/uiswing/components/toolbar.html">How to Use Tool Bars</a> et <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/JToolBar.html"><code>JToolBar</code></a>, <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/AbstractAction.html"><code>AbstractAction</code></a>, <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/JOptionPane.html"><code>JOptionPane</code></a>).
+		</p>
+
+		<p>
+Le programme résultant pourra ressembler à cette capture&nbsp;:
+		</p>
+		<img src="./TD 1 - Grapher avec Java_Swing_files/img-00.png">
+
+		<h2>Construction de menus</h2>
+		<p class="question">
+Faites en sorte que les actions (<a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/action.html">How to Use Actions</a> et <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/Action.html"><code>Action</code></a>) d'ajout et de suppression, possibles depuis la barre de boutons, le soient aussi depuis un menu "Expression" de l'application (<a href="http://java.sun.com/docs/books/tutorial/uiswing/components/menu.html">How to Use Menus</a> et <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/JMenuBar.html"><code>JMenuBar</code></a>, <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/JMenu.html"><code>JMenu</code></a>).
+		</p>
+		
+		<h2>Plus d'interactions</h2>
+		<p class="question">
+Remplacez la liste de fonctions par une table donnant pour chaque fonction une couleur (<a href="http://java.sun.com/docs/books/tutorial/uiswing/components/table.html">How to Use Tables</a> et <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/JTable.html"><code>JTable</code></a>, <a href="http://java.sun.com/j2se/1.5.0/docs/api/javax/swing/table/TableModel.html"><code>TableModel</code></a>).
+Faites en sorte que l'expression et la couleur soient éditables (respectivement en place sous forme de texte, et par l'intermédiaire d'un sélecteur de couleur).
+		</p>
+		<img src="./TD 1 - Grapher avec Java_Swing_files/img-01.png">
+
+		<p class="update">mise à jour&nbsp;: 1 mars 2015</p>
+	
+
+</body></html>
