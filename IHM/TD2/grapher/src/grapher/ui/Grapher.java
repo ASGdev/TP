@@ -126,10 +126,11 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 		for(double y = ystep; y < ymax; y += ystep)  { drawYTick(g2, y); }
 		for(double y = -ystep; y > ymin; y -= ystep) { drawYTick(g2, y); }
 		
-		if (this.button==MouseEvent.BUTTON3){
+		if (this.button==MouseEvent.BUTTON3 && this.dragging==true){
 			int xPoints[] = {drag.x,newpoint.x,newpoint.x,drag.x};
 			int yPoints[] = {drag.y,drag.y,newpoint.y,newpoint.y};
 			g2.drawPolygon(xPoints, yPoints, 4);
+			this.dragging=false;
 		}
 	}	
 	protected double dx(int dX) { return  (double)((xmax-xmin)*dX/W); }
@@ -202,7 +203,17 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+		Point pointClicked;
+		pointClicked=arg0.getPoint();
+		if (arg0.getButton()==MouseEvent.BUTTON1){
+			this.zoom(pointClicked, 5);
+		}
+		else if (arg0.getButton()==MouseEvent.BUTTON3){			
+			this.zoom(pointClicked, (-5));
+			this.repaint();
+		}
+		pointClicked=null;
+		this.repaint();
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -220,10 +231,12 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 		// TODO Auto-generated method stub
 		if (e.getButton()==MouseEvent.BUTTON1){
 			drag=e.getPoint();
-			this.button=e.getButton();}
+			this.button=e.getButton();
+			}
 		else if (e.getButton()==MouseEvent.BUTTON3){
 			drag=e.getPoint();
-			this.button=e.getButton();}
+			this.button=e.getButton();
+			}
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -239,6 +252,7 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 	
 	private Point drag;
 	private Point newpoint;
+	private boolean dragging = false ;
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -251,9 +265,11 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 			this.translate(X-dragX,Y-dragY);
 			drag=arg0.getPoint();
 			this.repaint();
+			this.dragging=false;
 		}
 		else if (button==MouseEvent.BUTTON3){
 			this.newpoint=arg0.getPoint();
+			this.dragging=true;
 			this.repaint();
 		}
 	}
