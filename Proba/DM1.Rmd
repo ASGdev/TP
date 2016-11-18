@@ -1,0 +1,448 @@
+---
+title: 'PS : DM1'
+author: "T.vegreville & D.Siest"
+date: "5 novembre 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Intuition
+
+En pennant en compte que le resultat final dépend enormement de la Pop. d'origine (si ils ont tous les yeux bleu, on sait pertinemment que cela restera ainsi), nous pensons que il y aura a terme, une petite proportion de yeux bleu qui perdurerons (peut-etre 20% ) et que le reste sera marron (un ou deux alleles).
+Il est probable que si l'on prend une pop. d'origine partage a 50% entre deux alleles bleu et deux alleles marron, la population bleu sera amenee a decroitre en faveur d'une pop marron avec un allele bleu.
+
+##Petite population
+
+```{r cars, echo=FALSE}
+
+AverageOnPop <-function(Res,N,Imax,P,pop,al){
+  templist = list()
+  reslist = templist = as.numeric(Res[[1]][[pop]][al,])
+    for(i in 2:N){
+        templist = as.numeric(Res[[i]][[pop]][al,])
+        for(y in 1:Imax){
+          reslist[[y]] = (reslist[[y]]+templist[[y]])/2
+        }
+    }
+  return (reslist)
+  
+}
+
+set.seed(4)
+
+
+
+#Alleles
+BB = 0
+MM = 1
+BM = 3
+
+#simulation 
+
+Imax = 20
+P = 20
+N=10
+
+  #BB et MM
+P0=list(4,12)
+P1=list(12,4)
+P2=list(5,5)
+
+
+
+#Calcul part
+PopInitList = list(P0,P1,P2) #r?partition des all?les dans P par P
+PopList = list(list(),list(),list()) #table de la pop (cf. codage all?le)
+
+ResultNTest = list()
+
+templist = list()
+
+
+
+
+  #initialisation of structure and output
+
+for(i in 1:3){
+  for(j in 1:PopInitList[[i]][[1]]){
+    PopList[[i]] = c(PopList[[i]],BB)
+  }
+  for(j in 1:PopInitList[[i]][[2]]){
+    PopList[[i]] = c(PopList[[i]],MM)
+  }
+ 
+  for(j in 1:(P-PopInitList[[i]][[1]]-PopInitList[[i]][[2]])){
+    PopList[[i]] = c(PopList[[i]],BM)
+  }
+}
+
+RefPopList = PopList
+
+  #Calcul of all population
+
+for(i in 1:N){ #N r?alisation de l'exp?rience sur les 3 pop diff?rentes
+    PopList = RefPopList
+    Result3Pop= list()
+    for(y in 1:3){
+      Result = data.frame(row.names = c("BB/P","MM/P"))
+      for(j in 1:Imax){
+        BBpercent =0
+        MMpercent =0
+        for(k in 1:P){
+          al = PopList[[y]][[sample(1:P,1)]] + PopList[[y]][[sample(1:P,1)]]
+           #simple case
+          if(al == (BB+BB)){
+             al = BB # BB + BB = BB
+           }else if(al == (BB+MM)){
+             al = BM # BB + MM = BM 
+          } else if(al == (MM+MM)){
+             al = MM # MM+MM = MM
+               
+             #complex case
+          }else if(al == (BB+BM)){
+            al = sample(1:4,1)
+            if(al == 1 || al == 2 ){
+              al = BB
+            }else if(al == 4 || al == 3){
+              al = BM
+            }
+          } else if(al == (MM+BM)){
+            al = sample(1:4,1)
+            if(al == 1 || al == 2){
+              al = MM
+            }else if(al == 4 || al == 3){
+              al = BM
+            }
+          }else if(al == (BM+BM)){
+             al = sample(1:4,1) 
+            if(al == 2 || al == 3){
+              al = BM
+            }else if(al == 4){
+              al = BB
+            }else if (al == 1){
+              al = MM
+            }
+          }                                                      
+          templist[[k]] = al
+        }#new generation
+        
+        PopList[[y]] = templist
+        
+        for(h in 1:P){
+          if(PopList[[y]][[h]] == BB){
+            BBpercent = BBpercent+1
+          }else if(PopList[[y]][[h]] == MM){
+            MMpercent = MMpercent + 1
+          }
+        }#statistic on it
+        
+        
+        BBpercent = BBpercent / P
+        MMpercent = MMpercent / P
+        
+        Result[[paste(c("P", j), collapse = "")]] = c(BBpercent,MMpercent)#store the data
+        
+      }
+      Result3Pop[[y]] = Result
+      Result = NULL
+      
+    }
+    ResultNTest[[i]] = Result3Pop
+    Result3Pop = NULL
+}
+
+#ResultNTest
+PopulationBB1 = AverageOnPop(ResultNTest,N,Imax,P,1,"BB/P")
+PopulationBB2 = AverageOnPop(ResultNTest,N,Imax,P,2,"BB/P")
+PopulationBB3 = AverageOnPop(ResultNTest,N,Imax,P,3,"BB/P")
+PopulationMM1 = AverageOnPop(ResultNTest,N,Imax,P,1,"MM/P")
+PopulationMM2 = AverageOnPop(ResultNTest,N,Imax,P,2,"MM/P")
+PopulationMM3 = AverageOnPop(ResultNTest,N,Imax,P,3,"MM/P")
+print("Voici les graphs présentant l'évolution de la proportion moyenne de personnes au cours des générations")
+print("PopulationBB1 signifie que le graph présente l'évolution en proportion des personnes ayant deux allèles bleus au cours des générations avec comme population initiale la population 1 (4,12). Rappel: pop 2 initiale=(12,4) et pop 3 initiale=(5,5)")
+
+
+plot(1:Imax,PopulationBB1);plot(1:Imax,PopulationMM1)
+plot(1:Imax,PopulationBB2);plot(1:Imax,PopulationMM2)
+plot(1:Imax,PopulationBB3);plot(1:Imax,PopulationMM3)
+
+
+
+
+print("On remarque que les variations sont fortes et imprévisibles. Il semble que le fait de n'avoir qu'une petite batterie de test (N=10) ou que la population ne conntiennent que 20 personnes ne permettent pas de faire de conjoncture sur l'évolution de la population en fonction de la population initiale")
+```
+
+
+##Cas d'une grande population
+```{r echo=FALSE}
+#simulation 
+
+Imax = 100
+P = 2000
+N=10
+
+  #BB et MM
+P0=list(400,1200)
+P1=list(1200,400)
+P2=list(500,500)
+
+
+
+#Calcul part
+PopInitList = list(P0,P1,P2) #r?partition des all?les dans P par P
+PopList = list(list(),list(),list()) #table de la pop (cf. codage all?le)
+
+ResultNTest = list()
+
+templist = list()
+
+
+
+
+  #initialisation of structure and output
+
+for(i in 1:3){
+  for(j in 1:PopInitList[[i]][[1]]){
+    PopList[[i]] = c(PopList[[i]],BB)
+  }
+  for(j in 1:PopInitList[[i]][[2]]){
+    PopList[[i]] = c(PopList[[i]],MM)
+  }
+ 
+  for(j in 1:(P-PopInitList[[i]][[1]]-PopInitList[[i]][[2]])){
+    PopList[[i]] = c(PopList[[i]],BM)
+  }
+}
+
+RefPopList = PopList
+
+  #Calcul of all population
+
+for(i in 1:N){ #N r?alisation de l'exp?rience sur les 3 pop diff?rentes
+    PopList = RefPopList
+    Result3Pop= list()
+    for(y in 1:3){
+      Result = data.frame(row.names = c("BB/P","MM/P"))
+      for(j in 1:Imax){
+        BBpercent =0
+        MMpercent =0
+        for(k in 1:P){
+          al = PopList[[y]][[sample(1:P,1)]] + PopList[[y]][[sample(1:P,1)]]
+           #simple case
+          if(al == (BB+BB)){
+             al = BB # BB + BB = BB
+           }else if(al == (BB+MM)){
+             al = BM # BB + MM = BM 
+          } else if(al == (MM+MM)){
+             al = MM # MM+MM = MM
+               
+             #complex case
+          }else if(al == (BB+BM)){
+            al = sample(1:4,1)
+            if(al == 1 || al == 2 ){
+              al = BB
+            }else if(al == 4 || al == 3){
+              al = BM
+            }
+          } else if(al == (MM+BM)){
+            al = sample(1:4,1)
+            if(al == 1 || al == 2){
+              al = MM
+            }else if(al == 4 || al == 3){
+              al = BM
+            }
+          }else if(al == (BM+BM)){
+             al = sample(1:4,1) 
+            if(al == 2 || al == 3){
+              al = BM
+            }else if(al == 4){
+              al = BB
+            }else if (al == 1){
+              al = MM
+            }
+          }                                                      
+          templist[[k]] = al
+        }#new generation
+        
+        PopList[[y]] = templist
+        
+        for(h in 1:P){
+          if(PopList[[y]][[h]] == BB){
+            BBpercent = BBpercent+1
+          }else if(PopList[[y]][[h]] == MM){
+            MMpercent = MMpercent + 1
+          }
+        }#statistic on it
+        
+        
+        BBpercent = BBpercent / P
+        MMpercent = MMpercent / P
+        
+        Result[[paste(c("P", j), collapse = "")]] = c(BBpercent,MMpercent)#store the data
+        
+      }
+      Result3Pop[[y]] = Result
+      Result = NULL
+      
+    }
+    ResultNTest[[i]] = Result3Pop
+    Result3Pop = NULL
+}
+
+#ResultNTest
+PopulationBB1 = AverageOnPop(ResultNTest,N,Imax,P,1,"BB/P")
+PopulationBB2 = AverageOnPop(ResultNTest,N,Imax,P,2,"BB/P")
+PopulationBB3 = AverageOnPop(ResultNTest,N,Imax,P,3,"BB/P")
+PopulationMM1 = AverageOnPop(ResultNTest,N,Imax,P,1,"MM/P")
+PopulationMM2 = AverageOnPop(ResultNTest,N,Imax,P,2,"MM/P")
+PopulationMM3 = AverageOnPop(ResultNTest,N,Imax,P,3,"MM/P")
+print("Voici les graphs présentant l'évolution de la proportion moyenne de personnes au cours des générations")
+
+
+plot(1:Imax,PopulationBB1)
+plot(1:Imax,PopulationMM1)
+print("La proportion de MM décroit pour laisser place à une augmentation de BB(6%) et de BM.")
+plot(1:Imax,PopulationBB2)
+plot(1:Imax,PopulationMM2)
+print("La proportion de BB à tendance à décroître au détriment de MM. Un peu comme si l'équilibre cherchait à s'établir entre les deux")
+plot(1:Imax,PopulationBB3)
+plot(1:Imax,PopulationMM3)
+print("La proportion MM décroit et la population BB augmente et les deux semblent se stabiliser: BB autour de 30% et MM autour de 20%")
+print("Les variations montre que l'évolution tend à trouver un équilibre entre les proportions de BB MM. En effet lorsqu'une catégorie est en forte supériorité à la population initiale, elle décroit et son opposée augmente. Dans le cas où les deux sont à équilibre en population initiale, on remarque que c'est BB qui augmente. Dans chaque cas la population en BM augmente. Les résultats sont plus clairsqu'avec une petite population donc il s'agit surement d'un facteur déterminant pour la lisibilité de l'évolution")
+
+
+```
+
+##Avez vous changé d'avis ?
+
+Nous avons peu changé d'avis, en effet les yeux marrons sont majoritaires dans beaucoup de cas puisque l'allèle bleu est recessif mais nous ne pensions pas qu'une catégorie MM ou BB en minorité aurait tendance à augmenter pour perdurer.
+
+
+```{r}
+
+#Alleles
+BB = 0
+MM = 1
+BM = 3
+
+#simulation 
+
+Imax = 1000
+P = 20
+N=10
+
+  #BB et MM
+P0=list(4,12)
+P1=list(12,4)
+P2=list(5,5)
+
+
+#Calcul part
+PopInitList = list(P0,P1,P2) #r?partition des all?les dans P par P
+PopList = list(list(),list(),list()) #table de la pop (cf. codage all?le)
+
+ResultNTest = list()
+
+templist = list()
+
+
+
+
+  #initialisation of structure and output
+
+for(i in 1:3){
+  for(j in 1:PopInitList[[i]][[1]]){
+    PopList[[i]] = c(PopList[[i]],BB)
+  }
+  for(j in 1:PopInitList[[i]][[2]]){
+    PopList[[i]] = c(PopList[[i]],MM)
+  }
+ 
+  for(j in 1:(P-PopInitList[[i]][[1]]-PopInitList[[i]][[2]])){
+    PopList[[i]] = c(PopList[[i]],BM)
+  }
+}
+
+RefPopList = PopList
+
+  #Calcul of all population
+
+for(i in 1:N){ #N r?alisation de l'exp?rience sur les 3 pop diff?rentes
+    PopList = RefPopList
+    Result3Pop= list()
+    for(y in 1:3){
+      Result = data.frame(row.names = c("BB/P","MM/P"))
+      for(j in 1:Imax){
+        BBpercent =0
+        MMpercent =0
+        for(k in 1:P){
+          al = PopList[[y]][[sample(1:P,1)]] + PopList[[y]][[sample(1:P,1)]]
+           #simple case
+          if(al == (BB+BB)){
+             al = BB # BB + BB = BB
+           }else if(al == (BB+MM)){
+             al = BM # BB + MM = BM 
+          } else if(al == (MM+MM)){
+             al = MM # MM+MM = MM
+               
+             #complex case
+          }else if(al == (BB+BM)){
+            al = sample(1:4,1)
+            if(al == 1 || al == 2 ){
+              al = BB
+            }else if(al == 4 || al == 3){
+              al = BM
+            }
+          } else if(al == (MM+BM)){
+            al = sample(1:4,1)
+            if(al == 1 || al == 2){
+              al = MM
+            }else if(al == 4 || al == 3){
+              al = BM
+            }
+          }else if(al == (BM+BM)){
+             al = sample(1:4,1) 
+            if(al == 2 || al == 3){
+              al = BM
+            }else if(al == 4){
+              al = BB
+            }else if (al == 1){
+              al = MM
+            }
+          }    
+          templist[[k]] = al
+        }#new generation
+        templist[[P-1]]=BB
+        templist[[P]]=MM
+        
+        PopList[[y]] = templist
+        
+        for(h in 1:P){
+          if(PopList[[y]][[h]] == BB){
+            BBpercent = BBpercent+1
+          }else if(PopList[[y]][[h]] == MM){
+            MMpercent = MMpercent + 1
+          }
+        }#statistic on it
+        
+        
+        BBpercent = BBpercent / P
+        MMpercent = MMpercent / P
+        
+        Result[[paste(c("P", j), collapse = "")]] = c(BBpercent,MMpercent)#store the data
+        
+      }
+      Result3Pop[[y]] = Result
+      Result = NULL
+      
+    }
+    ResultNTest[[i]] = Result3Pop
+    Result3Pop = NULL
+}
+
+
+```
+
