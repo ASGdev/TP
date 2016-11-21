@@ -5,18 +5,23 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 
 public class Main extends JFrame {
 	Main(String title, String[] expressions) {
 		super(title);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		JList list=new JList();
-		Grapher grapher = new Grapher();		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);	
+		String[] func={};
+		Grapher grapher = new Grapher();
+		int i=0;
 		for(String expression : expressions) {
 			grapher.add(expression);
+			func[i]=expression;
+			i++;
 		}
+		JList list=new JList(func);
 		JSplitPane splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,list,grapher);
 		add(splitPane);
 		splitPane.setOneTouchExpandable(true);
