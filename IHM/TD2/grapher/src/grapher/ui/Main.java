@@ -22,12 +22,11 @@ public class Main extends JFrame implements MouseListener {
 			grapher.add(expression);
 			func.addElement(expression);
 		}
-		JList list=new JList(func);
+		sidePanel list=new sidePanel(func, grapher);
 		JSplitPane splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,list,grapher);
 		add(splitPane);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(150);
-		this.addMouseListener(list);
 	
 
 		//Provide minimum sizes for the two components in the split pane

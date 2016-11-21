@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
 import java.awt.Point;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -37,6 +38,7 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 	protected double ymin, ymax;
 
 	protected Vector<Function> functions;
+	int theboldyone =-1;
 	
 	public Grapher() {
 		xmin = -PI/2.; xmax = 3*PI/2;
@@ -65,7 +67,7 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 		H = getHeight();
 
 		Graphics2D g2 = (Graphics2D)g;
-
+		Stroke str;
 		// background
 		g2.setColor(Color.WHITE);
 		g2.fillRect(0, 0, W, H);
@@ -81,7 +83,7 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 		}
 		
 		g2.drawRect(0, 0, W, H);
-		
+
 		g2.drawString("x", W, H+10);
 		g2.drawString("y", -10, 0);
 		
@@ -100,15 +102,22 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 			xs[i] = x;
 			Xs[i] = X(x);
 		}
-		
+		int tab=0;
 		for(Function f : functions) {
 			// y values
 			int Ys[] = new int[N];
 			for(int i = 0; i < N; i++) {
 				Ys[i] = Y(f.y(xs[i]));
 			}
-			
-			g2.drawPolyline(Xs, Ys, N);
+			if(tab == theboldyone){
+				str = g2.getStroke();
+				g2.setStroke(new BasicStroke(10));				
+				g2.drawPolyline(Xs, Ys, N);
+				g2.setStroke(str);
+			}else{
+				g2.drawPolyline(Xs, Ys, N);
+			}
+			tab++;
 		}
 
 		g2.setClip(null);
@@ -189,6 +198,20 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 		xmin = x + (xmin-x)/ds; xmax = x + (xmax-x)/ds;
 		ymin = y + (ymin-y)/ds; ymax = y + (ymax-y)/ds;
 		repaint();	
+	}
+	
+	public void bold(String s){
+		boolean find =false;
+		int i=0;
+		while(!find & i <functions.size()){
+			if(functions.get(i).toString().equals(s)){
+				theboldyone=i;
+				find = true;
+			}
+			i++;
+		}
+		System.out.println("yolo ca marche pas en haut"+theboldyone);
+		repaint();
 	}
 	
 	protected void zoom(Point p0, Point p1) {
