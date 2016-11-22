@@ -34,7 +34,7 @@ public class Main extends JFrame implements MouseListener {
 		
 		JToolBar toolbar = new JToolBar("Expression");
 		JButton button1 = new JButton("create");
-		button1.setToolTipText("create");
+		button1.setToolTipText("create a new function");
 		button1.addMouseListener(new MouseListener(){
 
 			@Override
@@ -43,7 +43,10 @@ public class Main extends JFrame implements MouseListener {
 				if (arg0.getButton()==MouseEvent.BUTTON1){
 					JOptionPane FunctionToImplement= new JOptionPane("Create a new function");
 					FunctionToImplement.showInputDialog("Write your function");
-					FunctionToImplement.getInputValue();
+					String expression = (String) FunctionToImplement.getValue();
+					System.out.println(expression);
+					grapher.add(expression);
+					func.addElement(expression);
 				}
 			}
 
