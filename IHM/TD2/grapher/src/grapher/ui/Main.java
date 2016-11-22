@@ -1,14 +1,18 @@
 package grapher.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 
@@ -27,7 +31,54 @@ public class Main extends JFrame implements MouseListener {
 		add(splitPane);
 		splitPane.setOneTouchExpandable(true);
 		splitPane.setDividerLocation(150);
-	
+		
+		JToolBar toolbar = new JToolBar("Expression");
+		JButton button1 = new JButton("create");
+		button1.setToolTipText("create");
+		button1.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				if (arg0.getButton()==MouseEvent.BUTTON1){
+					JOptionPane FunctionToImplement= new JOptionPane("Create a new function");
+					FunctionToImplement.showInputDialog("Write your function");
+					FunctionToImplement.getInputValue();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		JButton button2 = new JButton("delete");
+		button2.setActionCommand("delete");
+		button2.setToolTipText("delete");
+		button2.addActionListener(null);
+		toolbar.add(button1);
+		toolbar.add(button2);
+		add(toolbar, BorderLayout.NORTH);
 
 		//Provide minimum sizes for the two components in the split pane
 		Dimension minimumSize = new Dimension(100, 50);
