@@ -59,11 +59,21 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 	}
 
 	
-	public void remove(Function function){
-		functions.remove(function);
+	public void remove(String s){
+		boolean find =false;
+		int i=0;
+		while(!find & i <functions.size()){
+			if(functions.get(i).toString().equals(s)){
+				theboldyone=i;
+				find = true;
+				functions.remove(i);
+			}
+			i++;
+		}
 		repaint();
 	}
-		
+	
+	
 	public Dimension getPreferredSize() { return new Dimension(W, H); }
 	
 	protected void paintComponent(Graphics g) {
@@ -216,7 +226,6 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 			}
 			i++;
 		}
-		System.out.println("yolo ca marche pas en haut"+theboldyone);
 		repaint();
 	}
 	

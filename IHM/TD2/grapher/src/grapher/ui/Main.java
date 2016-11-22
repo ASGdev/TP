@@ -134,8 +134,8 @@ public class Main extends JFrame implements MouseListener {
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				if (arg0.getButton()==MouseEvent.BUTTON1){
-					JOptionPane FunctionToImplement1= new JOptionPane("Delete an existing function");
-					String expression = FunctionToImplement1.showInputDialog("Write the function to delete");
+					JOptionPane FunctionToImplement= new JOptionPane("Create a new function");
+					String expression = FunctionToImplement.showInputDialog("Write your function");
 					grapher.add(expression);
 					list.add(expression);
 					
@@ -176,7 +176,6 @@ public class Main extends JFrame implements MouseListener {
 				if (arg0.getButton()==MouseEvent.BUTTON1){
 					JOptionPane FunctionToImplement2= new JOptionPane("Delete an existing function");
 					String expression = FunctionToImplement2.showInputDialog("Write the function to delete");
-					System.out.println(expression);
 					grapher.remove(expression);
 					list.remove(expression);	
 				}
