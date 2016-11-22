@@ -40,6 +40,14 @@ public class sidePanel extends JList implements MouseListener,MouseMotionListene
 		
 	}
 	
+	void add (String expression){
+		model.addElement(expression);
+	}
+	
+	void remove (String expression){
+		model.removeElement(expression);
+	}
+	
 	private int Yolo;
 	@Override
 	

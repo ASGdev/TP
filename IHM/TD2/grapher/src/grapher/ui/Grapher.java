@@ -57,6 +57,12 @@ public class Grapher extends JPanel implements MouseListener,MouseMotionListener
 		functions.add(function);
 		repaint();
 	}
+
+	
+	public void remove(Function function){
+		functions.remove(function);
+		repaint();
+	}
 		
 	public Dimension getPreferredSize() { return new Dimension(W, H); }
 	
