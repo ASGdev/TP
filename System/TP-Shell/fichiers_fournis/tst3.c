@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2002, Simon Nieuviarts
+ * Copyright (C) SIEST Damien & VEGREVILLE Thibaud
  */
 
 #include <stdio.h>
