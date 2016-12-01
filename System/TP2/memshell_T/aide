@@ -1,0 +1,84 @@
+//Allocation de la mémoire
+void *mem_alloc(size_t size){
+	zone* ptr_temp = TETE;
+	zone* ptr=NULL;
+	zone* CC; // CREATION d'une CelluleCourante
+	size_t size_bloc;
+	size_t temp_size;
+	zone * temp_next;
+	
+	// size DU BLOC 
+	if (size <= sizeof(TETE))
+	{
+		printf("SIZE%ld\n",size);
+		size_bloc=size;
+	}
+	else // size est plus grand que la size de la structure
+	{
+		if (sizeof(TETE)%size!=0)// Redimensionnement la size du bloc
+		{
+			size_bloc = sizeof(TETE) * (sizeof(TETE)%size);
+		}
+		else
+		{ size_bloc = sizeof(TETE);}
+		//printf("size de la TETE %ld-- size bloc %ld --- size %ld\n ",sizeof(TETE),size_bloc,size);
+	}
+	
+	// AJOUT FIRST FIT
+	if (ptr_temp->next!=NULL)
+	{
+		printf("ajout 2\n");
+		// RECHERCHE d'une place libre
+		while (ptr_temp!=NULL)
+		{
+			// Verification de la size
+			if(ptr_temp->size <= size_bloc)
+			{
+				CC = ptr_temp;
+				ptr_temp = (size_t)ptr_temp + size_bloc; // on déplace l'adresse de TETE a "TETE + size_bloc"
+				ptr_temp = (zone*)ptr_temp;
+				ptr_temp->size = CC->size - size_bloc;
+				if (ptr==NULL)
+				{TETE->next=ptr_temp;}
+				else {ptr->next=ptr_temp;}
+				
+				CC->next=NULL;
+				return CC;
+			}
+			else
+			{
+				ptr= ptr_temp;
+				ptr_temp= ptr_temp->next;
+			}
+		}
+		return  NULL;
+	}
+	else // AJOUT
+	{
+		printf("ajout 1\n");
+		temp_size = TETE->size; // SAUVEGARDE DE LA TAILLE DE LA ZONE MEMOIRE LIBRE
+		
+		CC=TETE;//printf("l'adresse de TETE : %p || adresse de CC : %p\n",&TETE,&CC);
+		CC->next=NULL;
+		TETE->next=NULL;
+		
+		TETE = (size_t)TETE + size_bloc; // on déplace l'adresse de TETE a "TETE + size_bloc"
+		TETE = (zone*)TETE;
+		printf("CC=%ld\n",CC->size);
+		printf("T=%ld\n",TETE->size);
+		CC->size = (size_t)size_bloc;
+		
+		
+		printf("CC=%ld\n",CC->size);
+		
+		
+		printf("TETE->size %ld, CC->size%ld , size_bloc%ld , temp_size%ld \n",TETE->size, CC->size , size_bloc, temp_size);
+		return CC;
+	}
+  
+}
+
+
+// ESSAIE 2
+
+

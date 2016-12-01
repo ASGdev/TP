@@ -1,0 +1,66 @@
+#include<stdio.h>
+#include"alloc.h"
+
+
+typedef fb *Zone;
+
+void mem_init()
+{
+	mem_heap=malloc( (HEAP_SIZE+sizeof(Zone))*sizeof(char) );
+	
+	if(mem_heap!=NULL)
+	{
+		Zone TETE = mem_heap;
+		TETE->size=HEAP_SIZE;
+		TETE->next=NULL;
+	}
+}
+
+
+void *mem_alloc(size_t size){
+	Zone CC=mem_heap; // CELLULE COURANTE
+	Zone CELLULE=NULL;
+	
+	// CREATION CELLULE
+	CELLULE->next=NULL;
+
+	if ( size>0 || size<HEAP_SIZE )
+	{
+		if (TETE == NULL)
+		{
+			CELLULE->size=HEAP_SIZE-size;
+			TETE->next= CELLULE;
+		}
+		else
+		{	
+			while (CC->next != NULL)
+			{
+				CC = CC->next;
+			}
+			CELLULE->size=CC->size-size;
+			CC->next = CELLULE;
+		}
+	}
+	else
+	{printf("ERROR:PROBLEME D ALLOCATION MEMOIRE --- TAILLE INSUFFISANTE ---\n");}
+}
+
+void mem_free(void *zone, size_t size)
+{
+	/*while (CC->next != NULL)
+	{
+	CC = &CC->next;
+	}*/
+	printf("how about no !\n");
+}
+
+
+void mem_show(void (*print)(void *zone, size_t size))
+{
+	Zone CC=mem_heap; // CELLULE COURANTE
+	while (CC->next != NULL)
+	{
+		(*print)(CC,CC->size);	
+		CC = CC->next;
+	}	
+}

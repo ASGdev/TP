@@ -1,0 +1,78 @@
+Premier jeu de test
+
+christophe@ubuntu:~/Annee_4/TP_SE/memshell$ ./alloc 
+**** Mini-shell de test pour l'allocateur m�moire ****
+	Tapez help pour la liste des commandes
+Initialisation de la m�moire (1048576 octets)...OK
+
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0x100000
+>alloc 0xFFFF
+1 0xF0010
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xF0000
+>alloc 0xFFF
+2 0xEF010
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xEF000
+>alloc 0xFFFF
+3 0xDF010
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xDF000
+>free 3
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xEF000
+>free 2
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xF0000
+>free 1
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0x100000
+>exit
+
+Deuxième jeu de test
+
+christophe@ubuntu:~/Annee_4/TP_SE/memshell$ ./alloc 
+**** Mini-shell de test pour l'allocateur m�moire ****
+	Tapez help pour la liste des commandes
+Initialisation de la m�moire (1048576 octets)...OK
+
+>alloc 3000
+1 0xFF450
+>alloc 20
+2 0xFF430
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xFF420
+>free 1
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xFF420
+0xFF450 0xBB0
+>alloc 300
+3 0xFF300
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xFF2F0
+0xFF450 0xBB0
+>alloc 50
+4 0xFF2C0
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xFF2B0
+0xFF450 0xBB0
+>free 3
+>show
+M�moire initialement disponible : 1048576 octets
+0x0 0xFF2B0
+0xFF300 0x120
+0xFF450 0xBB0
+>exit
+
