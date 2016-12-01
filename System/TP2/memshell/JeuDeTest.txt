@@ -1,6 +1,6 @@
-Premier jeu de test
+﻿Premier jeu de test
 
-christophe@ubuntu:~/Annee_4/TP_SE/memshell$ ./alloc 
+damien@ubuntu:~/Annee_4/TP_SE/memshell$ ./alloc 
 **** Mini-shell de test pour l'allocateur m�moire ****
 	Tapez help pour la liste des commandes
 Initialisation de la m�moire (1048576 octets)...OK
@@ -37,9 +37,7 @@ M�moire initialement disponible : 1048576 octets
 0x0 0x100000
 >exit
 
-Deuxième jeu de test
-
-christophe@ubuntu:~/Annee_4/TP_SE/memshell$ ./alloc 
+Deuxième jeu de damien@ubuntu:~/Annee_4/TP_SE/memshell$ ./alloc 
 **** Mini-shell de test pour l'allocateur m�moire ****
 	Tapez help pour la liste des commandes
 Initialisation de la m�moire (1048576 octets)...OK
