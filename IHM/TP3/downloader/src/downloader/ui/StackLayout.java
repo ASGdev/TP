@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import static java.lang.Math.max;
 
 
+@SuppressWarnings("unused")
 class StackLayout implements LayoutManager {
 	public void addLayoutComponent(String name, Component c) {}
 	public void removeLayoutComponent(Component c) {}
