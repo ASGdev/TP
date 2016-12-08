@@ -1,5 +1,5 @@
 package jus.poc.prodcons;
 
-public class Consomateur {
+public interface _Producteur {
 
 }

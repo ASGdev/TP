@@ -1,13 +1,6 @@
-<<<<<<< Updated upstream
 package jus.poc.prodcons;
 
-public abstract class Acteur {
-
-}
-=======
-package jus.poc.prodcons;
-
-public abstract class Acteur implements Acteur{
+public abstract class Acteur implements _Acteur{
 
 	private static int consommateurIdentification;
 	protected int deviationTempsDeTraitement;
@@ -26,14 +19,22 @@ public abstract class Acteur implements Acteur{
 		
 	};
 	
-	int deviationTempsDeTraitement() {};
+	public int deviationTempsDeTraitement() {
+		return 0;
+	};
     //renvoie l'écart type du temps moyen de traitement 
-	int identification() {};
+	public int identification() {
+		return 0;
+	};
     //renvoie l'identification de l'acteur 
-	int moyenneTempsDeTraitement(){}; 
+	public int moyenneTempsDeTraitement(){
+		return 0;
+	}; 
     //renvoie le temps moyen de traitement 
-	abstract int nombreDeMessages();
+	public int nombreDeMessages(){
+		return 0;
+	};
     //renvoie le nombre de messages (à) traités(er) 
 
 }
->>>>>>> Stashed changes
+
