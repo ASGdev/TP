@@ -1,6 +1,6 @@
 package jus.poc.prodcons;
 
-public abstract class Acteur implements _Acteur{
+public abstract class Acteur extends Thread implements _Acteur {
 
 	private static int consommateurIdentification;
 	protected int deviationTempsDeTraitement;

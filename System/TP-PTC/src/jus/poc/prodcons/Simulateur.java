@@ -2,9 +2,10 @@ package jus.poc.prodcons;
 
 public class Simulateur {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public Simulateur(Observateur observateur) {
+		// TODO Auto-generated constructor stub
 	}
+
+
 
 }
