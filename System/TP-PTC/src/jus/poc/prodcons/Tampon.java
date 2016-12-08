@@ -1,5 +1,5 @@
 package jus.poc.prodcons;
 
-public class Tampon {
+public interface Tampon {
 
 }
