@@ -6,8 +6,8 @@ public abstract class Acteur extends Thread implements _Acteur {
 	private int identification;
 	protected int moyenneTempsDeTraitement;
 	protected Observateur observateur;
-	protected static int typeConsommateur = 1;
-	protected static int typeProducteur = 2;
+	protected static int typeConsommateur = 2;
+	protected static int typeProducteur = 1;
 	protected int type;
 	protected int nbMessage; //nb message restant a traiter
 	
@@ -16,6 +16,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 			int moyenneTempsDeTraitement,
 			int deviationTempsDeTraitement)
 	{
+		super("Thread_type_"+type);
 		this.type = type;
 		this.observateur = observateur;
 		this.moyenneTempsDeTraitement = moyenneTempsDeTraitement;
@@ -27,7 +28,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 	public int deviationTempsDeTraitement() {
 		return deviationTempsDeTraitement;
 	};
-    //renvoie l'�cart type du temps moyen de traitement 
+    //renvoie l'ecart type du temps moyen de traitement 
 	public int identification() {
 		return identification;
 	};
@@ -39,7 +40,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 	public int nombreDeMessages(){
 		return nbMessage;
 	};
-    //renvoie le nombre de messages (�) trait�s(er) 
+    //renvoie le nombre de messages a traiter
 	
 }
 

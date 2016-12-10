@@ -6,5 +6,11 @@ public class Producteur extends Acteur implements _Producteur {
 		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void run(){
+		for(int i =0;i<10;i++){
+			System.out.println(this.getName()+"N°"+this.identification());
+		}
+	}
 
 }
