@@ -27,7 +27,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 	public int deviationTempsDeTraitement() {
 		return deviationTempsDeTraitement;
 	};
-    //renvoie l'écart type du temps moyen de traitement 
+    //renvoie l'ï¿½cart type du temps moyen de traitement 
 	public int identification() {
 		return identification;
 	};
@@ -39,7 +39,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 	public int nombreDeMessages(){
 		return nbMessage;
 	};
-    //renvoie le nombre de messages (à) traités(er) 
+    //renvoie le nombre de messages (ï¿½) traitï¿½s(er) 
 	
 }
 
