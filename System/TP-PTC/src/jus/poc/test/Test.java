@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Test {
 
-	public void main(String[] args){
+	public static void main(String[] args){
 		Aleatoire randomizeur = new Aleatoire(2,10);
 		double valeur = Aleatoire.next();
 		int val = Aleatoire.valeur(2,10);
