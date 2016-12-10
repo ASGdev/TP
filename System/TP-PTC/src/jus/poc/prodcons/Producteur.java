@@ -11,6 +11,12 @@ public class Producteur extends Acteur implements _Producteur {
 		for(int i =0;i<10;i++){
 			System.out.println(this.getName()+"N°"+this.identification());
 		}
+		while(this.nbMessage >0){
+			MsgInteger m = new MsgInteger(this.nbMessage);
+			
+			
+		}
+		
 	}
 
 }

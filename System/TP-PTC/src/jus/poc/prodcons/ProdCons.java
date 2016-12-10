@@ -1,26 +1,37 @@
 package jus.poc.prodcons;
 
+import java.util.Vector;
+
 public class ProdCons implements Tampon {
-	private int[] buffer;
+	private Vector<Message> buffer;
+	private int buffer_size; 
+	private Vector<Consommateur> Consotab = new Vector<Consommateur>();
+	private Vector<Producteur> Productab = new Vector<Producteur>();
 	private Observateur o = new Observateur();
-	private Consommateur c = new Consommateur(2,o,5,2);
-	private Producteur p = new Producteur(1,o,5,2); 
 	
-	ProdCons(){
+	
+	public ProdCons(){
+		Consommateur c = new Consommateur(2,o,5,2);
+		Producteur p = new Producteur(1,o,5,2); 
+		Consotab.add(c);
+		Productab.add(p);
 		exec();
 	}
 	
 	public void exec(){
-		
-		buffer = new int[6]; //use option to configure it
-		p.run();
-		c.run();
+		buffer_size=6;//use option to configure it
+		buffer = new Vector<Message>(); 
+		for(int i=0;i<Consotab.size();i++){
+			Consotab.get(i).run();;
+		}
+		for(int i=0;i<Productab.size();i++){
+			Productab.get(i).run();;
+		}
 	}
 
 	@Override
 	public int enAttente() {
-		// TODO Auto-generated method stub
-		return 0;
+		return buffer.size();
 	}
 
 	@Override
@@ -37,8 +48,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public int taille() {
-		// TODO Auto-generated method stub
-		return 0;
+		return buffer_size-buffer.size();
 	}
 	
 	
