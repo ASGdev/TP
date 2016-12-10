@@ -3,10 +3,6 @@
  */
 package jus.poc.rw;
 
-import java.util.Random;
-
-import jus.poc.rw.Aleatory;
-import jus.poc.rw.IResource;
 import jus.poc.rw.control.IObservator;
 import jus.poc.rw.deadlock.DeadLockException;
 
@@ -30,9 +26,6 @@ public abstract class Actor extends Thread{
 	protected int nbIteration;
 	/** the rank of the last access done or under execution */
 	protected int accessRank;
-	protected int nombreAleatoire;
-	/** Choix aléatoire permettant de choisir une ressources **/
-	private Random rand = new Random();
 	/**
 	 * Constructor
 	 * @param useLaw the gaussian law for using delay
@@ -49,26 +42,17 @@ public abstract class Actor extends Thread{
 		nbIteration=iterationLaw.next();
 		setName(getClass().getSimpleName()+"-"+ident());
 		this.observator=observator;
-		// Creation de la resource à tiré aléatoirement dans le tableau de resources
-		this.nombreAleatoire = 0;
 	}
 	/**
-	 * the behavior of an actor accessing to a resource. 
+	 * the behavior of an actor accessing to a resource.
 	 */
 	public void run(){
+		// to be completed
 		for(accessRank=1; accessRank!=nbIteration; accessRank++) {
 			temporizationVacation(vacationLaw.next());
-			try {
-				acquire();
-			} catch (InterruptedException | DeadLockException e) {
-				e.printStackTrace();
-			}
+			acquire();
 			temporizationUse(useLaw.next());
-			try {
-				release();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			release();
 		}
 	}
 	/**
@@ -85,36 +69,22 @@ public abstract class Actor extends Thread{
 	}
 	/**
 	 * the acquisition stage of the resources.
-	 * @throws DeadLockException 
-	 * @throws InterruptedException 
 	 */
-	private void acquire() throws InterruptedException, DeadLockException{
-		//Choix aléatoire de la resource
-		this.nombreAleatoire = rand.nextInt(resources.length);
-		
-		// Appel de la fonction acquire de type "Reader" ou "Writer"
-		if (this instanceof Writer || this instanceof Reader ) {
-			this.observator.requireResource(this, resources[nombreAleatoire]);
-			this.acquire(resources[nombreAleatoire]);
-		}
-		
+	private void acquire(){
+		// to be completed
 	}
 	/**
 	 * the release stage of the resources prevously acquired
-	 * @throws InterruptedException 
 	 */
-	private void release() throws InterruptedException{
-		// Verification du type "Reader" ou "Writer"
-		if (this instanceof Writer || this instanceof Reader) {
-			this.observator.releaseResource(this, resources[nombreAleatoire]);
-			this.release(resources[nombreAleatoire]);
-		}
+	private void release(){
+		// to be completed
 	}
 	/**
 	 * Restart the actor at the start of his execution, having returned all the resources acquired.
 	 * @param resource the resource at the origin of the deadlock.
 	 */
 	protected void restart(IResource resource) {
+		// to be completed
 	}
 	/**
 	 * acquisition proceeding specific to the type of actor.
