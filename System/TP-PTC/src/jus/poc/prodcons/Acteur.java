@@ -1,40 +1,45 @@
 package jus.poc.prodcons;
 
 public abstract class Acteur extends Thread implements _Acteur {
-
-	private static int consommateurIdentification;
+	private int compt = 0;
 	protected int deviationTempsDeTraitement;
 	private int identification;
 	protected int moyenneTempsDeTraitement;
 	protected Observateur observateur;
-	private static int producteurIdentfication;
-	protected static int typeConsommateur;
-	protected static int typeProducteur;
+	protected static int typeConsommateur = 1;
+	protected static int typeProducteur = 2;
+	protected int type;
+	protected int nbMessage; //nb message restant a traiter
 	
 	protected Acteur(
 			int type, Observateur observateur,
 			int moyenneTempsDeTraitement,
 			int deviationTempsDeTraitement)
 	{
-		
+		this.type = type;
+		this.observateur = observateur;
+		this.moyenneTempsDeTraitement = moyenneTempsDeTraitement;
+		this.deviationTempsDeTraitement = deviationTempsDeTraitement;
+		identification = compt;
+		compt ++;
 	};
 	
 	public int deviationTempsDeTraitement() {
-		return 0;
+		return deviationTempsDeTraitement;
 	};
     //renvoie l'écart type du temps moyen de traitement 
 	public int identification() {
-		return 0;
+		return identification;
 	};
     //renvoie l'identification de l'acteur 
 	public int moyenneTempsDeTraitement(){
-		return 0;
+		return moyenneTempsDeTraitement;
 	}; 
     //renvoie le temps moyen de traitement 
 	public int nombreDeMessages(){
-		return 0;
+		return nbMessage;
 	};
     //renvoie le nombre de messages (à) traités(er) 
-
+	
 }
 
