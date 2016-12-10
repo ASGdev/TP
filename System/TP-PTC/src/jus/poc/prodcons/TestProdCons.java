@@ -20,11 +20,14 @@ public class TestProdCons extends Simulateur {
 		//INIT DES THREADS
 		
 		//SIMULATION
+		ProdCons ProdCons = new ProdCons();
 		
 	}
 	
 	
-	public static void main(String[] args){new TestProdCons(new Observateur()).start();}
+	public static void main(String[] args){new TestProdCons(new Observateur()).start();
+		ProdCons ProdCons = new ProdCons();
+	}
 	
 	
 	
