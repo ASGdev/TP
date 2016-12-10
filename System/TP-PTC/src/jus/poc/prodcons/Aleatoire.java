@@ -7,7 +7,7 @@ public class Aleatoire {
 	protected int borneSup;
 	protected int moyenne;
 	protected int deviation;
-	protected Random var;
+	protected Random var = new Random();
 	
 	Aleatoire(int moyenne, int deviation){
 			this.moyenne=moyenne;
@@ -19,15 +19,15 @@ public class Aleatoire {
 		return 0;
 	}
 	
-	static int valeur(int moyenne, int deviation){
+	int valeur(int moyenne, int deviation){
 		int nextValeurValue=var.nextInt(borneSup-borneInf)+borneInf;
 		return 0;
 	}
 	
-	static int[] valeurs(int size,int moyenne, int deviation){
+	int[] valeurs(int size,int moyenne, int deviation){
 		int[] tab = new int[size];
 		for (int i = 0; i < tab.length; i++) {
-			tab[i] = var.next();
+			tab[i] = this.next();
 		}
 		return tab;
 	}

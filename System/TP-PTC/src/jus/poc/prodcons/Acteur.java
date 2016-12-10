@@ -7,7 +7,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 	private int identification;
 	protected int moyenneTempsDeTraitement;
 	protected Observateur observateur;
-	private static int producteurIdentfication;
+	private static int producteurIdentification;
 	protected static int typeConsommateur;
 	protected static int typeProducteur;
 	
