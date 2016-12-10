@@ -6,19 +6,24 @@ import java.util.Map;
 import java.util.Properties;
 
 public class TestProdCons extends Simulateur {
-	protected Properties options;
 	
 	
 	public TestProdCons(Observateur observateur){super(observateur);}
 	
 	protected void run() throws Exception{
 		// le corps de votre programme principal
-	}
-	
-	private void start() {
-		// TODO Auto-generated method stub
+		
+		//PASSAGE DES OPTIONS
+		
+		//INIT MESSAGE 
+		
+		//INIT DES THREADS
+		
+		//SIMULATION
 		
 	}
+	
+	
 	public static void main(String[] args){new TestProdCons(new Observateur()).start();}
 	
 	
