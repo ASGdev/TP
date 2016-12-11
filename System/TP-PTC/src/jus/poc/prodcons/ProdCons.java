@@ -11,8 +11,8 @@ public class ProdCons implements Tampon {
 	
 	
 	public ProdCons(){
-		Consommateur c = new Consommateur(2,o,5,2);
-		Producteur p = new Producteur(1,o,5,2); 
+		Consommateur c = new Consommateur(2,o,5,2,this);
+		Producteur p = new Producteur(1,o,5,2,this); 
 		Consotab.add(c);
 		Productab.add(p);
 		exec();
@@ -36,13 +36,13 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public Message get(Consommateur c) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return buffer.remove(0);
 	}
 
 	@Override
 	public void put(Producteur p, Message m) {
-		// TODO Auto-generated method stub
+		buffer.add(m);
 		
 	}
 
