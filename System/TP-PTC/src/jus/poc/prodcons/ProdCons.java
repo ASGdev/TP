@@ -49,7 +49,6 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public Message get(Consommateur c) {
-		
 		return buffer.remove(0);
 	}
 

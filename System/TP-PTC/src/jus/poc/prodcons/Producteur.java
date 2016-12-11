@@ -1,7 +1,7 @@
 package jus.poc.prodcons;
 
 public class Producteur extends Acteur implements _Producteur {
-	
+	private final Object lockTamponProd = new Object();
 	ProdCons tampon;
 
 	public Producteur(int type, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons tmp) {
@@ -10,9 +10,7 @@ public class Producteur extends Acteur implements _Producteur {
 		tampon = tmp;
 	}
 	
-	
-	
-	public void run(){
+	public void start(){
 		while(this.nbMessage >0){
 			MsgInteger m = new MsgInteger(this.nbMessage);
 			addMessage(m);
@@ -25,22 +23,22 @@ public class Producteur extends Acteur implements _Producteur {
 				e.printStackTrace();
 			}*/
 		}
-		
-		
 	}
 	
-	synchronized void addMessage(Message m){
-		while(tampon.taille()== 0){
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	
+	private void addMessage(Message m){
+		
+		System.out.println("Demande d'accee de la part de "+this.getName()+"N°"+this.identification());
+		synchronized (lockTamponProd) {
+			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
+			if(tampon.taille()>0){
+				tampon.put(this,m);
+				System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification());
+				this.nbMessage -= 1;
 			}
+			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
 		}
-		tampon.put(this, m);
-		System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification());
-		this.nbMessage -= 1;
-		notify();		
+		
 	}
 	
 	public String name(){
