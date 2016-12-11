@@ -9,7 +9,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 	protected static int typeConsommateur = 2;
 	protected static int typeProducteur = 1;
 	protected int type;
-	protected int nbMessage; //nb message restant a traiter
+	protected int nbMessage;
 	
 	protected Acteur(
 			int type, Observateur observateur,

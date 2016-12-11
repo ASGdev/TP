@@ -15,7 +15,7 @@ public class Producteur extends Acteur implements _Producteur {
 			MsgInteger m = new MsgInteger(this.nbMessage);
 			addMessage(m);
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(Aleatoire.next());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -31,7 +31,7 @@ public class Producteur extends Acteur implements _Producteur {
 			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
 			if(tampon.taille()>0){
 				tampon.put(this,m);
-				System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification());
+				System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
 				this.nbMessage -= 1;
 			}
 			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
