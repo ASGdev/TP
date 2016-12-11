@@ -10,7 +10,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 		tampon = tmp;
 	}
 	
-	public void start(){
+	public void run(){
 		for(int i =0;i<10;i++){
 			System.out.println(this.getName()+"N°"+this.identification());
 			/*try {
@@ -23,6 +23,12 @@ public class Consommateur extends Acteur implements _Consommateur {
 		
 		while(this.nbMessage > 0){
 			getMessage();
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -33,14 +39,17 @@ public class Consommateur extends Acteur implements _Consommateur {
 	}
 	
 	private void getMessage(){
+		
 		System.out.println("Demande d'accee de la part de "+this.getName()+"N°"+this.identification());
 		synchronized (lockTamponCons) {
 			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
-			if(tampon.enAttente()>0){
+			if(tampon.enAttente()==0){
 				tampon.get(this);
 				System.out.println("tampon libre :"+tampon.taille()+" avec le retrait du thread "+this.getName()+"N°"+this.identification());
 				this.nbMessage -= 1;
-			}				
+			}
+			
+								
 			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
 		}
 	}

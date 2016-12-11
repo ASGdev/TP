@@ -11,7 +11,7 @@ public class TestProdCons extends Simulateur {
 	public TestProdCons(Observateur observateur){super(observateur);}
 	
 	protected void run() throws Exception{
-		// le corps de votre programme principal
+		// le corps de votre programme principalz
 		
 		//PASSAGE DES OPTIONS
 		

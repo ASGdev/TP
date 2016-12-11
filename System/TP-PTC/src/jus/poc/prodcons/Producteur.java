@@ -10,18 +10,16 @@ public class Producteur extends Acteur implements _Producteur {
 		tampon = tmp;
 	}
 	
-	public void start(){
+	public void run(){
 		while(this.nbMessage >0){
 			MsgInteger m = new MsgInteger(this.nbMessage);
 			addMessage(m);
-			/*try {
-				//this.sleep(Aleatoire.next());
-				//this.wait();
-				Thread.sleep(1000);
+			try {
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
+			}
 		}
 	}
 	

@@ -29,15 +29,16 @@ public class ProdCons implements Tampon {
 	}
 	
 	public void exec(){
+		for(int i=0;i<Productab.size();i++){
+			//System.out.println(Productab.get(i).name());
+			Productab.get(i).start();
+		}
 		 
 		for(int i=0;i<Consotab.size();i++){
 			//System.out.println(Consotab.get(i).name());
 			Consotab.get(i).start();
 		}
-		for(int i=0;i<Productab.size();i++){
-			//System.out.println(Productab.get(i).name());
-			Productab.get(i).start();
-		}
+		
 		
 		//System.out.println("");
 	}
@@ -49,12 +50,16 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public Message get(Consommateur c) {
-		return buffer.remove(0);
+		Message tamp = buffer.remove(0);
+	
+		return tamp;
+		
 	}
 
 	@Override
 	public void put(Producteur p, Message m) {
 		buffer.add(m);
+	
 		System.out.println("Message ajouté");
 	}
 
