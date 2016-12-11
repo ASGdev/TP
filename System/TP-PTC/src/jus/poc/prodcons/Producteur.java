@@ -10,15 +10,21 @@ public class Producteur extends Acteur implements _Producteur {
 		tampon = tmp;
 	}
 	
+	
+	
 	public void run(){
-		for(int i =0;i<10;i++){
-			System.out.println(this.getName()+"N°"+this.identification());
-		}
-		/*while(this.nbMessage >0){
+		while(this.nbMessage >0){
 			MsgInteger m = new MsgInteger(this.nbMessage);
-			
-			
-		}*/
+			addMessage(m);
+			/*try {
+				//this.sleep(Aleatoire.next());
+				//this.wait();
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		}
 		
 		
 	}
@@ -32,8 +38,13 @@ public class Producteur extends Acteur implements _Producteur {
 			}
 		}
 		tampon.put(this, m);
-		notify();
-		
+		System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification());
+		this.nbMessage -= 1;
+		notify();		
+	}
+	
+	public String name(){
+		return this.getName()+"N°"+this.identification();
 	}
 
 }

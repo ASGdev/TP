@@ -1,7 +1,7 @@
 package jus.poc.prodcons;
 
 public abstract class Acteur extends Thread implements _Acteur {
-	private int compt = 0;
+	private static int compt = 0;
 	protected int deviationTempsDeTraitement;
 	private int identification;
 	protected int moyenneTempsDeTraitement;
@@ -23,6 +23,7 @@ public abstract class Acteur extends Thread implements _Acteur {
 		this.deviationTempsDeTraitement = deviationTempsDeTraitement;
 		identification = compt;
 		compt ++;
+		nbMessage = 6; //use option to configure it
 	};
 	
 	public int deviationTempsDeTraitement() {

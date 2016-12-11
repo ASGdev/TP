@@ -10,23 +10,36 @@ public class ProdCons implements Tampon {
 	private Observateur o = new Observateur();
 	
 	
-	public ProdCons(){
-		Consommateur c = new Consommateur(2,o,5,2,this);
-		Producteur p = new Producteur(1,o,5,2,this); 
-		Consotab.add(c);
-		Productab.add(p);
+	public ProdCons(int nbProd, int nbCons){
+		
+		for(int i=0;i<nbCons;i++){
+			Consommateur c = new Consommateur(2,o,5,2,this);
+			Consotab.add(c);
+		}
+		
+		for(int i=0;i<nbProd;i++){
+			Producteur p = new Producteur(1,o,5,2,this);
+			Productab.add(p);
+		}
+		buffer_size=6;//use option to configure it
+		buffer = new Vector<Message>();
+		
+		
 		exec();
 	}
 	
 	public void exec(){
-		buffer_size=6;//use option to configure it
-		buffer = new Vector<Message>(); 
+		 
 		for(int i=0;i<Consotab.size();i++){
-			Consotab.get(i).run();;
+			//System.out.println(Consotab.get(i).name());
+			Consotab.get(i).start();
 		}
 		for(int i=0;i<Productab.size();i++){
-			Productab.get(i).run();;
+			//System.out.println(Productab.get(i).name());
+			Productab.get(i).start();
 		}
+		
+		//System.out.println("");
 	}
 
 	@Override
@@ -43,7 +56,7 @@ public class ProdCons implements Tampon {
 	@Override
 	public void put(Producteur p, Message m) {
 		buffer.add(m);
-		
+		System.out.println("Message ajouté");
 	}
 
 	@Override
