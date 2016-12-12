@@ -50,18 +50,41 @@ public class ProdCons implements Tampon {
 	}
 
 	@Override
-	public Message get(Consommateur c) {
+	public synchronized Message get(Consommateur c) {
+		System.out.println("Obtention d'accee de "+c.getName()+"N°"+c.identification()+"");
+		 while(buffer.isEmpty()) {
+	            try {
+					wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
+
+		 
 		Message tamp = buffer.remove(0);
 		notifyAll();
+		System.out.println("Notify from "+c.getName()+"N°"+c.identification()+"");
 //		o.retraitMessage(c, tamp);
 		return tamp;
 		
 	}
 
 	@Override
-	public void put(Producteur p, Message m) {
+	public synchronized void put(Producteur p, Message m) {
+		System.out.println("Obtention d'accee de "+p.getName()+"N°"+p.identification()+"");
+		while(buffer.size()==buffer_size) {
+            try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+
 		buffer.add(m);
 		notifyAll();
+		System.out.println("Notify from "+p.getName()+"N°"+p.identification()+"");
 //		o.depotMessage(p, m);
 		System.out.println("Message ajouté");
 	}

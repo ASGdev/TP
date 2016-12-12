@@ -19,25 +19,16 @@ public class Consommateur extends Acteur implements _Consommateur {
 	}
 	
 	
-	public String name(){
-		return this.getName()+"N°"+this.identification();
-	}
+	
 	
 	private Message getMessage(){
 		Message tamp = null;
-		
-		System.out.println("Demande d'accee de la part de "+this.getName()+"N°"+this.identification());
-		synchronized (lockTamponCons) {
-			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
-			if(tampon.enAttente()>0){
-				 tamp = tampon.get(this);
-				this.nbMessage -= 1;
-				System.out.println("tampon libre :"+tampon.taille()+" avec le retrait du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
-								
-			}
-			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
-			return tamp;			
-		}
+		System.out.println("Demande d'accee de "+this.getName()+"N°"+this.identification()+"");
+		tamp = tampon.get(this);
+		nbMessage -=1;
+		System.out.println("Tampon libre:"+tampon.taille()+" avec le retrait de "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+		System.out.println("Sortie d'accee de "+this.getName()+"N°"+this.identification()+"");
+		return tamp;		
 	}
 	
 	private void treatment(Message m){
@@ -59,6 +50,10 @@ public class Consommateur extends Acteur implements _Consommateur {
 				e.printStackTrace();
 		}
 		}
+	}
+	
+	public String name(){
+		return this.getName()+"N°"+this.identification();
 	}
 	
 	

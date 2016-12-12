@@ -19,25 +19,16 @@ public class Producteur extends Acteur implements _Producteur {
 	
 	
 	private void addMessage(Message m){
-		
-		System.out.println("Demande d'accee de la part de "+this.getName()+"N°"+this.identification());
-		synchronized (lockTamponProd) {
-			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
-			if(tampon.taille()>0){
-				tampon.put(this,m);
-				this.nbMessage -= 1;
-				System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
-				
-			}
-			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
-		}
+		System.out.println("Demande d'accee de "+this.getName()+"N°"+this.identification()+"");
+		tampon.put(this,m);
+		nbMessage -=1;
+		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+		System.out.println("Sortie d'accee de "+this.getName()+"N°"+this.identification()+"");	
 		
 	}
 	
 	
-	public String name(){
-		return this.getName()+"N°"+this.identification();
-	}
+	
 	
 	private Message production(){
 		MsgInteger m = new MsgInteger(this.nbMessage);
@@ -52,6 +43,10 @@ public class Producteur extends Acteur implements _Producteur {
 
 		return m;
 		
+	}
+	
+	public String name(){
+		return this.getName()+"N°"+this.identification();
 	}
 
 }
