@@ -4,12 +4,12 @@ import java.util.Vector;
 
 public class Observateur {
 	
-	private  Vector<Vector<Object>> messagesConsommes;
-	private  Vector<Vector<Object>> depot;
-	public  Vector<Consommateur> consommateurs;
-	public  Vector<Producteur> producteurs;
-	private  Vector<Vector<Object>> messagesProduits;
-	private  Vector<Vector<Object>> messagesRetires;
+	Vector<Vector<Object>> messagesConsommes;
+	Vector<Vector<Object>> depot;
+	Vector<Consommateur> consommateurs;
+	Vector<Producteur> producteurs;
+	Vector<Vector<Object>> messagesProduits;
+	Vector<Vector<Object>> messagesRetires;
 	
 	Observateur(){
 		Vector<Vector<Object>> messagesConsommes= new Vector<Vector<Object>>();
@@ -34,13 +34,13 @@ public class Observateur {
 		depot.add(v);
 	}
 	
-	static void newConsommateur(Consommateur c){
+	/*static void newConsommateur(Consommateur c){
 		consommateurs.add(0, c);
 	}
 	
 	static void newProducteur(Producteur c){
 		producteurs.add(0, c);
-	}
+	}*/
 	
 	 public void productionMessage(Producteur p,Message m){
 		/*Vector<Object> v = new Vector<Object>();

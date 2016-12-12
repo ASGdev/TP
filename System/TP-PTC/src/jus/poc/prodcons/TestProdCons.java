@@ -25,7 +25,9 @@ public class TestProdCons extends Simulateur {
 	
 	
 	public static void main(String[] args){new TestProdCons(new Observateur()).start();
-		ProdCons ProdCons = new ProdCons(3,3);
+		Observateur observateur = new Observateur();
+		ProdCons ProdCons = new ProdCons(3,3,observateur);
+		
 		int consultation =1;
 		System.out.println("Voulez vous acc�dez � un journal d'�venements ? \n"
 				+ "non (0)/ oui(1)");
@@ -52,40 +54,40 @@ public class TestProdCons extends Simulateur {
 			}
 			switch (choix) {
 			case 1:
-				for (int i = 0; i < Observateur.consommateurs.size(); i++) {
-					System.out.println(Observateur.consommateurs.get(i));
+				for (int i = 0; i < observateur.consommateurs.size(); i++) {
+					System.out.println(observateur.consommateurs.get(i));
 				}
 				break;
 			case 2:
-				for (int i = 0; i < Observateur.producteurs.size(); i++) {
-					System.out.println(Observateur.producteurs.get(i));
+				for (int i = 0; i < observateur.producteurs.size(); i++) {
+					System.out.println(observateur.producteurs.get(i));
 				}
 				break;
 			case 3:
-				for (int i = 0; i < Observateur.messagesProduits.size(); i++) {
-					System.out.println(Observateur.messagesProduits.get(i));
+				for (int i = 0; i < observateur.messagesProduits.size(); i++) {
+					System.out.println(observateur.messagesProduits.get(i));
 				}
 				break;
 			case 4:
-				for (int i = 0; i < Observateur.messagesConsommes.size(); i++) {
-					System.out.println(Observateur.messagesConsommes.get(i));
+				for (int i = 0; i < observateur.messagesConsommes.size(); i++) {
+					System.out.println(observateur.messagesConsommes.get(i));
 				}
 				break;
 			case 5:
-				for (int i = 0; i < Observateur.depot.size(); i++) {
-					System.out.println(Observateur.depot.get(i));
+				for (int i = 0; i < observateur.depot.size(); i++) {
+					System.out.println(observateur.depot.get(i));
 				}
 				break;
 			case 6:
-				for (int i = 0; i < Observateur.messagesRetires.size(); i++) {
-					System.out.println(Observateur.messagesRetires.get(i));
+				for (int i = 0; i < observateur.messagesRetires.size(); i++) {
+					System.out.println(observateur.messagesRetires.get(i));
 				}
 				break;
 			default:
 				System.out.println("Vous n'avez pas entrer une option valide (entre 1 et 6)");
 				break;
 			}
-			System.out.println("Voulez vous acc�dez � un journal d'�venements ? \n"
+			System.out.println("Voulez vous accedez a un journal d'evenements ? \n"
 					+ "oui (0) / non (1)");
 			try {
 				consultation = System.in.read();
