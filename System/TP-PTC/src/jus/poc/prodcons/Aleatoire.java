@@ -3,8 +3,8 @@ package jus.poc.prodcons;
 import java.util.Random;
 
 public class Aleatoire {
-	protected static int borneInf;
-	protected static int borneSup;
+	protected static int borneInf=1;
+	protected static int borneSup=10;
 	protected static  int moyenne;
 	protected static  int deviation;
 	protected static Random var = new Random();
