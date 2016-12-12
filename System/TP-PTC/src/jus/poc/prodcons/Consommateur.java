@@ -45,6 +45,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	private void treatment(Message m){
 		try {
 			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+			Observateur.consommationMessage(this, m, moyenneTempsDeTraitement);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
