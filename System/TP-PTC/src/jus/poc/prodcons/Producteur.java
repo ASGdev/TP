@@ -31,13 +31,15 @@ public class Producteur extends Acteur implements _Producteur {
 			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
 			if(tampon.taille()>0){
 				tampon.put(this,m);
-				System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
 				this.nbMessage -= 1;
+				System.out.println("tampon libre :"+tampon.taille()+" avec l'ajout du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+				
 			}
 			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
 		}
 		
 	}
+	
 	
 	public String name(){
 		return this.getName()+"N°"+this.identification();

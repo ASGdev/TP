@@ -36,14 +36,19 @@ public class Consommateur extends Acteur implements _Consommateur {
 			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
 			if(tampon.enAttente()>0){
 				tampon.get(this);
+				this.nbMessage -= 1;
 				System.out.println("tampon libre :"+tampon.taille()+" avec le retrait du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
 
-				this.nbMessage -= 1;
+				
 			}
 			
 								
 			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
 		}
+	}
+	
+	private void treatment(Message m){
+		
 	}
 	
 	
