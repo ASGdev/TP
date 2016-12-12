@@ -1,7 +1,6 @@
 package jus.poc.prodcons;
 
 public class Consommateur extends Acteur implements _Consommateur {
-	private final Object lockTamponCons = new Object();
 	ProdCons tampon;
 	public Consommateur(int type, Observateur observateur, int moyenneTempsDeTraitement,
 			int deviationTempsDeTraitement, ProdCons tmp) {
@@ -13,13 +12,8 @@ public class Consommateur extends Acteur implements _Consommateur {
 	public void run(){
 		
 		while(this.nbMessage > 0){
-			getMessage();
-			try {
-				Thread.sleep(Aleatoire.next());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			treatment(getMessage());
 		}
 		
 	}
@@ -29,26 +23,34 @@ public class Consommateur extends Acteur implements _Consommateur {
 		return this.getName()+"N°"+this.identification();
 	}
 	
-	private void getMessage(){
+	private Message getMessage(){
+		Message tamp = null;
 		
 		System.out.println("Demande d'accee de la part de "+this.getName()+"N°"+this.identification());
 		synchronized (lockTamponCons) {
 			System.out.println("Obtention d'accee pour "+this.getName()+"N°"+this.identification());
 			if(tampon.enAttente()>0){
-				tampon.get(this);
+				 tamp = tampon.get(this);
 				this.nbMessage -= 1;
 				System.out.println("tampon libre :"+tampon.taille()+" avec le retrait du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
-
-				
-			}
-			
 								
+			}
 			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
+			return tamp;
+								
+			
 		}
 	}
 	
 	private void treatment(Message m){
-		
+		try {
+			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("tampon libre :"+tampon.taille()+" avec le retrait du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+
 	}
 	
 	

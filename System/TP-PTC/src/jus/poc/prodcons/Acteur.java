@@ -10,6 +10,8 @@ public abstract class Acteur extends Thread implements _Acteur {
 	protected static int typeProducteur = 1;
 	protected int type;
 	protected int nbMessage;
+	protected static final Object lockTamponCons = new Object();
+	protected static final Object lockTamponProd = new Object();
 	
 	protected Acteur(
 			int type, Observateur observateur,

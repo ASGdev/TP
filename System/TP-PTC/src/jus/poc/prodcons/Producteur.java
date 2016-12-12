@@ -1,7 +1,7 @@
 package jus.poc.prodcons;
 
 public class Producteur extends Acteur implements _Producteur {
-	private final Object lockTamponProd = new Object();
+	
 	ProdCons tampon;
 
 	public Producteur(int type, Observateur observateur, int moyenneTempsDeTraitement, int deviationTempsDeTraitement, ProdCons tmp) {
@@ -43,6 +43,18 @@ public class Producteur extends Acteur implements _Producteur {
 	
 	public String name(){
 		return this.getName()+"N°"+this.identification();
+	}
+	
+	private Message production(){
+		MsgInteger m = new MsgInteger(this.nbMessage);
+		try {
+			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return m;
+		
 	}
 
 }
