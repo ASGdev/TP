@@ -23,13 +23,13 @@ public class Observateur {
 	static void consommationMessage(Consommateur c, Message m, int delay){
 		Vector<Object> v = new Vector<Object>();
 		v.addElement(c);v.addElement(m);v.addElement(delay);
-		messagesConsommes.add(0, v);
+		messagesConsommes.add(v);
 	}
 	
 	static void depotMessage(Producteur p, Message m){
 		Vector<Object> v = new Vector<Object>();
 		v.addElement(p);v.addElement(m);
-		depot.add(0, v);
+		depot.add(v);
 	}
 	
 	/*static void newConsommateur(Consommateur c){
@@ -43,13 +43,13 @@ public class Observateur {
 	static void productionMessage(Producteur p,Message m){
 		Vector<Object> v = new Vector<Object>();
 		v.addElement(p);v.addElement(m);
-		messagesProduits.add(0, v);
+		messagesProduits.add(v);
 	}
 	
 	static void retraitMessage(Consommateur c, Message m){
 		Vector<Object> v = new Vector<Object>();
 		v.add(c);v.add(m);
-		messagesRetires.add(0, v);
+		messagesRetires.add(v);
 	}
 	
 	
