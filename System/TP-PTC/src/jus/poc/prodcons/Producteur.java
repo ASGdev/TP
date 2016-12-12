@@ -43,11 +43,11 @@ public class Producteur extends Acteur implements _Producteur {
 		MsgInteger m = new MsgInteger(this.nbMessage);
 		try {
 			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
-			Observateur.productionMessage(this, m);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Observateur.productionMessage(this, m);
 		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
 
 		return m;
