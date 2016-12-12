@@ -4,12 +4,12 @@ import java.util.Vector;
 
 public class Observateur {
 	
-	Vector<Vector<Object>> messagesConsommes;
-	Vector<Vector<Object>> depot;
-	Vector<Consommateur> consommateurs;
-	Vector<Producteur> producteurs;
-	Vector<Vector<Object>> messagesProduits;
-	Vector<Vector<Object>> messagesRetires;
+	static Vector<Vector<Object>> messagesConsommes;
+	static Vector<Vector<Object>> depot;
+	static Vector<Consommateur> consommateurs;
+	static Vector<Producteur> producteurs;
+	static Vector<Vector<Object>> messagesProduits;
+	static Vector<Vector<Object>> messagesRetires;
 	
 	Observateur(){
 		Vector<Vector<Object>> messagesConsommes= new Vector<Vector<Object>>();
@@ -20,36 +20,38 @@ public class Observateur {
 		Vector<Vector<Object>> messagesRetires= new Vector<Vector<Object>>();
 	}
 	
-	void consommationMessage(Consommateur c, Message m, int delay){
+	static void consommationMessage(Consommateur c, Message m, int delay){
 		Vector<Object> v = new Vector<Object>();
 		v.addElement(c);v.addElement(m);v.addElement(delay);
 		messagesConsommes.add(0, v);
 	}
 	
-	void depotMessage(Producteur p, Message m){
+	static void depotMessage(Producteur p, Message m){
 		Vector<Object> v = new Vector<Object>();
 		v.addElement(p);v.addElement(m);
 		depot.add(0, v);
 	}
 	
-	void newConsommateur(Consommateur c){
+	static void newConsommateur(Consommateur c){
 		consommateurs.add(0, c);
 	}
 	
-	void newProducteur(Producteur c){
+	static void newProducteur(Producteur c){
 		producteurs.add(0, c);
 	}
 	
-	void productionMessage(Producteur p,Message m){
+	static void productionMessage(Producteur p,Message m){
 		Vector<Object> v = new Vector<Object>();
 		v.addElement(p);v.addElement(m);
 		messagesProduits.add(0, v);
 	}
 	
-	void retraitMessage(Consommateur c, Message m){
+	static void retraitMessage(Consommateur c, Message m){
 		Vector<Object> v = new Vector<Object>();
 		v.add(c);v.add(m);
 		messagesRetires.add(0, v);
 	}
+	
+	
 	
 }
