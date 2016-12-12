@@ -51,7 +51,7 @@ public class ProdCons implements Tampon {
 	@Override
 	public Message get(Consommateur c) {
 		Message tamp = buffer.remove(0);
-		Observateur.retraitMessage(c, tamp);
+		o.retraitMessage(c, tamp);
 		return tamp;
 		
 	}
@@ -59,13 +59,17 @@ public class ProdCons implements Tampon {
 	@Override
 	public void put(Producteur p, Message m) {
 		buffer.add(m);
-		Observateur.depotMessage(p, m);
+		o.depotMessage(p, m);
 		System.out.println("Message ajouté");
 	}
 
 	@Override
 	public int taille() {
 		return buffer_size-buffer.size();
+	}
+	
+	public Observateur getObservateur(){
+		return o;
 	}
 	
 	
