@@ -13,6 +13,7 @@ public class Producteur extends Acteur implements _Producteur {
 	public void run(){
 		while(this.nbMessage >0){			
 			addMessage(production());
+			
 		}
 	}
 	
@@ -46,8 +47,8 @@ public class Producteur extends Acteur implements _Producteur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		tampon.getObservateur().productionMessage(this, m);
-		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+		//tampon.getObservateur().productionMessage(this, m);
+		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification());
 
 		return m;
 		

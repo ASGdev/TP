@@ -6,8 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class TestProdCons extends Simulateur {
-	public static Properties options;
-	
+
 	public TestProdCons(Observateur observateur){super(observateur);}
 	
 	protected void run() throws Exception{
@@ -20,13 +19,14 @@ public class TestProdCons extends Simulateur {
 		//INIT DES THREADS
 		
 		//SIMULATION
-		ProdCons ProdCons = new ProdCons(3,3);
+		//ProdCons ProdCons = new ProdCons(3,3,this.observateur);
 		
 	}
 	
 	
-	public static void main(String[] args){new TestProdCons(new Observateur()).start();
-		ProdCons ProdCons = new ProdCons(3,3);
+	public static void main(String[] args){
+		new TestProdCons(new Observateur()).start();
+		ProdCons ProdCons = new ProdCons(3,3, new Observateur());
 	}
 	
 	

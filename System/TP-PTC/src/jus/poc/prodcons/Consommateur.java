@@ -12,8 +12,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	
 	public void run(){
 		
-		while(this.nbMessage > 0){
-			
+		while(this.nbMessage > 0){			
 			treatment(getMessage());
 		}
 		
@@ -37,22 +36,29 @@ public class Consommateur extends Acteur implements _Consommateur {
 								
 			}
 			System.out.println("Sortie d'accee pour "+this.getName()+"N°"+this.identification());
-			return tamp;
-								
-			
+			return tamp;			
 		}
 	}
 	
 	private void treatment(Message m){
-		try {
-			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(m!=null){
+			try {
+				Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//tampon.getObservateur().consommationMessage(this, m, moyenneTempsDeTraitement);
+			System.out.println("Traitement de consommation du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+		}else{
+			System.out.println("Rien a faire pour thread "+this.getName()+"N°"+this.identification());
+			try {
+				Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 		}
-		tampon.getObservateur().consommationMessage(this, m, moyenneTempsDeTraitement);
-		System.out.println("Traitement de consommation du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
-
+		}
 	}
 	
 	

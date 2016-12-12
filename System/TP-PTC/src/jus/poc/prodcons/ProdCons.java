@@ -7,14 +7,15 @@ public class ProdCons implements Tampon {
 	private int buffer_size; 
 	private Vector<Consommateur> Consotab = new Vector<Consommateur>();
 	private Vector<Producteur> Productab = new Vector<Producteur>();
-	private Observateur o = new Observateur();
+	private Observateur o;
 	
 	
-	public ProdCons(int nbProd, int nbCons){
+	public ProdCons(int nbProd, int nbCons, Observateur o){
 		
 		for(int i=0;i<nbCons;i++){
 			Consommateur c = new Consommateur(2,o,5,2,this);
 			Consotab.add(c);
+			this.o=o;
 		}
 		
 		for(int i=0;i<nbProd;i++){
@@ -51,7 +52,8 @@ public class ProdCons implements Tampon {
 	@Override
 	public Message get(Consommateur c) {
 		Message tamp = buffer.remove(0);
-		o.retraitMessage(c, tamp);
+		notifyAll();
+//		o.retraitMessage(c, tamp);
 		return tamp;
 		
 	}
@@ -59,7 +61,8 @@ public class ProdCons implements Tampon {
 	@Override
 	public void put(Producteur p, Message m) {
 		buffer.add(m);
-		o.depotMessage(p, m);
+		notifyAll();
+//		o.depotMessage(p, m);
 		System.out.println("Message ajouté");
 	}
 
