@@ -50,6 +50,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		Observateur.consommationMessage(this, m, moyenneTempsDeTraitement);
 		System.out.println("Traitement de consommation du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
 
 	}
