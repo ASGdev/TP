@@ -12,14 +12,8 @@ public class Producteur extends Acteur implements _Producteur {
 	
 	public void run(){
 		while(this.nbMessage >0){
-			MsgInteger m = new MsgInteger(this.nbMessage);
-			addMessage(m);
-			try {
-				Thread.sleep(Aleatoire.next());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			addMessage(production());
 		}
 	}
 	
@@ -53,6 +47,8 @@ public class Producteur extends Acteur implements _Producteur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+
 		return m;
 		
 	}

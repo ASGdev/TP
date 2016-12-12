@@ -49,7 +49,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("tampon libre :"+tampon.taille()+" avec le retrait du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
+		System.out.println("Traitement de consommation du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
 
 	}
 	

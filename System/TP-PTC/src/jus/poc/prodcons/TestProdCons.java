@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class TestProdCons extends Simulateur {
-	
+	public static Properties options;
 	
 	public TestProdCons(Observateur observateur){super(observateur);}
 	
@@ -39,10 +39,11 @@ public class TestProdCons extends Simulateur {
 		int value;
 		Class<?> thisOne = getClass();
 		for(Map.Entry<Object,Object> entry : properties.entrySet()) {
-		key = (String)entry.getKey();
-		value = Integer.parseInt((String)entry.getValue());
-		thisOne.getDeclaredField(key).set(this,value);
+			key = (String)entry.getKey();
+			value = Integer.parseInt((String)entry.getValue());
+			thisOne.getDeclaredField(key).set(this,value);
 		}
+		options = properties;
 	}
 
 
