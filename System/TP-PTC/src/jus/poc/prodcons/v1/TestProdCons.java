@@ -31,7 +31,7 @@ public class TestProdCons extends Simulateur {
 		new TestProdCons(new Observateur()).start();//n'hérite pas de thread, ca sert a rien...
 		
 		Observateur observateur = new Observateur();
-		ProdCons ProdCons = new ProdCons(3,3,observateur);
+		ProdCons ProdCons = new ProdCons(10,0,observateur);
 		
 		/*int consultation =1;
 		System.out.println("Voulez vous accedez a un journal d'evenements ? \n"

@@ -56,6 +56,7 @@ public class ProdCons implements Tampon {
 		System.out.println("Obtention d'accee de "+c.getName()+"N°"+c.identification()+"");
 		 while(buffer.isEmpty()) {
 	            try {
+	            	System.out.println("Se met en attente "+c.getName()+"N°"+c.identification()+"");
 					wait();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -77,6 +78,7 @@ public class ProdCons implements Tampon {
 		System.out.println("Obtention d'accee de "+p.getName()+"N°"+p.identification()+"");
 		while(buffer.size()==buffer_size) {
             try {
+            	System.out.println("Se met en attente "+p.getName()+"N°"+p.identification()+"");
 				wait();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
