@@ -22,16 +22,16 @@ public class Observateur {
 	}
 	
 	 public void consommationMessage(Consommateur c, Message m, int delay){
-		/*Vector<Object> v = new Vector<Object>();
+		Vector<Object> v = new Vector<Object>();
 		v.add(c.getName());v.add(m.getContent());v.add(delay);
-		messagesConsommes.add(v);*/
+		messagesConsommes.add(v);
 		 
 	}
 	
 	 public void depotMessage(Producteur p, Message m){
-		/*Vector<Object> v = new Vector<Object>();
+		Vector<Object> v = new Vector<Object>();
 		v.add(p.getName());v.add(m.getContent());
-		depot.add(v);*/
+		depot.add(v);
 	}
 	
 	/*static void newConsommateur(Consommateur c){
@@ -43,15 +43,15 @@ public class Observateur {
 	}*/
 	
 	 public void productionMessage(Producteur p,Message m){
-		/*Vector<Object> v = new Vector<Object>();
+		Vector<Object> v = new Vector<Object>();
 		v.add(p.getName());v.add(m.getContent());
-		messagesProduits.add(v);*/
+		messagesProduits.add(v);
 	}
 	
 	 public void retraitMessage(Consommateur c, Message m){
-		/*Vector<Object> v = new Vector<Object>();
+		Vector<Object> v = new Vector<Object>();
 		v.add(c.getName());v.add(m.getContent());
-		messagesRetires.add(v);*/
+		messagesRetires.add(v);
 	}
 	
 	
