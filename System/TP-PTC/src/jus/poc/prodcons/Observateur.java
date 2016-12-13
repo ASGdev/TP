@@ -3,35 +3,23 @@ package jus.poc.prodcons;
 import java.util.Vector;
 
 public class Observateur {
-	
-	Vector<Vector<Object>> messagesConsommes;
-	Vector<Vector<Object>> depot;
-	Vector<Consommateur> consommateurs;
-	Vector<Producteur> producteurs;
-	Vector<Vector<Object>> messagesProduits;
-	Vector<Vector<Object>> messagesRetires;
+	public Vector<String> prodJournal = new Vector<String>();
+	public Vector<String> consoJoural = new Vector<String>();
+	public Vector<String> evenementJournal = new Vector<String>();
 	
 	Observateur(){
-		Vector<Vector<Object>> messagesConsommes= new Vector<Vector<Object>>();
-		Vector<Vector<Object>> depot = new Vector<Vector<Object>>();
-		Vector<Consommateur> consommateur = new Vector<Consommateur>();
-		Vector<Producteur> producteur = new Vector<Producteur>();
-		Vector<Vector<Object>> messagesProduits = new Vector<Vector<Object>>();
-		Vector<Vector<Object>> messagesRetires= new Vector<Vector<Object>>();
+		
 		
 	}
 	
 	 public void consommationMessage(Consommateur c, Message m, int delay){
-		Vector<Object> v = new Vector<Object>();
-		v.add(c.getName());v.add(m.getContent());v.add(delay);
-		messagesConsommes.add(v);
+		consoJoural.add("Consommateur "+c.getName()+"N°"+c.identification()+" à fini de traiter un message au bout de "+delay+"ms");
 		 
 	}
 	
 	 public void depotMessage(Producteur p, Message m){
-		Vector<Object> v = new Vector<Object>();
-		v.add(p.getName());v.add(m.getContent());
-		depot.add(v);
+		 consoJoural.add("Producteur "+p.getName()+"N°"+p.identification()+" vient de deposer un message à"+System.currentTimeMillis());
+
 	}
 	
 	 /*static void newConsommateur(Consommateur c){
@@ -42,15 +30,13 @@ public class Observateur {
 		producteurs.add(0, c);*/
 	
 	 public void productionMessage(Producteur p,Message m){
-		Vector<Object> v = new Vector<Object>();
-		v.add(p.getName());v.add(m.getContent());
-		messagesProduits.add(v);
+		 prodJournal.add("Producteur "+p.getName()+"N°"+p.identification()+" vient de creer un message");
+
 	}
 	
 	 public void retraitMessage(Consommateur c, Message m){
-		Vector<Object> v = new Vector<Object>();
-		v.add(c.getName());v.add(m.getContent());
-		messagesRetires.add(v);
+		 consoJoural.add("Consommateur "+c.getName()+"N°"+c.identification()+" vient de retirer un message à"+System.currentTimeMillis());
+
 	}
 	
 	

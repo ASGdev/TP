@@ -38,7 +38,7 @@ public class Producteur extends Acteur implements _Producteur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//tampon.getObservateur().productionMessage(this, m);
+		tampon.getObservateur().productionMessage(this, m);
 		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification());
 
 		return m;

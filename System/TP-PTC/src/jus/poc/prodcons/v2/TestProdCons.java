@@ -33,7 +33,7 @@ public class TestProdCons extends Simulateur {
 		Observateur observateur = new Observateur();
 		ProdCons ProdCons = new ProdCons(3,3,observateur);
 		
-		int consultation =1;
+		/*int consultation =1;
 		System.out.println("Voulez vous accedez a un journal d'evenements ? \n"
 				+ "non (0)/ oui(1)");
 		try {
@@ -101,6 +101,7 @@ public class TestProdCons extends Simulateur {
 			e.printStackTrace();
 		}
 		}
+		*/
 	}
 	
 	

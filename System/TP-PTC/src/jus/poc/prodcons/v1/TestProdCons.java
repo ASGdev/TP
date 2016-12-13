@@ -10,6 +10,9 @@ public class TestProdCons extends Simulateur {
 	public TestProdCons(Observateur observateur){super(observateur);}
 	
 	protected void run() throws Exception{
+		while(true){
+			System.out.println("1");
+		}
 		// le corps de votre programme principalz
 		
 		//PASSAGE DES OPTIONS
@@ -24,11 +27,13 @@ public class TestProdCons extends Simulateur {
 	}
 	
 	
-	public static void main(String[] args){new TestProdCons(new Observateur()).start();
+	public static void main(String[] args){
+		new TestProdCons(new Observateur()).start();//n'hérite pas de thread, ca sert a rien...
+		
 		Observateur observateur = new Observateur();
 		ProdCons ProdCons = new ProdCons(3,3,observateur);
 		
-		int consultation =1;
+		/*int consultation =1;
 		System.out.println("Voulez vous accedez a un journal d'evenements ? \n"
 				+ "non (0)/ oui(1)");
 		try {
@@ -96,6 +101,7 @@ public class TestProdCons extends Simulateur {
 			e.printStackTrace();
 		}
 		}
+		*/
 	}
 	
 	

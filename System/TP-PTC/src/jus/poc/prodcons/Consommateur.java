@@ -32,14 +32,15 @@ public class Consommateur extends Acteur implements _Consommateur {
 	}
 	
 	private void treatment(Message m){
+		int delay = Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		if(m!=null){
 			try {
-				Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+				Thread.sleep(delay);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//tampon.getObservateur().consommationMessage(this, m, moyenneTempsDeTraitement);
+			tampon.getObservateur().consommationMessage(this, m, delay);
 			System.out.println("Traitement de consommation du thread "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
 		}else{
 			System.out.println("Rien a faire pour thread "+this.getName()+"N°"+this.identification());

@@ -62,12 +62,13 @@ public class ProdCons implements Tampon {
 			semDispo.acquire();
 			System.out.println("Obtention d'accee de "+c.getName()+"N°"+c.identification()+"");
 			tamp = buffer.remove(0);
+			o.retraitMessage(c, tamp);
 			semTampon.release();
 			System.out.println("increment of semTampon from "+c.getName()+"N°"+c.identification()+"");
 		}catch(InterruptedException e) {
 	        e.printStackTrace();
 	    }		
-//		o.retraitMessage(c, tamp);
+		
 		return tamp;
 		
 	}
@@ -79,12 +80,13 @@ public class ProdCons implements Tampon {
 			semTampon.acquire();
 			System.out.println("Obtention d'accee de "+p.getName()+"N°"+p.identification()+"");
 			buffer.add(m);
+			o.depotMessage(p, m);
 			semDispo.release();
 			System.out.println("increment of semDispo from "+p.getName()+"N°"+p.identification()+"");
 		}catch(InterruptedException e) {
 	        e.printStackTrace();
 	    }		
-//		o.depotMessage(p, m);
+		
 		System.out.println("Message ajouté");
 	}
 
@@ -95,6 +97,18 @@ public class ProdCons implements Tampon {
 	
 	public Observateur getObservateur(){
 		return o;
+	}
+	
+	public void addConsommateur(){
+		
+		Consommateur c = new Consommateur(2,o,5,2,this);
+		Consotab.add(c);
+	}
+	
+	public void addProducteur(){
+		
+		Producteur p = new Producteur(1,o,5,2,this);
+		Productab.add(p);
 	}
 	
 	
