@@ -14,7 +14,7 @@ public class ProdCons implements Tampon {
 	private Semaphore semDispo;
 	private Semaphore semTampon;
 	
-	public ProdCons(int nbProd, int nbCons, Observateur o){
+	public ProdCons(int nbProd, int nbCons,int buffer, Observateur o){
 		
 		for(int i=0;i<nbCons;i++){
 			Consommateur c = new Consommateur(2,o,5,2,this);
@@ -26,8 +26,8 @@ public class ProdCons implements Tampon {
 			Producteur p = new Producteur(1,o,5,2,this);
 			Productab.add(p);
 		}		
-		buffer_size=6;//use option to configure it
-		buffer = new Vector<Message>();
+		buffer_size=buffer;//use option to configure it
+		this.buffer = new Vector<Message>();
 		semDispo = new Semaphore(0);
 		semTampon = new Semaphore(buffer_size);
 		

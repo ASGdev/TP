@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 import java.util.Vector;
-import java.util.Properties;
+
 
 public class ProdCons implements Tampon {
 	private Vector<Message> buffer;
@@ -12,31 +12,24 @@ public class ProdCons implements Tampon {
 	private Vector<Consommateur> Consotab = new Vector<Consommateur>();
 	private Vector<Producteur> Productab = new Vector<Producteur>();
 	private Observateur o;
-	private Properties options;
 	
 	
-	public ProdCons(int nbProd, int nbCons, Observateur o){
-		/*
-		try {
-			options = initOption("./options/options.xml");
-		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException
-				| IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+	public ProdCons(int nbProd, int nbCons,int buffer, Observateur o){
+		
+		this.o=o;
 		
 		for(int i=0;i<nbCons;i++){
 			Consommateur c = new Consommateur(2,o,5,2,this);
 			Consotab.add(c);
-			this.o=o;
+			
 		}
 		
 		for(int i=0;i<nbProd;i++){
 			Producteur p = new Producteur(1,o,5,2,this);
 			Productab.add(p);
 		}		
-		buffer_size=6;//use option to configure it
-		buffer = new Vector<Message>();
+		buffer_size=buffer;//use option to configure it
+		this.buffer = new Vector<Message>();
 		
 		
 		exec();
@@ -79,7 +72,7 @@ public class ProdCons implements Tampon {
 		Message tamp = buffer.remove(0);
 		notifyAll();
 		System.out.println("Notify from "+c.getName()+"N°"+c.identification()+"");
-//		o.retraitMessage(c, tamp);
+		o.retraitMessage(c, tamp);
 		return tamp;
 		
 	}
@@ -100,7 +93,7 @@ public class ProdCons implements Tampon {
 		buffer.add(m);
 		notifyAll();
 		System.out.println("Notify from "+p.getName()+"N°"+p.identification()+"");
-//		o.depotMessage(p, m);
+		o.depotMessage(p, m);
 		System.out.println("Message ajouté");
 	}
 
@@ -113,18 +106,18 @@ public class ProdCons implements Tampon {
 		return o;
 	}
 	
-	public  Properties initOption(String file) throws InvalidPropertiesFormatException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		Properties properties = new Properties();
-		properties.loadFromXML(ClassLoader.getSystemResourceAsStream(file));
-		String key;
-		int value;
-		Class<?> thisOne = getClass();
-		for(Map.Entry<Object,Object> entry : properties.entrySet()) {
-			key = (String)entry.getKey();
-			value = Integer.parseInt((String)entry.getValue());
-			thisOne.getDeclaredField(key).set(this,value);
-		}
-		return properties;
+	public void addConsommateur(){
+		
+		Consommateur c = new Consommateur(2,o,5,2,this);
+		Consotab.add(c);
+		o.newConsommateur(c);
+	}
+	
+	public void addProducteur(){
+		
+		Producteur p = new Producteur(1,o,5,2,this);
+		Productab.add(p);
+		o.newProducteur(p);
 	}
 	
 	

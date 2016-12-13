@@ -31,8 +31,9 @@ public class TestProdCons extends Simulateur {
 	
 	public static void main(String[] args){
 		new TestProdCons(new Observateur()).start();//n'h�rite pas de thread, ca sert a rien...
-		System.out.println("Entrer la taille du buffer");
-		int tailleBuffer;
+		int buffer =6;
+		/*System.out.println("Entrer la taille du buffer");
+		
 		try {
 			tailleBuffer = System.in.read();
 		} catch (IOException e) {
@@ -54,9 +55,10 @@ public class TestProdCons extends Simulateur {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		
 		Observateur observateur = new Observateur();
-		ProdCons ProdCons = new ProdCons(nbProd,nbCons,observateur);
+		ProdCons ProdCons = new ProdCons(3,3,buffer,observateur);
 		
 		
 	}

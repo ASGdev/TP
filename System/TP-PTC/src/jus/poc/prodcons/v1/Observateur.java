@@ -22,12 +22,14 @@ public class Observateur {
 
 	}
 	
-	 /*static void newConsommateur(Consommateur c){
-		consommateurs.add(0, c);
+	 public void newConsommateur(Consommateur c){
+		evenementJournal.add("Consommateur "+c.getName()+"N°"+c.identification()+" ajouté");
+		
 	}
 	
-	static void newProducteur(Producteur c){
-		producteurs.add(0, c);*/
+	public void newProducteur(Producteur c){
+		evenementJournal.add("Producteur "+c.getName()+"N°"+c.identification()+" ajouté");
+	}
 	
 	 public void productionMessage(Producteur p,Message m){
 		 prodJournal.add("Producteur "+p.getName()+"N°"+p.identification()+" vient de creer un message");
