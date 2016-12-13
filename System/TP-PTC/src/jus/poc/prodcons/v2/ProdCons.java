@@ -1,4 +1,4 @@
-package jus.poc.prodcons;
+package jus.poc.prodcons.v2;
 
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
