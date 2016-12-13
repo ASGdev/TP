@@ -29,7 +29,7 @@ public class TestProdCons extends Simulateur {
 		ProdCons ProdCons = new ProdCons(3,3,observateur);
 		
 		int consultation =1;
-		System.out.println("Voulez vous acc�dez � un journal d'�venements ? \n"
+		System.out.println("Voulez vous accedez a un journal d'evenements ? \n"
 				+ "non (0)/ oui(1)");
 		try {
 				consultation = System.in.read();

@@ -34,13 +34,12 @@ public class Observateur {
 		depot.add(v);*/
 	}
 	
-	/*static void newConsommateur(Consommateur c){
+	 /*static void newConsommateur(Consommateur c){
 		consommateurs.add(0, c);
 	}
 	
 	static void newProducteur(Producteur c){
-		producteurs.add(0, c);
-	}*/
+		producteurs.add(0, c);*/
 	
 	 public void productionMessage(Producteur p,Message m){
 		/*Vector<Object> v = new Vector<Object>();
