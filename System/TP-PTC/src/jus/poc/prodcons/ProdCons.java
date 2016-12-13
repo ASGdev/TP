@@ -2,6 +2,8 @@ package jus.poc.prodcons;
 
 import java.util.Vector;
 
+import com.sun.xml.internal.fastinfoset.sax.Properties;
+
 public class ProdCons implements Tampon {
 	private Vector<Message> buffer;
 	private int buffer_size; 
@@ -21,7 +23,7 @@ public class ProdCons implements Tampon {
 		for(int i=0;i<nbProd;i++){
 			Producteur p = new Producteur(1,o,5,2,this);
 			Productab.add(p);
-		}
+		}		
 		buffer_size=6;//use option to configure it
 		buffer = new Vector<Message>();
 		
