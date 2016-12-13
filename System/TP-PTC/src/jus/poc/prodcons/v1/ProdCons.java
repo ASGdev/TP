@@ -1,8 +1,10 @@
 package jus.poc.prodcons.v1;
 
+import java.io.IOException;
+import java.util.InvalidPropertiesFormatException;
+import java.util.Map;
 import java.util.Vector;
-
-import com.sun.xml.internal.fastinfoset.sax.Properties;
+import java.util.Properties;
 
 public class ProdCons implements Tampon {
 	private Vector<Message> buffer;
@@ -10,9 +12,18 @@ public class ProdCons implements Tampon {
 	private Vector<Consommateur> Consotab = new Vector<Consommateur>();
 	private Vector<Producteur> Productab = new Vector<Producteur>();
 	private Observateur o;
+	private Properties options;
 	
 	
 	public ProdCons(int nbProd, int nbCons, Observateur o){
+		/*
+		try {
+			options = initOption("./options/options.xml");
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException
+				| IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		
 		for(int i=0;i<nbCons;i++){
 			Consommateur c = new Consommateur(2,o,5,2,this);
@@ -100,6 +111,20 @@ public class ProdCons implements Tampon {
 	
 	public Observateur getObservateur(){
 		return o;
+	}
+	
+	public  Properties initOption(String file) throws InvalidPropertiesFormatException, IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		Properties properties = new Properties();
+		properties.loadFromXML(ClassLoader.getSystemResourceAsStream(file));
+		String key;
+		int value;
+		Class<?> thisOne = getClass();
+		for(Map.Entry<Object,Object> entry : properties.entrySet()) {
+			key = (String)entry.getKey();
+			value = Integer.parseInt((String)entry.getValue());
+			thisOne.getDeclaredField(key).set(this,value);
+		}
+		return properties;
 	}
 	
 	
