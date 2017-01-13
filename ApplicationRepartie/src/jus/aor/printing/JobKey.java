@@ -43,6 +43,7 @@ public class JobKey {
 	 * @return le tableau de bytes de la forme textuelle
 	 */
 	public byte[] marshal() {
+		return null;
 		//----------------------------------------------------------------------------- A COMPLETER
 	}
 	/**

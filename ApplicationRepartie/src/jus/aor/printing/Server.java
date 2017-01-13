@@ -1,12 +1,14 @@
 package jus.aor.printing;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.Thread.State;
 import java.net.*;
 import java.util.*;
 import java.util.logging.Logger;
 
-import jus.aor.printing.Esclave.Slave;
+//import jus.aor.printing.Esclave.Slave;
 import jus.util.Formule;
 
 import static jus.aor.printing.Notification.*;
@@ -41,13 +43,22 @@ public class Server {
 	 */
 	private void runTCP(){
 		try{
-			Socket soc=null;
+			Socket soc=null;			
+			
 			serverTCPSoc = new ServerSocket(port, backlog);
 			Notification protocole=null;
 			log.log(Level.INFO_1,"Server.TCP.Started",new Object[] {port,backlog});
 			while(alive) {
 				log.log(Level.INFO,"Server.TCP.Waiting");
 				try{
+					soc = serverTCPSoc.accept();
+					System.out.println("Connexion entrante");
+					protocole = TCP.readProtocole(soc);
+					if(protocole == null){
+						TCP.writeProtocole(soc,REPLY_UNKNOWN_NOTIFICATION);
+					}else{
+						TCP.writeProtocole(soc, REPLY_PRINT_OK);
+					}
 					//---------------------------------------------------------------------- A COMPLETER
 				}catch(SocketException e){
 						// socket has been closed, master serverTCP will stop.
@@ -71,7 +82,7 @@ public class Server {
 	 * @param f
 	 * @see jus.aor.printing.Spooler#impressionTimeOfSize(jus.util.Formule)
 	 */
-	public void impressionTimeOfSize(Formule f){spooler.impressionTimeOfSize(f);}
+	//public void impressionTimeOfSize(Formule f){spooler.impressionTimeOfSize(f);}
 	/**
 	 * 
 	 */

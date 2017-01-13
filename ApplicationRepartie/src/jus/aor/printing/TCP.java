@@ -24,7 +24,8 @@ class TCP{
 	 * @throws IOException
 	 */
 	static void writeProtocole(Socket soc,  Notification not) throws IOException {
-	//----------------------------------------------------------------------------- A COMPLETER
+	DataOutputStream out = new DataOutputStream(soc.getOutputStream());
+	out.writeInt(not.ordinal());
 	}
 	/**
 	 * 
@@ -33,7 +34,9 @@ class TCP{
 	 * @throws IOException
 	 */
 	static Notification readProtocole(Socket soc) throws IOException {
-	//----------------------------------------------------------------------------- A COMPLETER
+		DataInputStream in = new DataInputStream(soc.getInputStream());
+		Notification not = Notification.values()[in.readInt()];
+		return not;
 	}
 	/**
 	 * 
@@ -51,7 +54,8 @@ class TCP{
 	 * @throws IOException
 	 */
 	static JobKey readJobKey(Socket soc) throws IOException {
-	//----------------------------------------------------------------------------- A COMPLETER
+	
+		return null;
 	}
 	/**
 	 * 
@@ -70,7 +74,7 @@ class TCP{
 	 * @throws IOException
 	 */
 	static String readData(Socket soc) throws IOException {
-	//----------------------------------------------------------------------------- A COMPLETER
+	return null;
 	}
 	/**
 	 * 
@@ -89,6 +93,6 @@ class TCP{
 	 * @throws ClassNotFoundException
 	 */
 	static JobState readJobState(Socket soc) throws IOException, ClassNotFoundException {
-	//----------------------------------------------------------------------------- A COMPLETER
+	return null;
 	}
 }
