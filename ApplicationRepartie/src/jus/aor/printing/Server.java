@@ -37,27 +37,34 @@ public class Server {
 	 */
 	public Server() {
 		log.setLevel(Level.INFO_1);
+		runTCP();
 	}
 	/**
 	 * le master thread TCP.
 	 */
 	private void runTCP(){
+		while(true){
 		try{
 			Socket soc=null;			
-			
+			alive = true;
 			serverTCPSoc = new ServerSocket(port, backlog);
 			Notification protocole=null;
 			log.log(Level.INFO_1,"Server.TCP.Started",new Object[] {port,backlog});
-			while(alive) {
+			while(alive) { 
 				log.log(Level.INFO,"Server.TCP.Waiting");
 				try{
 					soc = serverTCPSoc.accept();
-					System.out.println("Connexion entrante");
+					System.out.println("Connection enter");
+					log.log(Level.INFO, "Server.QueryPrint.Enter");
 					protocole = TCP.readProtocole(soc);
 					if(protocole == null){
 						TCP.writeProtocole(soc,REPLY_UNKNOWN_NOTIFICATION);
+						//log.log(Level.INFO, "Server.QueryPrint.Fail=>protocole.null");
 					}else{
 						TCP.writeProtocole(soc, REPLY_PRINT_OK);
+						System.out.println("All ok");
+						//log.log(Level.INFO, "Server.QueryPrint.OK", protocole.toString());
+					
 					}
 					//---------------------------------------------------------------------- A COMPLETER
 				}catch(SocketException e){
@@ -67,12 +74,14 @@ public class Server {
 				}catch(Exception e){
 					TCP.writeProtocole(soc,REPLY_UNKNOWN_ERROR);
 				}
+			
 			}
 			log.log(Level.INFO_1,"Server.TCP.Stopped");
 			serverTCPSoc.close();
 		}catch (Exception e){
 			e.printStackTrace();
 			System.exit(-1);
+		}
 		}
 	}
 	protected void setBacklog(int backlog) {this.backlog=backlog;}
@@ -99,7 +108,7 @@ public class Server {
 	 * 
 	 * @param args
 	 */
-	public static void main (String args[]) { 
+	public static void main (String args[]) {  
       new ServerGUI(new Server()); 
 	}
 }
