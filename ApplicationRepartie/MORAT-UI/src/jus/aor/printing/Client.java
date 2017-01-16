@@ -92,7 +92,7 @@ public class Client {
 			//-------------------------------------------------------------------------- A COMPLETER
 			if(ret == REPLY_PRINT_OK) {
 				System.out.println("all Ok");
-				//log.log(Level.INFO, "Client.QueryPrint.OK", ret.toString());
+				log.log(Level.INFO, "Client.QueryPrint.OK", ret.toString());
 				//------------------------------------------------------------------------ A COMPLETER
 				// Dans le cas où tout est correct on ajoute le job à la liste des encours.
 				//	{log.log(Level.INFO_3,"Client.QueryPrint.Processing",key);
