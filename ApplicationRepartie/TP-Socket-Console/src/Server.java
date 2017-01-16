@@ -2,21 +2,23 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class Server {
 	int port = 3000;
 	String host = "localhost";
 	int Threadpool = 10;
-	Vector<Socket> waitingConnectionPool;
+	BlockingQueue<Socket> waitingConnectionPool;
 	static ServerSocket socketserver;
 	
 	public Server(){
-		
+		waitingConnectionPool = new ArrayBlockingQueue<>(Threadpool*2);
 	}
 	
 	private void mainTCP(){
 		Socket socket ;
-
+		
 		try {
 			socketserver = new ServerSocket(port);
 			socket = socketserver.accept(); 
@@ -29,20 +31,12 @@ public class Server {
 		}
 	}
 	
-	private void readNotification(Socket soc){
-		
+	private Socket getConnectionSocket() throws InterruptedException{
+		return waitingConnectionPool.take();
 	}
 	
-	private void writeNotification(Socket soc, Notification n){
-		
-	}
-	
-	private void readData(Socket soc){
-		
-	}
-	
-	private void writeData(Socket soc, String s){
-		
+	private void setConnectionSocket(Socket soc) throws InterruptedException{
+		waitingConnectionPool.put(soc);
 	}
 
 	public static void main(String[] zero) {
