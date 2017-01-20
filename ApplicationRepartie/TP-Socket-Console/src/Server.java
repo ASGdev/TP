@@ -21,6 +21,7 @@ public class Server {
 		
 		try {
 			socketserver = new ServerSocket(port);
+			System.out.println("Serveur demarre");
 			socket = socketserver.accept(); 
 			System.out.println("Un client s'est connecté !");
 		    socketserver.close();

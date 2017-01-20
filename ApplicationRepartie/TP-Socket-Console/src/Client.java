@@ -26,8 +26,8 @@ public class Client {
 			socket = new Socket(InetAddress.getLocalHost(),port);
 			System.out.println("Demande de connexion");
 	        in = new BufferedReader (new InputStreamReader (socket.getInputStream()));
-	        String message_distant = in.readLine();
-	        System.out.println(message_distant);
+	        //String message_distant = in.readLine();
+	        //System.out.println(message_distant);
             socket.close();
 
 		}catch (UnknownHostException e) {
