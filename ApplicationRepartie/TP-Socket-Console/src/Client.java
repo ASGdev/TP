@@ -7,17 +7,21 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
+
 	int port = 3000;
 	String host = "localhost";
-	
+	int Threadpool = 10;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Client client= new Client();
-		client.mainTCP();				
+		Client client = new Client();
+		for (int i = 0; i < client.Threadpool; i++) {
+			client.mainTCP();
 		}
-	
-	private void mainTCP(){
+	}
+
+	private void mainTCP() {
+		// TODO Auto-generated method stub
 		Socket socket;
 		BufferedReader in;
 		PrintWriter out;
@@ -25,14 +29,9 @@ public class Client {
 		try {
 			socket = new Socket(InetAddress.getLocalHost(),port);
 			System.out.println("Demande de connexion");
-			TCP.writeProtocole(socket, Notification.QUERY_PRINT);
-	        Notification not = TCP.readProtocole(socket);
-	        if(not == Notification.REPLY_PRINT_OK){
-	        	System.out.println("Impression faite");
-	        }else{
-	        	System.out.println("le serveur est complétement bourré");
-	        }
-	        System.out.println("Fin du client");
+	        in = new BufferedReader (new InputStreamReader (socket.getInputStream()));
+	        //String message_distant = in.readLine();
+	        //System.out.println(message_distant);
             socket.close();
 
 		}catch (UnknownHostException e) {
@@ -43,5 +42,5 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	
 }
-
