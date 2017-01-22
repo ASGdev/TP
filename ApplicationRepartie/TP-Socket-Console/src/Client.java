@@ -10,17 +10,8 @@ public class Client {
 
 	int port = 3000;
 	String host = "localhost";
-	int Threadpool = 10;
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Client client = new Client();
-		for (int i = 0; i < client.Threadpool; i++) {
-			client.mainTCP();
-		}
-	}
 
-	private void mainTCP() {
+	void mainTCP() {
 		// TODO Auto-generated method stub
 		Socket socket;
 		BufferedReader in;
