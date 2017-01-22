@@ -11,21 +11,5 @@ private Simulation mainSimul;
 	public void start(){
 		
 	}	
-	
-	private void readNotification(Socket soc){
-		
-	}
-	
-	private void writeNotification(Socket soc, Notification n){
-		
-	}
-	
-	private void readData(Socket soc){
-		
-	}
-	
-	private void writeData(Socket soc, String s){
-		
-	}
 
 }
