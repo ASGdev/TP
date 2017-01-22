@@ -35,6 +35,12 @@ public class ServerThread extends Thread {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			try {
+				wait(20000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} //spooler waiting time simulation
 		}	
         
 	}	
