@@ -8,43 +8,86 @@ import java.util.concurrent.BlockingQueue;
 public class Server {
 	int port = 3000;
 	String host = "localhost";
-	int Threadpool = 10;
+	int ThreadpoolMaxSize = 1;
+	Vector<ServerThread> ThreadPool;
 	BlockingQueue<Socket> waitingConnectionPool;
 	static ServerSocket socketserver;
+	static boolean alive;
 	
 	public Server(){
-		waitingConnectionPool = new ArrayBlockingQueue<>(Threadpool*2);
+		waitingConnectionPool = new ArrayBlockingQueue<>(ThreadpoolMaxSize*2);
+		ThreadPool = new Vector<ServerThread>();
+		for (int i=0;i<ThreadpoolMaxSize;i++){
+			ServerThread th = new ServerThread(this);
+			th.start();
+			ThreadPool.addElement(th);
+		}
 	}
 	
 	private void mainTCP(){
-		Socket socket ;
-		
 		try {
 			socketserver = new ServerSocket(port);
-			System.out.println("Serveur demarre");
-			socket = socketserver.accept(); 
-			System.out.println("Un client s'est connecté !");
-			Notification not = TCP.readProtocole(socket);
-			if(not == Notification.QUERY_PRINT){
-				
-				TCP.writeProtocole(socket, Notification.REPLY_PRINT_OK);
-			}else{
-				System.out.println("Une erreur s'est produite : le client est bourré");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("Serveur demarre");
+		alive = true;
+		while(alive){
+			try {
+				Socket socket ;
+				socket = socketserver.accept(); 
+				System.out.println("Un client s'est connecté !");
+				Notification not = TCP.readProtocole(socket);
+				if(not == Notification.QUERY_PRINT){
+					setConnectionSocket(socket);
+					//TCP.writeProtocole(socket, Notification.REPLY_PRINT_OK);
+				}else{
+					System.out.println("Une erreur s'est produite : le client est bourré");
+				}
+	
+			}catch (IOException e) {
+				e.printStackTrace();
 			}
-		    socketserver.close();
-		    socket.close();
-
-		}catch (IOException e) {
+		}
+		try {
+			socketserver.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	private Socket getConnectionSocket() throws InterruptedException{
-		return waitingConnectionPool.take();
+	public Socket getConnectionSocket(){
+		Socket sock=null;
+			try {
+				sock = waitingConnectionPool.take();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return sock;
 	}
 	
-	private void setConnectionSocket(Socket soc) throws InterruptedException{
-		waitingConnectionPool.put(soc);
+	public void setConnectionSocket(Socket soc){
+		try {
+			waitingConnectionPool.put(soc);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void downServer(){
+		alive=false;
+	}
+	
+	public ServerSocket getServerSocket(){
+		return socketserver;
+	}
+	
+	public void ServerNot(String s){
+		System.out.println(s);
 	}
 
 	public static void main(String[] zero) {

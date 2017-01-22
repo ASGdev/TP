@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -27,8 +28,20 @@ public class Client {
 			System.out.println("Demande de connexion");
 			TCP.writeProtocole(socket, Notification.QUERY_PRINT);
 	        Notification not = TCP.readProtocole(socket);
-	        if(not == Notification.REPLY_PRINT_OK){
-	        	System.out.println("Impression faite");
+	        
+	        
+	        if(not == Notification.REPLY_THREAD_WIP){
+	        	TCP.fileTransfert(
+	        			new FileInputStream("Client.txt"),
+	                    socket.getOutputStream(),
+	                    true);
+	        	not = TCP.readProtocole(socket);
+	        	if(not==Notification.REPLY_PRINT_OK){
+	        		System.out.println("Impression faite");
+	        	}else{
+	        		System.out.println("Erreur ServeurThread");
+	        	}
+	        			
 	        }else{
 	        	System.out.println("le serveur est complétement bourré");
 	        }
