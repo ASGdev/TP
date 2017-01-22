@@ -24,6 +24,13 @@ public class Server {
 			System.out.println("Serveur demarre");
 			socket = socketserver.accept(); 
 			System.out.println("Un client s'est connecté !");
+			Notification not = TCP.readProtocole(socket);
+			if(not == Notification.QUERY_PRINT){
+				
+				TCP.writeProtocole(socket, Notification.REPLY_PRINT_OK);
+			}else{
+				System.out.println("Une erreur s'est produite : le client est bourré");
+			}
 		    socketserver.close();
 		    socket.close();
 

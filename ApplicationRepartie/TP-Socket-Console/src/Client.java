@@ -25,9 +25,14 @@ public class Client {
 		try {
 			socket = new Socket(InetAddress.getLocalHost(),port);
 			System.out.println("Demande de connexion");
-	        in = new BufferedReader (new InputStreamReader (socket.getInputStream()));
-	        //String message_distant = in.readLine();
-	        //System.out.println(message_distant);
+			TCP.writeProtocole(socket, Notification.QUERY_PRINT);
+	        Notification not = TCP.readProtocole(socket);
+	        if(not == Notification.REPLY_PRINT_OK){
+	        	System.out.println("Impression faite");
+	        }else{
+	        	System.out.println("le serveur est complétement bourré");
+	        }
+	        System.out.println("Fin du client");
             socket.close();
 
 		}catch (UnknownHostException e) {
