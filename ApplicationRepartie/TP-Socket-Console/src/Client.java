@@ -34,9 +34,10 @@ public class Client {
 	        	TCP.fileTransfert(
 	        			new FileInputStream("Client.txt"),
 	                    socket.getOutputStream(),
-	                    true);
+	                    false);
 	        	not = TCP.readProtocole(socket);
 	        	if(not==Notification.REPLY_PRINT_OK){
+	        		socket.close();
 	        		System.out.println("Impression faite");
 	        	}else{
 	        		System.out.println("Erreur ServeurThread");

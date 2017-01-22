@@ -55,7 +55,7 @@ class TCP{
 	public static void fileTransfert(InputStream in, OutputStream out, boolean closeOnExit) throws IOException
     {
         byte buf[] = new byte[MAX_LEN_BUFFER];        
-        int n;
+        int n=0;
         while((n=in.read(buf))!=-1)
             out.write(buf,0,n);
         
