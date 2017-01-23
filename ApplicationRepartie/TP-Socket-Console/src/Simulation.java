@@ -1,19 +1,28 @@
 
 public class Simulation {
-	int Threadpool = 10;
+	int ServThreadpool;
+	int ClientThreadpool;
 	
-	public Simulation(int n) {
-		this.Threadpool = n;
+	public Simulation(int n,int m) {
+		this.ServThreadpool = n;
+		this.ClientThreadpool = m;
 	}
 	
 	public static void main(int[] args) {
 		// TODO Auto-generated method stub
-		Simulation simulation = new Simulation((args[0]));
+		Simulation simulation = new Simulation(args[0],args[1]);
+		Server serv = new Server();
+		for (int i = 0; i < simulation.ServThreadpool; i++) {
+			
+			ServerThread servthread = new ServerThread(serv);
+			servthread.start();
+		}
+		
 		Client client = new Client();
-		for (int i = 0; i < simulation.Threadpool; i++) {
+		for (int i = 0; i < simulation.ClientThreadpool; i++) {
 			
 			ClientThread clientthread = new ClientThread(client);
-			clientthread.mainTCP();
+			clientthread.start();
 		}
 	}
 }
