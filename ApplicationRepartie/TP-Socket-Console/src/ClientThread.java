@@ -13,7 +13,7 @@ public class ClientThread extends Thread{
 	String host = "localhost";
 	boolean alive;
 
-	public ClientThread(Client client){
+	public ClientThread(){
 
 	}
 
