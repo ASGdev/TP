@@ -28,9 +28,8 @@ public class Client {
 			System.out.println("Demande de connexion");
 			TCP.writeProtocole(socket, Notification.QUERY_PRINT);
 	        Notification not = TCP.readProtocole(socket);
-	        
-	        
 	        if(not == Notification.REPLY_THREAD_WIP){
+
 	        	TCP.fileTransfert(
 	        			new FileInputStream("Client.txt"),
 	                    socket.getOutputStream(),

@@ -5,6 +5,7 @@
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -56,8 +57,10 @@ class TCP{
     {
         byte buf[] = new byte[MAX_LEN_BUFFER];        
         int n=0;
-        while((n=in.read(buf))!=-1)
+        while((n=in.read(buf))>=0 && buf[n-1]!=-1)
             out.write(buf,0,n);
+        out.write(-1);
+        
         
         if (closeOnExit)
         {

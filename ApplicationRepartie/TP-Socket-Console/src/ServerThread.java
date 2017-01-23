@@ -16,8 +16,8 @@ public class ServerThread extends Thread {
 	
 	public void run(){
 		alive = true;
-		while(alive){
-			mainServ.ServerNot("Thread online");
+		mainServ.ServerNot("Thread online");
+		while(alive){			
 			Socket client = mainServ.getConnectionSocket();		
 			//Simulation of getting file and print it
 			mainServ.ServerNot("Client récupéré");
@@ -27,20 +27,19 @@ public class ServerThread extends Thread {
 				        client.getInputStream(),
 				        new FileOutputStream("Server.txt"),//get ressources, or can forward to ptinting
 				        false);
-				while(client.isConnected()){
-					TCP.writeProtocole(client, Notification.REPLY_PRINT_OK);
-				}				
+				
+				TCP.writeProtocole(client, Notification.REPLY_PRINT_OK);
+					
+				
 				mainServ.ServerNot("Client servi");
+				sleep(20000);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
-			try {
-				wait(20000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} //spooler waiting time simulation
+			}
 		}	
         
 	}	
