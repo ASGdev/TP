@@ -11,6 +11,7 @@ public class Simulation {
 		Simulation simulation = new Simulation((args[0]));
 		for (int i = 0; i < simulation.Threadpool; i++) {
 			Client client = new Client();
+			ClientThread clientthread = new ClientThread(client);
 			client.mainTCP();
 		}
 	}
