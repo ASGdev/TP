@@ -5,10 +5,14 @@
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -38,4 +42,30 @@ class TCP{
 		Notification not = Notification.values()[in.readInt()];
 		return not;
 	}
+	
+	static void writeData(Socket soc,String file) throws IOException{
+		FileInputStream inf=new FileInputStream(new File("d:\\f.txt"));
+        DataOutputStream out= new DataOutputStream(soc.getOutputStream());               
+                byte buf[] = new byte[1024];
+                int n;                   
+                while((n=inf.read(buf))!=-1){
+                   out.write(buf,0,n);                   
+                }           
+	}
+	
+	public static void fileTransfert(InputStream in, OutputStream out, boolean closeOnExit) throws IOException
+    {
+        byte buf[] = new byte[MAX_LEN_BUFFER];        
+        int n=0;
+        while((n=in.read(buf))>=0 && buf[n-1]!=-1)
+            out.write(buf,0,n);
+        out.write(-1);
+        
+        
+        if (closeOnExit)
+        {
+            in.close();
+            out.close();
+        }
+    }
 }
