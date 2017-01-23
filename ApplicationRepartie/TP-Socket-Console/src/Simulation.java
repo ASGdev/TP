@@ -11,12 +11,7 @@ public class Simulation {
 	public static void main(int[] args) {
 		// TODO Auto-generated method stub
 		Simulation simulation = new Simulation(args[0],args[1]);
-		Server serv = new Server();
-		for (int i = 0; i < simulation.ServThreadpool; i++) {
-			
-			ServerThread servthread = new ServerThread(serv);
-			servthread.start();
-		}
+		Server serv = new Server(10);
 		
 		Client client = new Client();
 		for (int i = 0; i < simulation.ClientThreadpool; i++) {

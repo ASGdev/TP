@@ -14,7 +14,8 @@ public class Server {
 	static ServerSocket socketserver;
 	static boolean alive;
 	
-	public Server(){
+	public Server(int nbth){
+		ThreadpoolMaxSize=nbth;
 		waitingConnectionPool = new ArrayBlockingQueue<>(ThreadpoolMaxSize*2);
 		ThreadPool = new Vector<ServerThread>();
 		for (int i=0;i<ThreadpoolMaxSize;i++){
@@ -91,7 +92,7 @@ public class Server {
 	}
 
 	public static void main(String[] zero) {
-		Server serv = new Server();
+		Server serv = new Server(1);
 		serv.mainTCP();
 	}
 		
