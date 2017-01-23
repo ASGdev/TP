@@ -8,17 +8,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
+
 	int port = 3000;
 	String host = "localhost";
-	
-	
-	public static void main(String[] args) {
+
+	void mainTCP() {
 		// TODO Auto-generated method stub
-		Client client= new Client();
-		client.mainTCP();				
-		}
-	
-	private void mainTCP(){
 		Socket socket;
 		BufferedReader in;
 		PrintWriter out;
@@ -26,6 +21,7 @@ public class Client {
 		try {
 			socket = new Socket(InetAddress.getLocalHost(),port);
 			System.out.println("Demande de connexion");
+      
 			TCP.writeProtocole(socket, Notification.QUERY_PRINT);
 	        Notification not = TCP.readProtocole(socket);
 	        if(not == Notification.REPLY_THREAD_WIP){
@@ -43,10 +39,10 @@ public class Client {
 	        	}
 	        			
 	        }else{
-	        	System.out.println("le serveur est complétement bourré");
+	        	System.out.println("le serveur est complÃ©tement bourrÃ©");
 	        }
 	        System.out.println("Fin du client");
-            socket.close();
+          socket.close();
 
 		}catch (UnknownHostException e) {
 			
@@ -56,5 +52,5 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	
 }
-
