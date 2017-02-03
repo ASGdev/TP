@@ -43,7 +43,7 @@ public class NioClient implements Runnable {
 
 		this.msg = msg;
 
-		serverAddress = InetAddress.getByName(serverAddressName);
+		serverAddress = InetAddress.getByName(serverAddressName); // par défaut réglé en localhost
 
 		// create a new selector
 		selector = SelectorProvider.provider().openSelector();
@@ -51,7 +51,7 @@ public class NioClient implements Runnable {
 		// create a new non-blocking server socket channel
 		clientChannel = SocketChannel.open();
 		clientChannel.configureBlocking(false);
-
+	
 		// be notified when connection requests arrive
 		clientChannel.register(selector, SelectionKey.OP_CONNECT);
 		clientChannel.connect(new InetSocketAddress(serverAddress, port));
@@ -129,8 +129,9 @@ public class NioClient implements Runnable {
 	/**
 	 * Finish to establish a connection
 	 * @param the key of the channel on which a connection is requested
+	 * @throws IOException 
 	 */
-	private void handleConnect(SelectionKey key) {
+	private void handleConnect(SelectionKey key) throws IOException {
 		SocketChannel socketChannel = (SocketChannel) key.channel();
 
 		try {
@@ -165,18 +166,45 @@ public class NioClient implements Runnable {
 	/**
 	 * Handle incoming data event
 	 * @param the key of the channel on which the incoming data waits to be received 
+	 * @throws IOException 
 	 */
-	private void handleRead(SelectionKey key){
-		// todo
+	private void handleRead(SelectionKey key) throws IOException{
+		SocketChannel socketChannel = (SocketChannel) key.channel();
+		ByteBuffer inBuffer = ByteBuffer.allocate(128);;
+		
+		int nbread = 0;
+		try {
+			nbread = socketChannel.read(inBuffer);
+		} catch (IOException e) {
+			key.cancel();
+			socketChannel.close();
+			return;
+		}
+		if(nbread == -1){
+			key.cancel();
+			socketChannel.close();
+			return;
+		}
+		//process
 	}
 
 
 	/**
 	 * Handle outgoing data event
 	 * @param the key of the channel on which data can be sent 
+	 * @throws IOException 
 	 */
-	private void handleWrite(SelectionKey key) {
-       // todo
+	private void handleWrite(SelectionKey key) throws IOException {
+		SocketChannel socketChannel = (SocketChannel) key.channel();
+		
+		try {
+			socketChannel.write(outBuffer);
+		} catch (IOException e) {
+			key.cancel();
+			clientChannel.close();
+			return;
+		}
+		key.interestOps(SelectionKey.OP_READ);
 	}
 
 
@@ -184,16 +212,18 @@ public class NioClient implements Runnable {
 	 * Send data
 	 * @param the key of the channel on which data that should be sent
 	 * @param the data that should be sent
+	 * @throws IOException 
 	 */
-	public void send(byte[] data) {
-       // todo
+	public void send(byte[] data) throws IOException {
+		outBuffer.put(ByteBuffer.wrap(data));
+		clientChannel.register(selector, SelectionKey.OP_WRITE);
 	}
 
 
 	public static void main(String args[]){
 		int serverPort = NioServer.DEFAULT_SERVER_PORT;
 		String serverAddress = "localhost";
-		String msg = "defaultMsg";
+		String msg = "defaultMsgClient";
 		String arg;
 
 		try {

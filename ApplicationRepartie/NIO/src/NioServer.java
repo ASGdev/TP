@@ -26,9 +26,14 @@ public class NioServer implements Runnable {
 
 	// Unblocking selector
 	private Selector selector;
+	
+	// ByteBuffer for outgoing messages
+	Hashtable<SocketChannel, ByteBuffer> outBuffers;
 
 	// Ip address of the server
 	private InetAddress hostAddress;
+
+	private String msg;
 
 	// to complete
 
@@ -40,6 +45,7 @@ public class NioServer implements Runnable {
 	 */
 	public NioServer(int port) 
 			throws IOException {
+		this.msg = "STDMessageFromServ";
 
 		// create a new selector
 		selector = SelectorProvider.provider().openSelector();
@@ -161,27 +167,59 @@ public class NioServer implements Runnable {
 	/**
 	 * Handle incoming data event
 	 * @param the key of the channel on which the incoming data waits to be received 
+	 * @throws IOException 
 	 */
-	private void handleRead(SelectionKey key) {
-		// todo
+	private void handleRead(SelectionKey key) throws IOException {
+		SocketChannel socketChannel = (SocketChannel) key.channel();
+		ByteBuffer inBuffer = ByteBuffer.allocate(128);;
+		
+		int nbread = 0;
+		try {
+			nbread = socketChannel.read(inBuffer);
+		} catch (IOException e) {
+			key.cancel();
+			socketChannel.close();
+			return;
+		}
+		if(nbread == -1){
+			key.cancel();
+			socketChannel.close();
+			return;
+		}
+		//process
+				
+		
 	}
 
 
 	/**
 	 * Handle outgoing data event
 	 * @param the key of the channel on which data can be sent 
+	 * @throws IOException 
 	 */
-	private void handleWrite(SelectionKey key) {
-		// todo
+	private void handleWrite(SelectionKey key) throws IOException {
+		SocketChannel socketChannel = (SocketChannel) key.channel();
+		
+		try {
+			socketChannel.write(outBuffers.get(socketChannel));
+		} catch (IOException e) {
+			key.cancel();
+			socketChannel.close();
+			return;
+		}
+		key.interestOps(SelectionKey.OP_READ);
+		
 	}
 
 	/**
 	 * Send data
 	 * @param the key of the channel on which data that should be sent
 	 * @param the data that should be sent
+	 * @throws IOException 
 	 */
-	public void send(SocketChannel socketChannel, byte[] data) {
-		// todo
+	public void send(SocketChannel socketChannel, byte[] data) throws IOException {
+		outBuffers.put(socketChannel, ByteBuffer.wrap(msg.getBytes()));
+		socketChannel.register(selector, SelectionKey.OP_WRITE);
 	}
 
 	public static void main(String args[]){
