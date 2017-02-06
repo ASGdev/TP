@@ -1,0 +1,67 @@
+---
+title: "TP Markov"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## TP Markov
+
+On dispose de N=100 objets et on va étudier les performances d'un cache LRU de taille K. Pour simplifier, on va supposer qu'un des objets est plus populaire (probabilité a) que les autres (probabilité b).
+
+```{r MarkovCalcule}
+N = 100
+a = 0.1
+b = (1-a)/(N-1)
+K = 20 #taille du cache
+T = 10000
+cachedefault = 0
+cachedefaultbyelement = vector(length=N)
+
+
+Access = sample((1:N),T, prob=c(a,rep(b,N-1)), replace = T) #On simule un accée
+hist(Access, breaks=N)
+
+cache = list(length = K) 
+
+for(access in Access){
+  # access = sample((1:N),1, prob=c(a,rep(b,N-1)), replace = T)
+  if(length(cache)<K){
+    if( access %in% cache ){
+      listofposition = (1:K)[cache==access]
+      temp = cache[-listofposition[length(listofposition)]]
+      cache = c(access,temp)
+    }else{
+      cache <- c(access,cache)
+    }
+  }else{
+    if( access %in% cache ){
+      listofposition = (1:K)[cache==access]
+      temp = cache[-listofposition[length(listofposition)]]
+      cache = c(access,temp)
+    }else{
+      temp = cache[-length(cache)]
+      cache = c(access,temp)
+      cachedefault <- cachedefault +1
+      cachedefaultbyelement[access] <- cachedefaultbyelement[access] +1
+    }
+  }
+}
+
+plot.ts(cachedefaultbyelement)
+
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
