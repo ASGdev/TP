@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 /**
  * @author morat 
@@ -19,6 +20,8 @@ public class WriteCont extends Continuation{
 	protected ArrayList<byte[]> msgs = new ArrayList<>() ;
 	// buf contains the byte array that is currently written
 	protected ByteBuffer buf = null;
+	protected ByteBuffer lenBuf = ByteBuffer.allocate(4);
+	SocketChannel sock;
 
 
 	/**
@@ -36,6 +39,7 @@ public class WriteCont extends Continuation{
 	 */
 	protected boolean isPendingMsg(){
 	// todo
+		return true;
 	}
 
 
@@ -44,14 +48,37 @@ public class WriteCont extends Continuation{
 	 * @throws IOException 
 	 */
 	protected void sendMsg(Message data) throws IOException{
-	// todo
+	// todo	
+		Message.add(data);
+		if (state == State.WRITING_DONE){
+		key.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+		}
 	}
-
 
 	/**
 	 * @throws IOException
 	 */
 	protected void handleWrite()throws IOException{
 	// todo
-	}
+		if (state == State.WRITING_LENGTH){
+
+			 if (lenBuf.remaining() == 0) {
+				 state = State.WRITING_DATA;
+			 }
+		} else
+		if (state == State.WRITING_DATA) {
+			if (buf.remaining() > 0){
+				int nb = sock.write(buf);
+			}
+			if (buf.remaining() == 0){ // the message has been fully sent
+				if (! Message.isEmpty()){
+					buf = Message.remove(0);
+					lenBuf.position(0); lenBuf.putInt(0, buf.remaining());
+					state = State.WRITING_LENGTH;
+				}
+				else state = State.WRITING_DONE;
+		
+			}
+}
+}
 }
