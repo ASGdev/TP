@@ -100,5 +100,13 @@ public class Message implements Serializable {
 		int nanos = (int)(date.getTime().getTime()%1e3);
 		return String.format("(%02d:%02d:%02d.%03d) %2d[%10d / %3d / %4d]",hours,minutes,seconds,nanos, id, data.length(), nsteps, nexchanges);
 	}
+	
+	public boolean isEmpty(){
+		return data.isEmpty();
+	}
+	
+	public void delete(){
+		data = null;
+	}
 }
 
