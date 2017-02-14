@@ -29,7 +29,7 @@ public class ReadCont  extends Continuation{
 	 */
 	protected Message handleRead() throws IOException, ClassNotFoundException{
 	// todo
-		int state;
+		int state= READING_LENGTH;
 		int length;
 		if (state == READING_LENGTH){
 			int nb = sock.read(lenBuf);
@@ -51,5 +51,6 @@ public class ReadCont  extends Continuation{
 			}
 		}
 	}
+
 }
 
