@@ -35,7 +35,7 @@ public class Message implements Serializable {
 		this.id = id;
 		this.date = Calendar.getInstance();
 		this.nexchanges = 0;
-		this.data = toString() + data;
+		this.data = toString() + data; // <==== WTTTFFFFF ????
 	}
 	/**
 	 * construit un message à partir de sa sérialisation
