@@ -1,0 +1,23 @@
+/!\ VM mesurment !
+
+
+First step :
+- I have changed some number in the script test in order to focus on large-scale array, because it's obvious that for small one's, the parallel sucks.
+
+	Joined Data :measurment_16:23
+	OBS : passé les 10000000 objets, le tri par thread est beaucou plus rentable (dans le cas de ma machine toujours)
+		J'ai également observé via un manager de ressources que l'écriture disque explose dans le cas des threads sur long objets, car paginations obligé. Je poursuit donc l'observation en me basant sur le disk usage
+
+		Beforetask : J'ai dû installer plusieur outils de management de ram et de disque afin de validé l'hypothése, à savoir : iotop, valgrind, massif-visualizer.
+
+		utilisation de valgrind pour observer la RAM : valgrind --tools =massif <command> <argument>
+
+		NOTE : aprés plusieur heure d'essais, il s'avére que obtenir un cliché des I/O d'un proc est vraiment dur, surtout que celui ci est confondu avec l'I/O du bash dans le cas présent. Les stats sont donc conservé d'un programme sur l'autre et indifférenciable. Seul un management "au fil de l'execution" avec un I/O manager permet de se rendre compte des écards.
+
+	Data disk : Observation visuel uniquement : passée les 1000000000 éléments, les I/O explosent au niveau du gestionnaire. J'en déduis que l'espace mémoire fait des défauts de page probablement, et que le nombre de thread n'arrange rien. Peut-être que loadé par paquets les espaces à trier serais bénéfiques.
+		e.g : Si on divise le tri par bunch de 10000 éléments, en gardant la même logique de thread, cela évite les I/O inutiles.
+				Sinon, nous pouvons toujours écrires directement des paquets d'ordre dans la liste, comme si on sais que l'on a trié une zone, avant d'attaquer la suivante. On ne fera donc qu'une seul écriture pour un tas d'octet. On utiliserai un swap pour stoquer les valeurs qui ne sont pas dans cet intervalle.
+	
+
+Second Step : 
+	- J'envisage de deployer un fix sur les I/O afin d'améliorer la qualité du code. Cependant, cela necessiterai d'utiliser un framework pour du dev parallel, et donc de refondre le code.

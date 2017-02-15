@@ -1,0 +1,37 @@
+Size: 10000
+Sequential quicksort took: 0.002376 sec.
+Parallel quicksort took: 0.409694 sec.
+Built-in quicksort took: 0.001829 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.002061 sec.
+Parallel quicksort took: 0.362740 sec.
+Built-in quicksort took: 0.001812 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.001920 sec.
+Parallel quicksort took: 0.427650 sec.
+Built-in quicksort took: 0.001774 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.001823 sec.
+Parallel quicksort took: 0.467423 sec.
+Built-in quicksort took: 0.001804 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.002035 sec.
+Parallel quicksort took: 0.421334 sec.
+Built-in quicksort took: 0.001846 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.001902 sec.
+Parallel quicksort took: 0.430161 sec.
+Built-in quicksort took: 0.001933 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.001906 sec.
+Parallel quicksort took: 0.397648 sec.
+Built-in quicksort took: 0.001771 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.001961 sec.
+Parallel quicksort took: 0.455480 sec.
+Built-in quicksort took: 0.001809 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000
+Sequential quicksort took: 0.001741 sec.
+Parallel quicksort took: 0.453379 sec.
+Built-in quicksort took: 0.001783 sec.
+[?1049h[1;24r(B[m[4l[?7h[?1h=[39;49m[?1l>[39;49m[37m[40m[24;1H[K[24;1H[?1049l[?1l>Size: 10000

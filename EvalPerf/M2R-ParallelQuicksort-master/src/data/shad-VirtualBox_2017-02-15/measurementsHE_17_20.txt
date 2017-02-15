@@ -1,0 +1,60 @@
+Size: 10000000
+Sequential quicksort took: 3.167633 sec.
+Parallel quicksort took: 2.242646 sec.
+Built-in quicksort took: 3.280907 sec.
+Size: 10000000
+Sequential quicksort took: 3.192586 sec.
+Parallel quicksort took: 2.273081 sec.
+Built-in quicksort took: 3.207228 sec.
+Size: 10000000
+Sequential quicksort took: 3.127078 sec.
+Parallel quicksort took: 2.265605 sec.
+Built-in quicksort took: 3.186165 sec.
+Size: 10000000
+Sequential quicksort took: 3.258505 sec.
+Parallel quicksort took: 2.298419 sec.
+Built-in quicksort took: 3.266353 sec.
+Size: 10000000
+Sequential quicksort took: 3.100170 sec.
+Parallel quicksort took: 2.122201 sec.
+Built-in quicksort took: 3.204932 sec.
+Size: 10000000
+Sequential quicksort took: 3.203624 sec.
+Parallel quicksort took: 2.365235 sec.
+Built-in quicksort took: 3.235501 sec.
+Size: 10000000
+Sequential quicksort took: 3.209357 sec.
+Parallel quicksort took: 2.249019 sec.
+Built-in quicksort took: 3.201652 sec.
+Size: 10000000
+Sequential quicksort took: 3.077958 sec.
+Parallel quicksort took: 2.310144 sec.
+Built-in quicksort took: 3.260859 sec.
+Size: 10000000
+Sequential quicksort took: 3.168723 sec.
+Parallel quicksort took: 2.201698 sec.
+Built-in quicksort took: 3.219512 sec.
+Size: 10000000
+Sequential quicksort took: 3.088021 sec.
+Parallel quicksort took: 2.055675 sec.
+Built-in quicksort took: 3.219999 sec.
+Size: 10000000
+Sequential quicksort took: 3.141682 sec.
+Parallel quicksort took: 2.121403 sec.
+Built-in quicksort took: 3.209063 sec.
+Size: 10000000
+Sequential quicksort took: 3.221448 sec.
+Parallel quicksort took: 2.208912 sec.
+Built-in quicksort took: 3.202791 sec.
+Size: 10000000
+Sequential quicksort took: 3.362151 sec.
+Parallel quicksort took: 2.290260 sec.
+Built-in quicksort took: 3.300199 sec.
+Size: 10000000
+Sequential quicksort took: 3.301705 sec.
+Parallel quicksort took: 2.236544 sec.
+Built-in quicksort took: 3.201771 sec.
+Size: 10000000
+Sequential quicksort took: 3.189408 sec.
+Parallel quicksort took: 2.324154 sec.
+Built-in quicksort took: 3.192094 sec.

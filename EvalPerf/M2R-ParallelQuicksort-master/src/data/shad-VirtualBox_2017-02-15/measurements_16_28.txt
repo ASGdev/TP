@@ -1,0 +1,63 @@
+Size: 100000
+Sequential quicksort took: 0.023697 sec.
+Parallel quicksort took: 0.556069 sec.
+Built-in quicksort took: 0.023962 sec.
+Size: 100000
+Sequential quicksort took: 0.024176 sec.
+Parallel quicksort took: 0.584696 sec.
+Built-in quicksort took: 0.024181 sec.
+Size: 100000
+Sequential quicksort took: 0.023734 sec.
+Parallel quicksort took: 0.552743 sec.
+Built-in quicksort took: 0.023777 sec.
+Size: 100000
+Sequential quicksort took: 0.023508 sec.
+Parallel quicksort took: 0.858179 sec.
+Built-in quicksort took: 0.025486 sec.
+Size: 100000
+Sequential quicksort took: 0.023798 sec.
+Parallel quicksort took: 0.674082 sec.
+Built-in quicksort took: 0.022182 sec.
+Size: 1000000
+Sequential quicksort took: 0.262041 sec.
+Parallel quicksort took: 0.805367 sec.
+Built-in quicksort took: 0.273230 sec.
+Size: 1000000
+Sequential quicksort took: 0.279242 sec.
+Parallel quicksort took: 0.688734 sec.
+Built-in quicksort took: 0.281374 sec.
+Size: 1000000
+Sequential quicksort took: 0.260804 sec.
+Parallel quicksort took: 0.626204 sec.
+Built-in quicksort took: 0.258772 sec.
+Size: 1000000
+Sequential quicksort took: 0.275793 sec.
+Parallel quicksort took: 0.865025 sec.
+Built-in quicksort took: 0.282856 sec.
+Size: 1000000
+Sequential quicksort took: 0.300289 sec.
+Parallel quicksort took: 0.559051 sec.
+Built-in quicksort took: 0.281679 sec.
+Size: 10000000
+Sequential quicksort took: 3.155048 sec.
+Parallel quicksort took: 2.234551 sec.
+Built-in quicksort took: 3.256408 sec.
+Size: 10000000
+Sequential quicksort took: 3.319790 sec.
+Parallel quicksort took: 2.337595 sec.
+Built-in quicksort took: 3.246570 sec.
+Size: 10000000
+Sequential quicksort took: 3.172015 sec.
+Parallel quicksort took: 2.166449 sec.
+Built-in quicksort took: 3.146862 sec.
+Size: 10000000
+Sequential quicksort took: 3.228060 sec.
+Parallel quicksort took: 2.159631 sec.
+Built-in quicksort took: 3.196132 sec.
+Size: 10000000
+Sequential quicksort took: 3.182298 sec.
+Parallel quicksort took: 2.552560 sec.
+Built-in quicksort took: 3.352790 sec.
+Size: 1000000000
+Size: 1000000000
+Size: 1000000000
