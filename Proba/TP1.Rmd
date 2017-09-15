@@ -1,0 +1,51 @@
+---
+title: "TP1P&S"
+author: "T.V"
+date: "8 septembre 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Anniversaire
+
+Je simule un échantillon de 50 personne Y fois.
+
+
+
+```{r cars echo=false}
+anniversaire = function(n=20,min=1,max=365) 
+  (floor(runif(n, min = min, max = max)));
+   
+
+
+n = 50
+Y = 100000
+min = 1
+max = 365
+set.seed(19)
+
+#donne le nombre d'experience pour lequel le resultat (deux anniv identique) est vrai
+expStatCounterForTrue = 0
+for(i in 1:Y){
+  if(any(duplicated(anniversaire(n,min,max)))){
+    expStatCounterForTrue = expStatCounterForTrue+1
+  }
+}
+(expStatCounterForTrue/Y)
+
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
