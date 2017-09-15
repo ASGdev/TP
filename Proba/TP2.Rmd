@@ -1,0 +1,56 @@
+---
+title: "TP2P&S"
+author: "T.V"
+date: "15 septembre 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## famille
+
+Je simule un échantillon de n famille Y fois.
+
+Sert a démontré l'algorythme de rejet (problème de la pièce biaisé)
+
+
+```{r echo=false}
+enfant = function(nbenfant=2,min=0,max=1) 
+  (round(runif(nbenfant, min = min, max = max)));
+   
+
+nbenfant =2
+n = 10
+min = 0 #=> fille
+max = 1 #=> garcon
+set.seed(19)
+struct=matrix(ncol=n,nrow=2)
+nbfille1=0
+nbgarcon2=0
+probafillegarcon =0
+
+
+
+for(i in 1:n){
+    struct[,i]=enfant(nbenfant,min,max)
+};
+
+for(i in 1:n){
+  if(struct[1,i]== 0 || struct[2,i]== 0){
+    nbfille1=nbfille1+1 #au moins une fille
+    if(struct[1,i]== 1 || struct[2,i]== 1){
+      nbgarcon2=nbgarcon2+1 # exactement 1 fille et 1 garcon
+    }
+  }
+};
+
+
+probafillegarcon = nbgarcon2/nbfille1
+probafillegarcon
+
+
+
+
+```
