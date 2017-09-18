@@ -8,15 +8,22 @@ from math import *
 def trace(function, xmin, xmax, nstep, output):
 	output.write("x, %s\n" % function)
 	function = eval("lambda x:" + function)
-	
+	fichier = open("test.ps", "w")
 	step = 1.*(xmax-xmin)/nstep
 	for i in range(nstep+1):
 		x = xmin + i*step
+		fichier.write(str(x)) 
+		fichier.write("    ") 
 		try:
 			y = function(x)
+			fichier.write(str(y)) 
+			fichier.write("\n") 
 		except:
 			continue
-		output.write("%s, %s\n" % (x, y))
+
+		output.write("100 100 moveto \n" % (x, y))
+		output.write("%s, %s \n" % (x, y))
+		 
 		
 
 def main(argv=None):
@@ -34,10 +41,10 @@ def main(argv=None):
 		#ajout de la ligne affichant la necessité de mettre un argument poru avoir un resultat
 		sys.stdout.write("Veuillez introduire en paramêtre une fonction à calculer (e.g : sin(x))\n")
 		sys.exit(1)
-	if len(argv) > 1 & len(options) < 1:
+#	if len(argv) > 1 & len(options) < 1:
 		#ajout de la ligne affichant la necessité de mettre un argument poru avoir un resultat
-		sys.stdout.write("Veuillez entrer les parametres avant la fonction (E.G : -h X)\n")
-		sys.exit(1)
+	#	sys.stdout.write("Veuillez entrer les parametres avant la fonction (E.G : -h X)\n")
+	#	sys.exit(1)
 		
 	function = argv[0]	
 	output = sys.stdout
