@@ -9,7 +9,7 @@ def trace(function, xmin, xmax, nstep, output):
 	output.write("x, %s\n" % function)
 	function = eval("lambda x:" + function)
 	fichier = open("test.ps", "w")
-	step = 1.*(xmax-xmin)/nstep
+	step = 1.*(float(xmax)-float(xmin))/nstep
 	for i in range(nstep+1):
 		x = xmin + i*step
 		fichier.write(str(x)) 
@@ -21,7 +21,7 @@ def trace(function, xmin, xmax, nstep, output):
 		except:
 			continue
 
-		output.write("100 100 moveto \n" % (x, y))
+		#output.write("100 100 moveto \n" % (x, y))
 		output.write("%s, %s \n" % (x, y))
 		 
 		
@@ -42,7 +42,7 @@ def main(argv=None):
 		sys.stdout.write("Veuillez introduire en paramêtre une fonction à calculer (e.g : sin(x))\n")
 		sys.exit(1)
 #	if len(argv) > 1 & len(options) < 1:
-		#ajout de la ligne affichant la necessité de mettre un argument poru avoir un resultat
+		#ajout de la ligne affichant la necessité de mettre un argument pour avoir un resultat
 	#	sys.stdout.write("Veuillez entrer les parametres avant la fonction (E.G : -h X)\n")
 	#	sys.exit(1)
 		
@@ -66,15 +66,8 @@ def main(argv=None):
 		elif option in ["--nstep","-n"]:
 			xmax = value
 
-	if xmax<=xmin :
+	if float(xmax)<=float(xmin) :
 		xmax = xmin+1
-
-	
-	for option, value in options:
-		if option in ["-o", "--output"]:
-			output = file(value, "w")
-		else:
-			assert False, "unhandled option"
 			
 	trace(function, xmin, xmax, nstep, output)
 
