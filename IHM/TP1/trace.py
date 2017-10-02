@@ -20,8 +20,7 @@ def trace(function, xmin, xmax, nstep, output):
 		fichier.write("    ") 
 		try:
 			y = function(x)
-			fichier.write(str(y)) 
-			fichier.write("\n") 
+			
 		except:
 			continue
 
