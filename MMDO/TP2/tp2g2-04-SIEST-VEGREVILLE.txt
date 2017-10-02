@@ -1,0 +1,71 @@
+SIEST Damien, VEGREVILLE Thibaud  TP2 MMDO
+
+Le tp a pour but de nous habituer à traiter des données ouvertes "opendata"
+institutionnelles, à l'aide des technologies web vues en cours. Pour ce faire, 
+nous allons utiliser les données de la ville de Grenoble via le site
+"http://data.beta.metropole-grenoble.fr/"
+
+Données ouvertes de la ville de Grenoble
+
+Filtres Unix
+
+La commande utilisée pour trouver le nombre de bornes wifi est :
+cat borneswifi_EPSG4326.csv | wc
+Le résultat que la console nous retourne est 68.
+
+La commande utilisée pour trouver le nombre d'emplacements différents:
+cat borneswifi_EPSG4326.csv | cut -d , -f 3-4 | uniq | wc
+Le résultat que la console nous retourne est 54.
+Pour trouver celui qui a le plus de points d'accès on fait :
+
+L'emplacement contenant le plus de points d'accès (17) est l'hôtel de ville.
+
+Les points d'accès à moins de 200m de place Grenette sont :
+-Antenne 2 à 112,7m
+-Musée stendhal appartement gagnon 45,1m
+-Jardin de ville ap à 145,9m
+-Jardin de ville port 2 à 128,9m
+-Théâtre à 180m
+-théâtre à 181m
+-8 place grenette 1er étage à 20 m
+Il y a donc 7 points d'acces à place grenette et le plus près est 8 place grenet
+.
+
+Nous n'avons pas réussi à faire les questions sur json et ne savons pourquoi 
+notre code ne fonctionne pas.
+
+
+Antennes GSM
+
+Pour cette partie du tp nous utiliseront la console.
+
+Ce jeu rajoute par rapport au bornes wifi des données en doubles mais également
+les id de l'antenne ce qui n'est pas utile dans le cadre de l'open data.
+
+
+cat DSPE_ANT_GSM_EPSG4326.csv | cut -d \; -f 4 |uniq
+Il y a 4 opérateurs dans grenoble : bouygue, orange, sfr, free.
+
+cat DSPE_ANT_GSM_EPSG4326.csv | cut -d \; -f 4 | grep ORA | wc
+Orange possède 26 antennes, Bouygues 26, Free 18 et Sfr 30.
+
+Nous ne savons pas dire si le fichier google compressé est valide ou non car 
+nous n'arrivons pas à l'ouvrir.
+
+Nous n'arrivons pas à ouvrir le fichier donc aucune réponse possible en terme
+de compacité et redondance.
+
+
+WIKIDATA
+
+Nous avons participé sur la page "MMO" de wikidata à completer l'information en
+francais, en donnant quelques détails supplémentaires sur le genre. Nous avons 
+trouvé l'interface relativement peu maniable et intuitive pour de nouveaux
+utilisateurs. Quelques progrès pourraient y être ajoutés comme sur Wikipédia par
+exemple. De plus, certaines définitions ou mots semblent absents, ce qui est
+dommage. Peut-être des liens wikipédia (ou autre wiki) pourraient être placés ici 
+automatiquement.
+
+
+
+

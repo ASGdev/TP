@@ -1,0 +1,63 @@
+WIKIDATA SPARQL
+
+1. SELECT ?item ?itemLabel WHERE {
+?item wdt:P397 wd:Q2 .
+SERVICE wikibase:label { bd:serviceParam wikibase:language "fr" }
+}
+
+
+2. SELECT ?_satellite ?_satelliteLabel ?_planet ?_planetLabel WHERE {
+  ?_satellite wdt:P31 wd:Q2537.
+  ?_satellite wdt:P397 ?_planet.
+  ?_planet wdt:P31 wd:Q3504248.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "fr". }
+}
+
+3. SELECT ?satellite ?satelliteLabel ?_parent_astronomical_body ?_parent_astronomical_bodyLabel WHERE {
+  ?satellite wdt:P31 wd:Q1297322.
+  ?satellite p:P397 ?_parent_astronomical_body.
+  ?_parent_astronomical_body wdt:P31 wd:Q3132741.
+  ?_parent_astronomical_body wdt:P361 wd:Q544.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "fr". }
+}
+
+
+
+
+
+CINEMA
+1.SELECT ?film ?filmLabel ?originaltitleLabel ?imdb WHERE {
+	?film wdt:P31 wd:Q11424.
+  	?film wdt:P1476 ?originaltitle.
+   	?film wdt:P345 ?imdb.
+  SERVICE wikibase:label {
+ bd:serviceParam wikibase:language "fr" .
+} 
+}
+LIMIT 50
+
+2. SELECT ?film ?filmLabel WHERE {
+	?film wdt:P179 wd:Q190214.
+  SERVICE wikibase:label {
+ bd:serviceParam wikibase:language "fr" .
+} 
+}
+
+3. SELECT DISTINCT ?film ?filmLabel ?acteurLabel ?roleLabel WHERE {
+  ?film wdt:P179 wd:Q190214.
+  ?film p:P161 [ps:P161 ?acteur; pq:P453 ?role]
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "fr". }
+}
+4. SELECT DISTINCT ?film ?filmLabel ?lieuLabel ?coord WHERE {
+  ?film wdt:P179 wd:Q190214.
+  ?film wdt:P915 ?lieu.
+  ?lieu wdt:P625 ?coord.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "fr". }
+}
+
+5. SELECT DISTINCT ?acteurLabel ?roleLabel WHERE {
+  ?film wdt:P179 wd:Q190214.
+  ?film p:P161 [ps:P161 ?acteur; pq:P453 ?role].
+  ?role wdt:P31 wd:Q74359.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "fr". }
+}
