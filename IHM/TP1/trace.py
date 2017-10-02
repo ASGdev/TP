@@ -32,22 +32,24 @@ def trace(function, xmin, xmax, nstep, output):
 	output.write("x, %s\n" % function)
 	function = eval("lambda x:" + function)
 	fichier = open("test.ps", "w")
+	if (xmin < 0) :
+		output.write("hello there")
 	step = 1.*(float(xmax)-float(xmin))/nstep
 	fichier.write("%!")
 	graphRep(xmin,xmax,fichier);
 	fichier.write("\nnewpath")
 	for i in range(nstep+1):
 		try:
-			x = xmin + i*step
+			x = (xmin + i*step)
 			y = function(x)
 		except:
 			continue
 		if( i == 0): 
 			fichier.write("\n"+str(x)+" "+str(y)+" moveto")
-		fichier.write("\n"+str(x)+" "+str(y)+" lineeto") 
+		fichier.write("\n"+str(x)+" "+str(y)+" lineto") 
 		#output.write("100 100 moveto \n" % (x, y))
 		output.write("%s, %s \n" % (x, y))
-	fichier.write("\n 10.5 cm 14.85 cm translate")
+	fichier.write("\n10.5 cm 14.85 cm translate")
 	fichier.write("\nstroke")
 	fichier.write("\nshowpage")
 		
@@ -75,7 +77,7 @@ def main(argv=None):
 	function = argv[0]	
 	output = sys.stdout
 	xmin,xmax = 0.,1.
-	nstep=10
+	nstep=1000
 	
 	for option,value in options:
 		if option in ["-h","--help"]:
@@ -86,13 +88,13 @@ def main(argv=None):
 		elif option in ["-o","--output"]:
 			output = file(value,"w")
 		elif option in ["--xmin"]:
-			xmin = value
+			xmin = float(value)
 		elif option in ["--xmax"]:
-			xmax = value
+			xmax = float(value)
 		elif option in ["--nstep","-n"]:
-			xmax = value
+			nstep = int(value)
 
-	if float(xmax)<=float(xmin) :
+	if xmax<= xmin :
 		xmax = xmin+1
 			
 	trace(function, xmin, xmax, nstep, output)
