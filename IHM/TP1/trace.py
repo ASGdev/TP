@@ -35,6 +35,7 @@ def trace(function, xmin, xmax, nstep, output):
 	step = 1.*(float(xmax)-float(xmin))/nstep
 	fichier.write("%!")
 	graphRep(xmin,xmax,fichier);
+	fichier.write("\nnewpath")
 	for i in range(nstep+1):
 		try:
 			x = xmin + i*step
@@ -46,6 +47,7 @@ def trace(function, xmin, xmax, nstep, output):
 		fichier.write("\n"+str(x)+" "+str(y)+" lineeto") 
 		#output.write("100 100 moveto \n" % (x, y))
 		output.write("%s, %s \n" % (x, y))
+	fichier.write("\n 10.5 cm 14.85 cm translate")
 	fichier.write("\nstroke")
 	fichier.write("\nshowpage")
 		
