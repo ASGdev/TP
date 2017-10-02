@@ -5,7 +5,7 @@ import sys
 from math import *
 
 def graphRep(xmin, xmax, fichier) :
-    fichier.write("/repere {\n/Arial findfont\n.5 cm scalefont\nsetfont\nnewpath\n0 0 moveto\n1 cm 0 lineto\n(x) show\n0 0 moveto\n0 1 cm lineto\n(y) show\nstroke\n} def ")
+    fichier.write("/repere {\n/Arial findfont\n.5 cm scalefont\nsetfont\nnewpath\n0 0 moveto\n1 cm 0 lineto\n(x) show\n0 0 moveto\n0 1 cm lineto\n(y) show\nstroke\n} def\n ")
 
 
 def trace(function, xmin, xmax, nstep, output):
