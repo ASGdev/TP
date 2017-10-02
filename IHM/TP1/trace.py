@@ -22,11 +22,57 @@ newpath
 0 -100 cm lineto
 0 0 moveto
 -100 cm 0 cm lineto
+30 30 scale
+0.05 setlinewidth
+stroke
+newpath
+
+100 1 moveto 
+-100 1 lineto
+100 -1 moveto 
+-100 -1 lineto
+100 2 moveto 
+-100 2 lineto
+100 -2 moveto 
+-100 -2 lineto
+100 3 moveto 
+-100 3 lineto
+100 -3 moveto 
+-100 -3 lineto
+100 4 moveto 
+-100 4 lineto
+100 -4 moveto 
+-100 -4 lineto
+
+2 -100 moveto
+2 100 lineto
+1 -100 moveto
+1 100 lineto
+-1 -100 moveto
+-1 100 lineto
+4 -100 moveto
+4 100 lineto
+3 -100 moveto
+3 100 lineto
+-3 -100 moveto
+-3 100 lineto
+-4 -100 moveto
+-4 100 lineto
+-2 -100 moveto
+-2 100 lineto
+
+
+
+0.01 setlinewidth
 stroke
 } def
 10.5 cm 14.85 cm translate
 repere
+
+
 """)
+
+
 
 def trace(function, xmin, xmax, nstep, output):
 	output.write("x, %s\n" % function)
@@ -36,7 +82,7 @@ def trace(function, xmin, xmax, nstep, output):
 		output.write("hello there")
 	step = 1.*(float(xmax)-float(xmin))/nstep
 	fichier.write("%!")
-	graphRep(xmin,xmax,fichier);
+	graphRep(xmin,xmax,fichier)
 	fichier.write("\nnewpath")
 	for i in range(nstep+1):
 		try:
@@ -50,6 +96,7 @@ def trace(function, xmin, xmax, nstep, output):
 		#output.write("100 100 moveto \n" % (x, y))
 		output.write("%s, %s \n" % (x, y))
 	fichier.write("\n10.5 cm 14.85 cm translate")
+	fichier.write("\n0.05 setlinewidth")
 	fichier.write("\nstroke")
 	fichier.write("\nshowpage")
 		
