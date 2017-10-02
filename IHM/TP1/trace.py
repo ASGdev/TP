@@ -5,29 +5,49 @@ import sys
 from math import *
 
 def graphRep(xmin, xmax, fichier) :
-    fichier.write("/repere {\n/Arial findfont\n.5 cm scalefont\nsetfont\nnewpath\n0 0 moveto\n1 cm 0 lineto\n(x) show\n0 0 moveto\n0 1 cm lineto\n(y) show\nstroke\n} def\n ")
-
+    fichier.write("""
+/cm { 28.3464567 mul} def
+/repere {
+/Arial findfont
+.5 cm scalefont
+setfont
+newpath
+0 0 moveto
+10.5 cm 0 lineto
+(x) show
+0 0 moveto
+0 12.5 cm lineto
+(y) show
+0 0 moveto
+0 -100 cm lineto
+0 0 moveto
+-100 cm 0 cm lineto
+stroke
+} def
+10.5 cm 14.85 cm translate
+repere
+""")
 
 def trace(function, xmin, xmax, nstep, output):
 	output.write("x, %s\n" % function)
 	function = eval("lambda x:" + function)
 	fichier = open("test.ps", "w")
 	step = 1.*(float(xmax)-float(xmin))/nstep
+	fichier.write("%!")
 	graphRep(xmin,xmax,fichier);
 	for i in range(nstep+1):
-		x = xmin + i*step		
-		fichier.write(str(x)) 
-		fichier.write("    ") 
 		try:
+			x = xmin + i*step
 			y = function(x)
-			fichier.write(str(y)) 
-			fichier.write("\n") 
 		except:
 			continue
-
+		if( i == 0): 
+			fichier.write("\n"+str(x)+" "+str(y)+" moveto")
+		fichier.write("\n"+str(x)+" "+str(y)+" lineeto") 
 		#output.write("100 100 moveto \n" % (x, y))
 		output.write("%s, %s \n" % (x, y))
-		 
+	fichier.write("\nstroke")
+	fichier.write("\nshowpage")
 		
 
 def main(argv=None):
@@ -42,7 +62,7 @@ def main(argv=None):
 		sys.exit(1)
 		
 	if len(argv) < 1:
-		#ajout de la ligne affichant la necessité de mettre un argument poru avoir un resultat
+    		#ajout de la ligne affichant la necessité de mettre un argument poru avoir un resultat
 		sys.stdout.write("Veuillez introduire en paramêtre une fonction à calculer (e.g : sin(x))\n")
 		sys.exit(1)
 #	if len(argv) > 1 & len(options) < 1:
