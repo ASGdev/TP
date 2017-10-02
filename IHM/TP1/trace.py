@@ -4,14 +4,18 @@
 import sys
 from math import *
 
+def graphRep(xmin, xmax, fichier) :
+    fichier.write("/repere {\n/Arial findfont\n.5 cm scalefont\nsetfont\nnewpath\n0 0 moveto\n1 cm 0 lineto\n(x) show\n0 0 moveto\n0 1 cm lineto\n(y) show\nstroke\n} def ")
+
 
 def trace(function, xmin, xmax, nstep, output):
 	output.write("x, %s\n" % function)
 	function = eval("lambda x:" + function)
 	fichier = open("test.ps", "w")
 	step = 1.*(float(xmax)-float(xmin))/nstep
+	graphRep(xmin,xmax,fichier);
 	for i in range(nstep+1):
-		x = xmin + i*step
+		x = xmin + i*step		
 		fichier.write(str(x)) 
 		fichier.write("    ") 
 		try:
