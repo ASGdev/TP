@@ -1,5 +1,6 @@
 
 <?php
+//Création du lien vers OpenStreetMap
 function affiche_map($liste_station,$i){
 	if(isset($_GET['latitude']) AND !empty($_GET['latitude']) ){
 		$latitude=$_GET['latitude'];
@@ -14,10 +15,28 @@ function affiche_map($liste_station,$i){
 		echo "<a href=\"http://www.openstreetmap.org/?mlat=".$la."&mlon=".$lo."#map=15/".$la."/".$lo."\">";
 		echo "MAP";
 		echo "</a>";
-		
-	
 }
 
+function geocodage($liste_station){
+	$lat=$liste_station[2]['latitude'];
+	$lon=$liste_station[2]['longitude'];
+$urlbase = "http://nominatim.openstreetmap.org/reverse";
+$urlparams =  '$lat='.$lat.'&lon='.$lon.'&format=json';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_USERAGENT, $urlbase . '?' . $urlparams);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_USERAGENT, "php-libcurl");
+$content = json_decode(curl_exec($ch));
+print_r($content); // affichage des donnees
+    
+
+        
+curl_close($ch);
+
+}
+
+
+//Colorie les bordures du max et min
 function coloriage($parametre,$liste_station,$i,$tab){
 	if ($parametre=='humidite' && $tab[4]==$i) {
 						echo "<td";
@@ -128,4 +147,5 @@ function minmax($liste_station){
 	$tab_min_max=[$indice_pluie_min,$indice_pluie_max,$indice_temperature_min,$indice_temperature_max,$indice_humidite_min,$indice_humidite_max];
 	return($tab_min_max);		
 }
+
 ?>

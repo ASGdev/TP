@@ -13,6 +13,7 @@ $indice_station=[33,34,72,73,98,100,110,118,120,131];
 
 //Remplit l'array des données de chaque station
 function fill_array($indice_station){
+	
 	$liste_station=null;
 	for ($i=0; $i <=9 ; $i++) { 
 		$api_url = 'http://romma.fr/releves_romma_xml.php?id=e50aa81fbd8e831dae&station='.$indice_station[$i];
@@ -24,8 +25,9 @@ function fill_array($indice_station){
 }
 
 
-
-$liste_station=fill_array($indice_station); //Liste station+data
+ //Liste station+data
+$liste_station=fill_array($indice_station);
+geocodage($liste_station);
 //REMPLIT info_station avec toutes les données d'une station
 function fill_data_station($liste_station){
 	$valide=0;
@@ -106,7 +108,7 @@ function affichage_synthetique($liste_station){
 			if($liste_parametres[$j]=='station'){
 				$nom=$liste_station[$i][$liste_parametres[$j]];
 				echo "<td>";
-				echo "<a href=\"station.php?nom=".$nom."\">";
+				echo "<a href=\"meteo.php?nom=".$nom."\">";
 				print_r($liste_station[$i][$parametre]);
 				echo "</a>";
 				echo "</td>";
