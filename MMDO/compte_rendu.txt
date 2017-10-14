@@ -1,9 +1,7 @@
 Compte_rendu
 
-Ya les 4 premières questions de faites (il me manque 3 lignes pour finir la 4eme questions). Le code est en gros bordel je fais du corde à rallonge en php c'est violent ahah désolé ! 
+Ya les 5 premières questions de faites . Le code est plus clean qu'hier ! 
 
-Normalement tout marche tu peux tester des trucs et dis moi si tu vois des BUG.
+je vais essayer d'avancer tout cette après-midi, il reste 3 questions !
 
-TODO : j'ai détecté les max et min de temp,pluie et humidité, tu pourras voir que pour humidité c'est déjà fait sur le tableau, il me reste à mettre les deux autres (ça prendre 2min mais jsuis éclaté là !)
-
--si tu peux commencer la deuxième partie ce serait nice ! 
+ 
