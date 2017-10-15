@@ -23,6 +23,7 @@
 ?>
 </table>
 
+
 <table style="width:100%">
 <?php
 if (!$info_station) {

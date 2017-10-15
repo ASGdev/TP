@@ -6,7 +6,8 @@
 </head>
 <body>
 <?php
-include("test.php"); 
+include("function_alias.php");
+include("precision.php"); 
 
 
 $indice_station=[33,34,72,73,98,100,110,118,120,131];
@@ -20,21 +21,26 @@ function fill_array($indice_station){
 		$api_content = file_get_contents($api_url);
 		$liste_station[$i]= json_decode($api_content,true);
 	}
-	//print_r($liste_station);
 	return($liste_station);
 }
 
 
  //Liste station+data
 $liste_station=fill_array($indice_station);
-geocodage($liste_station);
+//on recup le nom de la station
+
+
+
 //REMPLIT info_station avec toutes les données d'une station
 function fill_data_station($liste_station){
 	$valide=0;
+	$cite=null;
 	$info_station=null;
 	$station_name=null; //Nom rentré dans le formulaire
 	if(isset($_GET['station']) AND !empty($_GET['station']) ){
 		$station_name=$_GET['station'];
+		
+
 	}
 	else{
 		if(isset($_GET['nom']) AND !empty($_GET['nom']) ){
@@ -59,16 +65,27 @@ function fill_data_station($liste_station){
 	}
 	return($info_station);
 }
-$info_station=fill_data_station($liste_station); 
-	
-	
+$info_station=fill_data_station($liste_station); 	
 //AFFICHAGE EN Dynamique/statique
 function affichage_tableaux($info_station){
-	if($info_station!=0){ // Vérifie qu'une station soit écrite
-	echo "<tr>";
-	echo "<th>Données Fixe</th>";
-	echo "<th>Valeurs</th>"; 
-	 	foreach($info_station as $key => $value) // affiche tab
+	$city=null;
+	$cite=geocodage($info_station);
+	//on regarde si c'est un village ou une ville
+	if($cite['address']!=null && !array_key_exists('city',$cite['address'])){
+		$city=$cite['address']['village'];
+	}
+	else
+		$city=$cite['address']['city'];
+	
+ // Vérifie qu'une station soit écrite
+	if($info_station!=0){
+		$arrayStatic = array('licence' =>$info_station['licence'],'id' =>$info_station['id'],'station' =>$info_station['station'],'altitude' =>$info_station['altitude'],'departement' =>$info_station['departement'],'latitude' =>$info_station['latitude'],'longitude' =>$info_station['longitude'] );
+		$arrayDynamic = array('valide' =>$info_station['valide'],'date' =>$info_station['date'],'heure' =>$info_station['heure'],'temperature' =>$info_station['temperature'],'pluie' =>$info_station['pluie'],'humidite' =>$info_station['humidite'],'rayonnement' =>$info_station['rayonnement'],'vent_moyen_10' =>$info_station['vent_moyen_10'],'direction' =>$info_station['direction'],'rafale_maxi' =>$info_station['rafale_maxi'],'dewpoint' =>$info_station['rayonnement']);
+		echo "<table style=\"width:100%\">";
+		echo "<tr>";
+		echo "<th>Données Dynamique</th>";
+		echo "<th>Valeurs</th>"; 
+	 	foreach($arrayDynamic as $key => $value)
 		{
 			echo "<tr>";
 			echo "<td>";
@@ -78,10 +95,40 @@ function affichage_tableaux($info_station){
 			print_r($value);
 			echo "</td>";
 			echo "</tr>";
-		}	
+		}
+		echo "</tr>";   
+   		echo "</table>";	
+   		echo "<table style=\"width:100%\">";
+		echo "<tr>";
+		echo "<th>Données Statique</th>";
+		echo "<th>Valeurs</th>"; 
+	 	foreach($arrayStatic as $key => $value)
+		{
+			echo "<tr>";
+			echo "<td>";
+		 	print_r($key);
+		 	echo "</td>";
+		 	echo "<td>";
+			print_r($value);
+			echo "</td>";
+			echo "</tr>";
+		}
+		//AFFICHAGE DU NOM DE LA CITY
+		echo "<tr>";
+		echo "<td>";
+		print_r("nom");
+		echo "</td>";
+	    echo "<td>";
+		print_r($city);
+		echo "</td>";
+		echo "</tr>"; 
+		//fin du tableau
+   		echo "</tr>";   
+   		echo "</table>";	
    	}
-   	echo "</tr>";	
+  	
 }
+
 
 
 
@@ -99,8 +146,20 @@ function affichage_synthetique($liste_station){
 	echo "<td>";
 	echo "MAP";;
 	echo "</td>";
+	echo "<td>";
+	echo "wiki";;
+	echo "</td>";
 	//Il y a 10 stations à parcourir
 	for ($i=0; $i <10 ; $i++) {
+		$city=null;
+		$cite=geocodage($liste_station[$i]);
+		//on regarde si c'est un village ou une ville
+		if($cite['address']!=null && !array_key_exists('city',$cite['address'])){
+		$city=$cite['address']['village'];
+		}
+		else
+			$city=$cite['address']['city'];
+		echo "</td>";
 		echo "<tr>"; 
 		// 9 paramètre par station à afficher		
 		for ($j=0; $j <9 ; $j++) {
@@ -111,7 +170,6 @@ function affichage_synthetique($liste_station){
 				echo "<a href=\"meteo.php?nom=".$nom."\">";
 				print_r($liste_station[$i][$parametre]);
 				echo "</a>";
-				echo "</td>";
 			}
 			else{
 				//COLORIE LE MIN/MAX
@@ -122,7 +180,9 @@ function affichage_synthetique($liste_station){
 	echo "<td>";
 	affiche_map($liste_station,$i);	
 	echo "</td>";
-	echo "</tr>";
+	echo "<td>";
+	affiche_wikipedia($city);	
+	echo "</td>";
 	}
 
 }
