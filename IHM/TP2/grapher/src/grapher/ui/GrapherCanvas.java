@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 
 
@@ -62,7 +63,9 @@ public class GrapherCanvas extends Canvas {
 		this.setEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	if(me.getButton() == MouseButton.PRIMARY) {
-		    		 System.out.println("Mouse Drag for translate"); 
+		    		 changeCursor(Cursor.HAND);
+		    		 //System.out.println("Mouse Drag for translate"); 
+		    		translate(me.getSceneX(),me.getSceneY());
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
 		    		 System.out.println("Mouse Drag for zoom"); 
 		    	}else {
@@ -72,7 +75,20 @@ public class GrapherCanvas extends Canvas {
 		    }
 		});
 		
-		
+		this.setEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent me) {
+		    	changeCursor(Cursor.DEFAULT);
+		    	System.out.println("Mouse release"); 
+		    	if(me.getButton() == MouseButton.PRIMARY) {
+		    		 
+		    	}else if(me.getButton() == MouseButton.SECONDARY) {
+		    		 
+		    	}else {
+		    		  System.out.println("Mouse release default"); 
+		    	}      
+		        
+		    }
+		});
 		
 	}
 	
@@ -230,5 +246,7 @@ public class GrapherCanvas extends Canvas {
 		redraw();
 	}
 	
-	
+	protected void changeCursor(Cursor c) {
+		this.setCursor(c);
+	}
 }
