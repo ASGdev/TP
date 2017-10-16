@@ -31,6 +31,12 @@ public class GrapherCanvas extends Canvas {
 		public Automate() {
 			
 		}
+		
+		public void reset() {
+			click = false;
+			drag = false;
+			release = true;
+		}
 	}
 	static final double MARGIN = 40;
 	static final double STEP = 5;
@@ -75,6 +81,7 @@ public class GrapherCanvas extends Canvas {
 		});
 		this.setEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
+		    	if(!auto.drag) auto.drag=true;
 		    	if(me.getButton() == MouseButton.PRIMARY) {
 		    		 changeCursor(Cursor.HAND);
 		    		 //System.out.println("Mouse Drag for translate"); 
@@ -91,6 +98,7 @@ public class GrapherCanvas extends Canvas {
 		this.setEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	changeCursor(Cursor.DEFAULT);
+		    	auto.reset();
 		    	System.out.println("Mouse release"); 
 		    	if(me.getButton() == MouseButton.PRIMARY) {
 		    		 
