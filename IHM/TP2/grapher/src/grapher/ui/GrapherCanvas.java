@@ -23,6 +23,15 @@ import grapher.fc.*;
 
 
 public class GrapherCanvas extends Canvas {
+	private class Automate{
+		public boolean click = false;
+		public boolean drag = false;
+		public boolean release = true;
+		
+		public Automate() {
+			
+		}
+	}
 	static final double MARGIN = 40;
 	static final double STEP = 5;
 
@@ -33,7 +42,7 @@ public class GrapherCanvas extends Canvas {
 	
 	protected double W = WIDTH;
 	protected double H = HEIGHT;
-
+	protected Automate auto;
 	protected double xmin, xmax;
 	protected double ymin, ymax;
 	protected double dragvaluex, dragvaluey;
@@ -51,7 +60,8 @@ public class GrapherCanvas extends Canvas {
 		for(String param: params.getRaw()) {
 			functions.add(FunctionFactory.createFunction(param));
 		}
-		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+		auto = new Automate();
+		this.setEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	if(me.getButton() == MouseButton.PRIMARY) {
 		    		zoom(center,zoom_pos);
