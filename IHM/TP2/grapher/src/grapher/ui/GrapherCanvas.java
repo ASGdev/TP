@@ -86,31 +86,36 @@ public class GrapherCanvas extends Canvas {
 			functions.add(FunctionFactory.createFunction(param));
 		}
 		auto = new Automate();
-		
+		Zoom z1= new Zoom();
 		this.setEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
-		    	if(me.getButton() == MouseButton.PRIMARY) {
+		    	z1.x1=me.getSceneX();
+		    	z1.y1=me.getSceneY();
+		    	auto.click=true;
+		    	
+		    	if(auto.click==true && auto.drag==false && me.getButton() == MouseButton.PRIMARY) {
 		    		zoom(center,zoom_pos);
-		    	}else if(me.getButton() == MouseButton.SECONDARY) {
+		    		System.out.println(auto.click);
+		    	}else if(auto.drag=false && me.getButton() == MouseButton.SECONDARY) {
 		    		zoom(center,zoom_neg);
 		    	}else {
-		    		 
+		    	 
 		    	}      
 		        
 		    }
+	
 		});
 		this.setEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	if(!auto.drag) auto.drag=true;
 		    	if(me.getButton() == MouseButton.PRIMARY) {
 		    		 changeCursor(Cursor.HAND);
-		    		 translate()
+		    		 translate(5,5);
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
 		    		 System.out.println("Mouse Drag for zoom"); 
 		    	}else {
 		    		  System.out.println("Mouse Drag"); 
 		    	}      
-		        
 		    }
 		});
 		
