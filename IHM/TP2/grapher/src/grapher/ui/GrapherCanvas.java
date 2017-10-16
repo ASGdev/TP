@@ -38,6 +38,25 @@ public class GrapherCanvas extends Canvas {
 			release = true;
 		}
 	}
+	public class Drag{
+		public double x;
+		public double y;
+		
+		public Drag() {
+			
+		}
+	}
+	public class Zoom{
+		public double x1;
+		public double y1;
+		public double x2;
+		public double y2;
+		public double zoom_pos=5;
+		public double zoom_neg=-5;
+		public Zoom() {
+			
+		}
+	}
 	static final double MARGIN = 40;
 	static final double STEP = 5;
 
@@ -51,7 +70,7 @@ public class GrapherCanvas extends Canvas {
 	protected Automate auto;
 	protected double xmin, xmax;
 	protected double ymin, ymax;
-	protected double dragvaluex, dragvaluey;
+	
 	protected double zoomvaluex, zoomvaluey;
 	protected Point2D center=new Point2D(WIDTH/2,HEIGHT/2);
 	protected double zoom_pos=5;
@@ -67,6 +86,7 @@ public class GrapherCanvas extends Canvas {
 			functions.add(FunctionFactory.createFunction(param));
 		}
 		auto = new Automate();
+		
 		this.setEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	if(me.getButton() == MouseButton.PRIMARY) {
@@ -84,8 +104,7 @@ public class GrapherCanvas extends Canvas {
 		    	if(!auto.drag) auto.drag=true;
 		    	if(me.getButton() == MouseButton.PRIMARY) {
 		    		 changeCursor(Cursor.HAND);
-		    		 //System.out.println("Mouse Drag for translate"); 
-		    		translate(me.getSceneX(),me.getSceneY());
+		    		 translate()
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
 		    		 System.out.println("Mouse Drag for zoom"); 
 		    	}else {
