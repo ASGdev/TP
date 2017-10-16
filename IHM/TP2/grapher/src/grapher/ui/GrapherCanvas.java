@@ -7,12 +7,13 @@ import java.util.Vector;
 import javafx.util.converter.DoubleStringConverter;
 
 import javafx.application.Application.Parameters;
-
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
 
 
@@ -44,6 +45,11 @@ public class GrapherCanvas extends Canvas {
 		for(String param: params.getRaw()) {
 			functions.add(FunctionFactory.createFunction(param));
 		}
+		this.setOnDragDetected(new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent me) {
+		        System.out.println("Mouse drag"); 
+		    }
+		});
 	}
 	
 	public double minHeight(double width)  { return HEIGHT;}
@@ -199,4 +205,5 @@ public class GrapherCanvas extends Canvas {
 		ymin = min(y0, y1); ymax = max(y0, y1);
 		redraw();
 	}
+	
 }
