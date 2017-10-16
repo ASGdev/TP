@@ -1,68 +1,99 @@
 package grapher.fc;
 
-import java.io.File;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+// runtime creation and instanciation of class implementing Function interface
+// shamelessly stolen from:
+// https://javajazzle.wordpress.com/2011/06/29/dynamic-in-memory-compilation-using-javax-tools/
+
+
+/* imports *****************************************************************/
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLClassLoader;
+import java.io.OutputStream;
+
+import java.security.SecureClassLoader;
+
+import java.net.URI;
+
+import javax.tools.FileObject;
+import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
+import javax.tools.SimpleJavaFileObject;
+import javax.tools.JavaFileManager;
+import javax.tools.ForwardingJavaFileManager;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
+
+/* factory *****************************************************************/
 
 public class FunctionFactory {
-	static final String NAME = "DynamicFunction";
-	static final String PATH = "dyna";
-	
 	public static Function createFunction(String expression) {
-		File temp = new File(NAME + ".java");
-		temp.delete();
-		try { 
-			temp.createNewFile();
-			temp.deleteOnExit();
-			
-			BufferedWriter out = new BufferedWriter(new FileWriter(temp));
-			out.write("package grapher.fc;\n");
-			out.write("import static java.lang.Math.*;\n");
-			out.write("public class DynamicFunction implements Function {\n");
-			out.write("	public String toString() { return \"" + expression + "\"; }\n");
-			out.write("	public double y(double x) { return " + expression + "; }\n");
-			out.write("}\n");
-			out.close();
+		String name = "grapher.fc.DynamicFunction";
+		
+		StringBuilder src = new StringBuilder();
+		src.append("package grapher.fc;\n");
+		src.append("import static java.lang.Math.*;\n");
+		src.append("public class DynamicFunction implements Function {\n");
+		src.append("	public String toString() { return \"" + expression + "\"; }\n");
+		src.append("	public double y(double x) { return " + expression + "; }\n");
+		src.append("}\n");
+
+		class CharSequenceJavaFileObject extends SimpleJavaFileObject {
+			private CharSequence content;
+			public CharSequenceJavaFileObject(String name, CharSequence content) {
+				super(URI.create("string:///" + name.replace('.', '/') + Kind.SOURCE.extension), Kind.SOURCE);
+				this.content = content;
+			}
+			public CharSequence getCharContent(boolean ignoreEncodingErrors) { return content; }
 		}
-		catch(IOException e) { 
-			throw new RuntimeException("unable to create file."); 
+
+		class JavaClassObject extends SimpleJavaFileObject {
+			protected final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			public JavaClassObject(String name, Kind kind) {
+				super(URI.create("string:///" + name.replace('.', '/') + kind.extension), kind);
+			}
+			public byte[] getBytes() { return bos.toByteArray(); }
+			public OutputStream openOutputStream() throws IOException { return bos; }
 		}
 		
-		File path = new File(PATH);
-		if(!path.exists()) {
-			path.mkdir();
+		class ClassFileManager extends ForwardingJavaFileManager {
+			private JavaClassObject object;
+			public ClassFileManager(StandardJavaFileManager manager) { super(manager); }
+			public ClassLoader getClassLoader(Location location) {
+				return new SecureClassLoader() {
+					protected Class<?> findClass(String name) throws ClassNotFoundException {
+						byte[] b = object.getBytes();
+						return super.defineClass(name, b, 0, b.length);
+					}
+				};
+			}
+			public JavaFileObject getJavaFileForOutput(Location location, String name, Kind kind, FileObject sibling) throws IOException {
+				object = new JavaClassObject(name, kind);
+				return object;
+			}
 		}
+
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		JavaFileManager file_manager = new ClassFileManager(compiler.getStandardFileManager(null, null, null));
+		List<JavaFileObject> files = new ArrayList<JavaFileObject>();
+		files.add(new CharSequenceJavaFileObject(name, src.toString()));
+		compiler.getTask(null, file_manager, null, null, null, files).call();
 		
-		if(com.sun.tools.javac.Main.compile(new String[] { "-d", PATH, NAME + ".java" }) != 0) {
-			throw new RuntimeException("compilation failed");
-		}
-		
-		URL url = null;
-		try { url = path.toURL(); }
-		catch(MalformedURLException e) {}
-		
-		URLClassLoader loader = new URLClassLoader(new URL[] { url },
-		                                           Function.class.getClassLoader());
-		Class<Function> DynamicFunction = load(loader);
-		Function instance = null;
-		try { instance = DynamicFunction.newInstance(); }
-		catch(InstantiationException e) {}
-		catch(IllegalAccessException e) {}
-		
-		return instance;
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected static Class<Function> load(ClassLoader loader) {
 		try {
-			return (Class<Function>)loader.loadClass("grapher.fc." + NAME);
+			return (Function)file_manager.getClassLoader(null).loadClass(name).newInstance();
+		
+		} catch (InstantiationException e) {
+		} catch (IllegalAccessException e) {
+		} catch (ClassNotFoundException e) {
+		} catch (NullPointerException e) {
 		}
-		catch(ClassNotFoundException e) {
-			throw new RuntimeException("unable to load class");
-		}
+
+		throw new RuntimeException("unable to load class");
 	}
 }
