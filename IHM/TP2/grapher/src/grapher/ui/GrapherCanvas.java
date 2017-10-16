@@ -47,6 +47,18 @@ public class GrapherCanvas extends Canvas {
 		for(String param: params.getRaw()) {
 			functions.add(FunctionFactory.createFunction(param));
 		}
+		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent me) {
+		    	if(me.getButton() == MouseButton.PRIMARY) {
+		    		 System.out.println("Mouse press for translate"); 
+		    	}else if(me.getButton() == MouseButton.SECONDARY) {
+		    		 System.out.println("Mouse press for zoom"); 
+		    	}else {
+		    		  System.out.println("Mouse Drag"); 
+		    	}      
+		        
+		    }
+		});
 		this.setEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	if(me.getButton() == MouseButton.PRIMARY) {
