@@ -27,6 +27,8 @@ public class GrapherCanvas extends Canvas {
 		public boolean click = false;
 		public boolean drag = false;
 		public boolean release = true;
+		public boolean G = false;
+		public boolean D = false;
 		
 		public Automate() {
 			
@@ -36,6 +38,8 @@ public class GrapherCanvas extends Canvas {
 			click = false;
 			drag = false;
 			release = true;
+			G = false;
+			D = false;
 		}
 	}
 	public class Drag{
@@ -101,25 +105,37 @@ public class GrapherCanvas extends Canvas {
 		drag = new Drag();
 		zoom =new Zoom();
 		
-		this.setEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	zoom.x1=me.getSceneX();
 		    	zoom.y1=me.getSceneY();  	
-
-		    	if(auto.drag==false && me.getButton() == MouseButton.PRIMARY) {
+		    	drag.x = me.getSceneX();
+		    	drag.y = me.getSceneY();
+		    }
+	
+		});
+		
+		this.setEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		    public void handle(MouseEvent me) {		    	
+		    	if(!auto.drag && me.getButton() == MouseButton.PRIMARY) {
 		    		System.out.println("Passe1");
 		    		zoom(center,zoom_pos);
 		    		auto.click=true;
-		    	}else if(auto.drag==false && me.getButton() == MouseButton.SECONDARY) {
+		    	}else if(!auto.drag && me.getButton() == MouseButton.SECONDARY) {
 		    		System.out.println("Passe2");
 		    		zoom(center,zoom_neg);
 		    		auto.click=true;
-		    	}else if(auto.drag==true){
+	//EQUIVALENT DE RELEASE POUR LES DEUX CAS EN DESSOUS (click precede d'un drag)
+		    	}else if(auto.drag && auto.G ){
 		    		System.out.println("Passe3");
-		    		//Equivalent de notre release
 		    		changeCursor(Cursor.DEFAULT);
 		    		auto.reset();
-		    	}      
+		    		drag.reset();
+		    	}else if(auto.drag && auto.D) {
+		    		System.out.println("Passe4");
+		    		auto.reset();
+		    		drag.reset();
+		    	}
 		        
 		    }
 	
@@ -128,11 +144,15 @@ public class GrapherCanvas extends Canvas {
 		    public void handle(MouseEvent me) {
 		    	if(!auto.drag) auto.drag=true;
 		    	if(me.getButton() == MouseButton.PRIMARY) {
+		    		if(!auto.G) auto.G = true;
 		    		 changeCursor(Cursor.HAND);
 		    		 translate(me.getSceneX()-drag.x,me.getSceneY()-drag.y);
 		    		 drag.x=me.getSceneX();
 		    		 drag.y=me.getSceneY();
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
+		    		if(!auto.D) auto.D = true;
+		    		zoom.x2=me.getSceneX();
+		    		zoom.y2=me.getSceneY();
 		    		 System.out.println("Mouse Drag for zoom"); 
 		    	}else {
 		    		  System.out.println("Mouse Drag"); 
