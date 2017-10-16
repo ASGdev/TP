@@ -13,6 +13,7 @@ import javafx.geometry.Rectangle2D;
 
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
 
@@ -35,6 +36,7 @@ public class GrapherCanvas extends Canvas {
 	protected double xmin, xmax;
 	protected double ymin, ymax;
 	protected double dragvaluex, dragvaluey;
+	protected double zoomvaluex, zoomvaluey;
 	protected Vector<Function> functions = new Vector<Function>();
 	
 	public GrapherCanvas(Parameters params) {
@@ -47,7 +49,13 @@ public class GrapherCanvas extends Canvas {
 		}
 		this.setEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
-		        System.out.println("Drag realease"); 
+		    	if(me.getButton() == MouseButton.PRIMARY) {
+		    		 System.out.println("Mouse Drag for translate"); 
+		    	}else if(me.getButton() == MouseButton.SECONDARY) {
+		    		 System.out.println("Mouse Drag for zoom"); 
+		    	}else {
+		    		  System.out.println("Mouse Drag"); 
+		    	}      
 		        
 		    }
 		});
