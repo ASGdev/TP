@@ -30,10 +30,6 @@ public class GrapherCanvas extends Canvas {
 		public boolean G = false;
 		public boolean D = false;
 		
-		public Automate() {
-			
-		}
-		
 		public void reset() {
 			click = false;
 			drag = false;
@@ -46,9 +42,6 @@ public class GrapherCanvas extends Canvas {
 		public double x =0;
 		public double y =0;
 		
-		public Drag() {
-			
-		}
 		public void reset() {
 			x=0;
 			y=0;
@@ -61,9 +54,7 @@ public class GrapherCanvas extends Canvas {
 		public double y2;
 		public double zoom_pos=5;
 		public double zoom_neg=-5;
-		public Zoom() {
-			
-		}
+		
 		public void reset() {
 			x1=0;
 			y1=0;
