@@ -38,6 +38,9 @@ public class GrapherCanvas extends Canvas {
 	protected double ymin, ymax;
 	protected double dragvaluex, dragvaluey;
 	protected double zoomvaluex, zoomvaluey;
+	protected Point2D center=new Point2D(WIDTH/2,HEIGHT/2);
+	protected double zoom_pos=5;
+	protected double zoom_neg=-5;
 	protected Vector<Function> functions = new Vector<Function>();
 	
 	public GrapherCanvas(Parameters params) {
@@ -51,11 +54,11 @@ public class GrapherCanvas extends Canvas {
 		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	if(me.getButton() == MouseButton.PRIMARY) {
-		    		 System.out.println("Mouse press for translate"); 
+		    		zoom(center,zoom_pos);
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
-		    		 System.out.println("Mouse press for zoom"); 
+		    		zoom(center,zoom_neg);
 		    	}else {
-		    		  System.out.println("Mouse Drag"); 
+		    		 
 		    	}      
 		        
 		    }
@@ -89,6 +92,8 @@ public class GrapherCanvas extends Canvas {
 		        
 		    }
 		});
+		
+		
 		
 	}
 	
@@ -176,6 +181,7 @@ public class GrapherCanvas extends Canvas {
 		for(double y = -ystep; y > ymin; y -= ystep) { drawYTick(gc, y); }
 		
 		gc.setLineDashes(null);
+	
 	}
 	
 	protected double dx(double dX) { return  (double)((xmax-xmin)*dX/W); }
