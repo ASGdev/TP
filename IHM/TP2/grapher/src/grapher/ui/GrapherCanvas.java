@@ -103,17 +103,22 @@ public class GrapherCanvas extends Canvas {
 		
 		this.setEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
-		    	z1.x1=me.getSceneX();
-		    	z1.y1=me.getSceneY();
-		    	auto.click=true;
-		    	
-		    	if(auto.click==true && auto.drag==false && me.getButton() == MouseButton.PRIMARY) {
+		    	zoom.x1=me.getSceneX();
+		    	zoom.y1=me.getSceneY();  	
+
+		    	if(auto.drag==false && me.getButton() == MouseButton.PRIMARY) {
+		    		System.out.println("Passe1");
 		    		zoom(center,zoom_pos);
-		    		System.out.println(auto.click);
-		    	}else if(auto.drag=false && me.getButton() == MouseButton.SECONDARY) {
+		    		auto.click=true;
+		    	}else if(auto.drag==false && me.getButton() == MouseButton.SECONDARY) {
+		    		System.out.println("Passe2");
 		    		zoom(center,zoom_neg);
-		    	}else {
-		    	 
+		    		auto.click=true;
+		    	}else if(auto.drag==true){
+		    		System.out.println("Passe3");
+		    		//Equivalent de notre release
+		    		changeCursor(Cursor.DEFAULT);
+		    		auto.reset();
 		    	}      
 		        
 		    }
