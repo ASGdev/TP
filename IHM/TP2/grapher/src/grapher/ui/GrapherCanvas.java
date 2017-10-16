@@ -34,7 +34,7 @@ public class GrapherCanvas extends Canvas {
 
 	protected double xmin, xmax;
 	protected double ymin, ymax;
-
+	protected double dragvaluex, dragvaluey;
 	protected Vector<Function> functions = new Vector<Function>();
 	
 	public GrapherCanvas(Parameters params) {
@@ -45,11 +45,15 @@ public class GrapherCanvas extends Canvas {
 		for(String param: params.getRaw()) {
 			functions.add(FunctionFactory.createFunction(param));
 		}
-		this.setOnDragDetected(new EventHandler<MouseEvent>() {
+		this.setEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
-		        System.out.println("Mouse drag"); 
+		        System.out.println("Drag realease"); 
+		        
 		    }
 		});
+		
+		
+		
 	}
 	
 	public double minHeight(double width)  { return HEIGHT;}
@@ -205,5 +209,6 @@ public class GrapherCanvas extends Canvas {
 		ymin = min(y0, y1); ymax = max(y0, y1);
 		redraw();
 	}
+	
 	
 }
