@@ -134,24 +134,7 @@ public class GrapherCanvas extends Canvas {
 		    	}      
 		    }
 		});
-		
-		this.setEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-		    public void handle(MouseEvent me) {
-		    	changeCursor(Cursor.DEFAULT);
-		    	auto.reset();
-		    	System.out.println("Mouse release"); 
-		    	if(me.getButton() == MouseButton.PRIMARY) {
-		    		 
-		    	}else if(me.getButton() == MouseButton.SECONDARY) {
-		    		 
-		    	}else {
-		    		  System.out.println("Mouse release default"); 
-		    	}      
-		        
-		    }
-		});
-		
-		
+			
 		
 	}
 	
