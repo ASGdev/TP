@@ -1,0 +1,5 @@
+Pour crée un TP :
+    - taper la commande .\"node_modules\.bin\cordova.cmd" create NomDuTP com.RICM.NomDuTP NomDuTP
+    - Sous linux, sans backslash, sans guillemet et sans cmd (je pense)
+    - Ensuite, moove dans le repertoire crée et taper .\"..\node_modules\.bin\cordova.cmd" platform add android
+    - Pour le reste : taper .\"node_modules\.bin\cordova.cmd" help
