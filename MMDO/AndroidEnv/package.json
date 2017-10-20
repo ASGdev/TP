@@ -1,0 +1,11 @@
+{
+  "name": "androidcordovasetup",
+  "version": "1.0.0",
+  "description": "Basic setup for Cordova dev, TP purpose",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
