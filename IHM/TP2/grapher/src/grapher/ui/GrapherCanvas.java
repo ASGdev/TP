@@ -380,6 +380,7 @@ public class GrapherCanvas extends Canvas {
 	public void setBold(String fcnName) {
 		boldFunction = fcnName;
 		redraw();
+	}
 
 	protected void rectangle(GraphicsContext g,double x,double y){
 		g.strokeRect(zoom.x1,zoom.y1, x, y);
