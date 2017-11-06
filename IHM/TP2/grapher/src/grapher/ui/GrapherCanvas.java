@@ -40,7 +40,12 @@ public class GrapherCanvas extends Canvas {
 			D = false;
 		}
 	}
-	public class Drag{
+	
+	private class Style{
+		
+	}
+	
+	private class Drag{
 		public double x =0;
 		public double y =0;
 		
@@ -49,7 +54,7 @@ public class GrapherCanvas extends Canvas {
 			y=0;
 		}
 	}
-	public class Zoom{
+	private class Zoom{
 		public double x1;
 		public double y1;
 		public double x2;
@@ -85,6 +90,16 @@ public class GrapherCanvas extends Canvas {
 	protected double zoom_pos=5;
 	protected double zoom_neg=-5;
 	protected Vector<Function> functions = new Vector<Function>();
+	protected String boldFunction;
+	protected double Bold = 5.0;
+	protected double Default = 1.0;
+	
+	
+	
+	
+	
+	
+	
 	
 	public GrapherCanvas(Parameters params) {
 		super(WIDTH, HEIGHT);
@@ -234,8 +249,13 @@ public class GrapherCanvas extends Canvas {
 			for(int i = 0; i < N; i++) {
 				Ys[i] = Y(f.y(xs[i]));
 			}
-			
+			if( boldFunction == f.toString()) {
+				gc.setLineWidth(Bold);
+				gc.strokePolyline(Xs, Ys, N);
+				gc.setLineWidth(Default);
+			}
 			gc.strokePolyline(Xs, Ys, N);
+			
 		}
 		
 		gc.restore(); // restoring no clipping
@@ -328,5 +348,20 @@ public class GrapherCanvas extends Canvas {
 	
 	protected void changeCursor(Cursor c) {
 		this.setCursor(c);
+	}
+	
+	//Public part for call
+	
+	public Vector<String> getFuntionList() {
+		Vector<String> functionlist = new Vector<>();
+		for(int i=0;i<this.functions.size();i++) {
+			functionlist.add(this.functions.get(i).toString());
+		}
+		return functionlist;
+	}
+	
+	public void setBold(String fcnName) {
+		boldFunction = fcnName;
+		redraw();
 	}
 }
