@@ -82,29 +82,27 @@ public class GrapherCanvas extends Canvas {
 	
 	protected double zoomvaluex, zoomvaluey;
 	protected Point2D center=new Point2D(WIDTH/2,HEIGHT/2);
-	protected double zoom_pos=5;
-	protected double zoom_neg=-5;
 	protected Vector<Function> functions = new Vector<Function>();
 	
 	public GrapherCanvas(Parameters params) {
 		super(WIDTH, HEIGHT);
 		xmin = -PI/2.; xmax = 3*PI/2;
 		ymin = -1.5;   ymax = 1.5;
-		Point2D z1=new Point2D(zoom.x1,zoom.y1);;
-		Point2D z2=new Point2D(zoom.x2,zoom.y2);;
+		
 		for(String param: params.getRaw()) {
 			functions.add(FunctionFactory.createFunction(param));
 		}
 		auto = new Automate();
 		drag = new Drag();
 		zoom =new Zoom();
+		GraphicsContext g=getGraphicsContext2D();
+		
 		
 		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	zoom.x1=me.getSceneX();
 		    	zoom.y1=me.getSceneY(); 
-		    	System.out.println("z1.x:");
-		    	System.out.println(z1.getX());	
+		    	System.out.println("z1.x:");    	
 		    	drag.x = me.getSceneX();
 		    	drag.y = me.getSceneY();
 		    }
@@ -115,11 +113,11 @@ public class GrapherCanvas extends Canvas {
 		    public void handle(MouseEvent me) {		    	
 		    	if(!auto.drag && me.getButton() == MouseButton.PRIMARY) {
 		    		System.out.println("Passe1");
-		    		zoom(center,zoom_pos);
+		    		zoom(center,zoom.zoom_pos);
 		    		auto.click=true;
 		    	}else if(!auto.drag && me.getButton() == MouseButton.SECONDARY) {
 		    		System.out.println("Passe2");
-		    		zoom(center,zoom_neg);
+		    		zoom(center,zoom.zoom_neg);
 		    		auto.click=true;
 	//EQUIVALENT DE RELEASE POUR LES DEUX CAS EN DESSOUS (click precede d'un drag)
 		    	}else if(auto.drag && auto.G ){
@@ -128,12 +126,18 @@ public class GrapherCanvas extends Canvas {
 		    		auto.reset();
 		    		drag.reset();
 		    	}else if(auto.drag && auto.D) {
+		    		auto.release=true;
 		    		System.out.println("Passe4");
+		    		Point2D z1=new Point2D(zoom.x1,zoom.y1);
+		    		Point2D z2=new Point2D(zoom.x2,zoom.y2);
 		    		zoom(z1,z2);
 		    		auto.reset();
 		    		drag.reset();
+		    		
 		    	}
-		        
+		    	else{
+		    		
+		    	}
 		    }
 	
 		});
@@ -146,15 +150,21 @@ public class GrapherCanvas extends Canvas {
 		    		 translate(me.getSceneX()-drag.x,me.getSceneY()-drag.y);
 		    		 drag.x=me.getSceneX();
 		    		 drag.y=me.getSceneY();
+		    		 
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
 		    		if(!auto.D) auto.D = true;
+		    		auto.release=false;
 		    		zoom.x2=me.getSceneX();
-		    		zoom.y2=me.getSceneY();    		
+		    		zoom.y2=me.getSceneY();
+		    		redraw();
 		    		System.out.println("Mouse Drag for zoom"); 
 		    	}else {
-		    		  System.out.println("Mouse Drag"); 
-		    	}      
+		    		  System.out.println("Mouse Drag");
+		    		  
+		    	} 
+		    	
 		    }
+		    
 		});
 		
 		this.setEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
@@ -206,12 +216,9 @@ public class GrapherCanvas extends Canvas {
 		if(W < 0 || H < 0) {
 			return;
 		}
-		
 		gc.strokeRect(0, 0, W, H);
-		
 		gc.fillText("x", W, H+10);
 		gc.fillText("y", -10, 0);
-		
 		gc.beginPath();
 		gc.rect(0, 0, W, H);
 		gc.closePath();
@@ -231,6 +238,8 @@ public class GrapherCanvas extends Canvas {
 			xs[i] = x;
 			Xs[i] = X(x);
 		}
+		//TRACE LE RECTANGLE DE ZOOM
+	
 
 		for(Function f: functions) {
 			// y values
@@ -257,7 +266,9 @@ public class GrapherCanvas extends Canvas {
 		for(double x = -xstep; x > xmin; x -= xstep) { drawXTick(gc, x); }
 		for(double y = ystep; y < ymax; y += ystep)  { drawYTick(gc, y); }
 		for(double y = -ystep; y > ymin; y -= ystep) { drawYTick(gc, y); }
-		
+		if(auto.drag==true && auto.D==true && auto.release==false){
+			rectangle(gc,zoom.x2-zoom.x1,zoom.y2-zoom.y1);
+		}
 		gc.setLineDashes(null);
 	
 	}
@@ -332,5 +343,10 @@ public class GrapherCanvas extends Canvas {
 	
 	protected void changeCursor(Cursor c) {
 		this.setCursor(c);
+	}
+	
+	protected void rectangle(GraphicsContext g,double x,double y){
+		g.strokeRect(zoom.x1,zoom.y1, x, y);
+		
 	}
 }
