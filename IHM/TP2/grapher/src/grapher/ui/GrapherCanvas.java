@@ -87,8 +87,6 @@ public class GrapherCanvas extends Canvas {
 	
 	protected double zoomvaluex, zoomvaluey;
 	protected Point2D center=new Point2D(WIDTH/2,HEIGHT/2);
-	protected double zoom_pos=5;
-	protected double zoom_neg=-5;
 	protected Vector<Function> functions = new Vector<Function>();
 	protected String boldFunction;
 	protected double Bold = 5.0;
@@ -115,10 +113,10 @@ public class GrapherCanvas extends Canvas {
 		
 		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
-		    	zoom.x1=me.getSceneX();
-		    	zoom.y1=me.getSceneY();  	
-		    	drag.x = me.getSceneX();
-		    	drag.y = me.getSceneY();
+		    	zoom.x1=me.getX();
+		    	zoom.y1=me.getY();  	
+		    	drag.x = me.getX();
+		    	drag.y = me.getY();
 		    }
 	
 		});
@@ -127,11 +125,11 @@ public class GrapherCanvas extends Canvas {
 		    public void handle(MouseEvent me) {		    	
 		    	if(!auto.drag && me.getButton() == MouseButton.PRIMARY) {
 		    		System.out.println("Passe1");
-		    		zoom(center,zoom_pos);
+		    		zoom(center,zoom.zoom_pos);
 		    		auto.click=true;
 		    	}else if(!auto.drag && me.getButton() == MouseButton.SECONDARY) {
 		    		System.out.println("Passe2");
-		    		zoom(center,zoom_neg);
+		    		zoom(center,zoom.zoom_neg);
 		    		auto.click=true;
 	//EQUIVALENT DE RELEASE POUR LES DEUX CAS EN DESSOUS (click precede d'un drag)
 		    	}else if(auto.drag && auto.G ){
@@ -154,13 +152,13 @@ public class GrapherCanvas extends Canvas {
 		    	if(me.getButton() == MouseButton.PRIMARY) {
 		    		if(!auto.G) auto.G = true;
 		    		 changeCursor(Cursor.HAND);
-		    		 translate(me.getSceneX()-drag.x,me.getSceneY()-drag.y);
-		    		 drag.x=me.getSceneX();
-		    		 drag.y=me.getSceneY();
+		    		 translate(me.getX()-drag.x,me.getY()-drag.y);
+		    		 drag.x=me.getX();
+		    		 drag.y=me.getY();
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
 		    		if(!auto.D) auto.D = true;
-		    		zoom.x2=me.getSceneX();
-		    		zoom.y2=me.getSceneY();
+		    		zoom.x2=me.getX();
+		    		zoom.y2=me.getY();
 		    		 System.out.println("Mouse Drag for zoom"); 
 		    	}else {
 		    		  System.out.println("Mouse Drag"); 
@@ -171,7 +169,7 @@ public class GrapherCanvas extends Canvas {
 		this.setEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
 		    public void handle(ScrollEvent me) {
 		    	System.out.println("Mouse wheel"); 
-	            Point2D point = new Point2D(me.getSceneX(),me.getSceneY());
+	            Point2D point = new Point2D(me.getX(),me.getY());
 	            double z= me.getDeltaY();
 	            if(z>20.0) {
 	            	z=z/(me.getDeltaY()/10);

@@ -15,12 +15,9 @@ public class FunctionList extends ListView<String> {
 		//Even handler
 		this.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 		    System.out.println("ListView Selection Changed (selected: " + newValue.toString() + ")");
-		    if(newValue == null) {
-		    	canva.setBold("");
-		    }else {
-		    	canva.setBold(newValue);
-		    }
-		    
+		    canva.setBold(newValue);
+	
+		   
 		});
 
 	}
