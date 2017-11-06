@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 
@@ -150,6 +151,22 @@ public class GrapherCanvas extends Canvas {
 		    	}      
 		    }
 		});
+		
+		this.setEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
+		    public void handle(ScrollEvent me) {
+		    	System.out.println("Mouse wheel"); 
+	            Point2D point = new Point2D(me.getSceneX(),me.getSceneY());
+	            double z= me.getDeltaY();
+	            if(z>20.0) {
+	            	z=z/(me.getDeltaY()/10);
+	            }else if(z<-20) {
+	            	z=-(z/(me.getDeltaY()/10));
+	            }
+	            System.out.println(z); 
+	            zoom(point,z);
+		    }
+		});
+		
 			
 		
 	}
