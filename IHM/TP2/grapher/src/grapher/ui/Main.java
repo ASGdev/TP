@@ -4,13 +4,17 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 
 
 
 public class Main extends Application {
 	public void start(Stage stage) {
 		BorderPane root = new BorderPane();
-		root.setCenter(new GrapherCanvas(getParameters()));
+		SplitPane p = new SplitPane();
+		root.setCenter(new GrapherCanvas(getParameters()));	
+		
+		
 		
 		stage.setTitle("grapher");
 		stage.setScene(new Scene(root));

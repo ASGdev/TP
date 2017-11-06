@@ -13,6 +13,7 @@ import javafx.geometry.Rectangle2D;
 
 import javafx.scene.paint.Color;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -167,8 +168,7 @@ public class GrapherCanvas extends Canvas {
 		    }
 		});
 		
-			
-		
+	
 	}
 	
 	public double minHeight(double width)  { return HEIGHT;}
