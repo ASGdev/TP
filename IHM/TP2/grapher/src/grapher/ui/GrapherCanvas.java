@@ -90,7 +90,8 @@ public class GrapherCanvas extends Canvas {
 		super(WIDTH, HEIGHT);
 		xmin = -PI/2.; xmax = 3*PI/2;
 		ymin = -1.5;   ymax = 1.5;
-		
+		Point2D z1=new Point2D(zoom.x1,zoom.y1);;
+		Point2D z2=new Point2D(zoom.x2,zoom.y2);;
 		for(String param: params.getRaw()) {
 			functions.add(FunctionFactory.createFunction(param));
 		}
@@ -101,7 +102,9 @@ public class GrapherCanvas extends Canvas {
 		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 		    public void handle(MouseEvent me) {
 		    	zoom.x1=me.getSceneX();
-		    	zoom.y1=me.getSceneY();  	
+		    	zoom.y1=me.getSceneY(); 
+		    	System.out.println("z1.x:");
+		    	System.out.println(z1.getX());	
 		    	drag.x = me.getSceneX();
 		    	drag.y = me.getSceneY();
 		    }
@@ -126,6 +129,7 @@ public class GrapherCanvas extends Canvas {
 		    		drag.reset();
 		    	}else if(auto.drag && auto.D) {
 		    		System.out.println("Passe4");
+		    		zoom(z1,z2);
 		    		auto.reset();
 		    		drag.reset();
 		    	}
@@ -145,8 +149,8 @@ public class GrapherCanvas extends Canvas {
 		    	}else if(me.getButton() == MouseButton.SECONDARY) {
 		    		if(!auto.D) auto.D = true;
 		    		zoom.x2=me.getSceneX();
-		    		zoom.y2=me.getSceneY();
-		    		 System.out.println("Mouse Drag for zoom"); 
+		    		zoom.y2=me.getSceneY();    		
+		    		System.out.println("Mouse Drag for zoom"); 
 		    	}else {
 		    		  System.out.println("Mouse Drag"); 
 		    	}      
