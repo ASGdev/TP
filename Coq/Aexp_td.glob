@@ -1,0 +1,303 @@
+DIGEST 1da5d6fdcbbb749938df85f091dd589f
+FAexp_td
+R287:289 Coq.Init.Nat <> <> lib
+ind 400:402 <> Num
+constr 413:414 <> Nu
+R421:424 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R425:427 Aexp_td <> Num ind
+R418:420 Coq.Init.Datatypes <> nat ind
+ind 440:442 <> Var
+constr 453:454 <> Va
+R461:464 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R465:467 Aexp_td <> Var ind
+R458:460 Coq.Init.Datatypes <> nat ind
+ind 573:576 <> Aexp
+constr 589:591 <> Anu
+constr 638:640 <> Ava
+constr 686:688 <> Apl
+constr 734:736 <> Amu
+constr 788:790 <> Amo
+R605:607 Aexp_td <> Num ind
+R611:614 Aexp_td <> Aexp ind
+R654:656 Aexp_td <> Var ind
+R660:663 Aexp_td <> Aexp ind
+R706:709 Aexp_td <> Aexp ind
+R712:715 Aexp_td <> Aexp ind
+R754:757 Aexp_td <> Aexp ind
+R760:763 Aexp_td <> Aexp ind
+R808:811 Aexp_td <> Aexp ind
+R814:817 Aexp_td <> Aexp ind
+def 887:887 <> x
+R891:892 Aexp_td <> Va constr
+def 908:908 <> y
+R912:913 Aexp_td <> Va constr
+def 1005:1006 <> a1
+R1011:1013 Aexp_td <> Amo constr
+R1037:1039 Aexp_td <> Anu constr
+R1042:1043 Aexp_td <> Nu constr
+R1015:1017 Aexp_td <> Amu constr
+R1028:1030 Aexp_td <> Ava constr
+R1032:1032 Aexp_td <> x def
+R1020:1022 Aexp_td <> Ava constr
+R1024:1024 Aexp_td <> x def
+def 1231:1234 <> Etat
+R1242:1245 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R1246:1248 Coq.Init.Datatypes <> nat ind
+R1239:1241 Aexp_td <> Var ind
+def 1322:1327 <> e_init
+R1331:1334 Aexp_td <> Etat def
+def 1408:1412 <> eqvar
+R1419:1422 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R1426:1429 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R1430:1433 Coq.Init.Datatypes <> bool ind
+R1423:1425 Aexp_td <> Var ind
+R1416:1418 Aexp_td <> Var ind
+R1464:1464 Aexp_td <> y var
+R1461:1461 Aexp_td <> x var
+R1477:1478 Aexp_td <> Va constr
+R1483:1484 Aexp_td <> Va constr
+R1491:1493 Coq.Init.Nat <> eqb def
+def 1575:1580 <> masque
+R1586:1588 Aexp_td <> Var ind
+R1595:1597 Coq.Init.Datatypes <> nat ind
+R1604:1607 Aexp_td <> Etat def
+R1612:1615 Aexp_td <> Etat def
+R1634:1638 Aexp_td <> eqvar def
+R1642:1642 Aexp_td <> y var
+R1640:1640 Aexp_td <> x var
+R1656:1656 Aexp_td <> e var
+R1658:1658 Aexp_td <> y var
+R1649:1649 Aexp_td <> n var
+def 1728:1733 <> init_x
+R1740:1745 Aexp_td <> masque def
+R1756:1761 Aexp_td <> e_init def
+R1754:1754 Aexp_td <> n var
+R1748:1749 Aexp_td <> Va constr
+def 2010:2013 <> semN
+R2018:2020 Aexp_td <> Num ind
+R2025:2027 Coq.Init.Datatypes <> nat ind
+R2038:2038 Aexp_td <> n var
+R2045:2046 Aexp_td <> Nu constr
+def 2128:2131 <> semA
+R2137:2140 Aexp_td <> Aexp ind
+R2147:2150 Aexp_td <> Etat def
+R2155:2157 Coq.Init.Datatypes <> nat ind
+R2170:2170 Aexp_td <> a var
+R2183:2185 Aexp_td <> Anu constr
+R2192:2195 Aexp_td <> semN def
+R2205:2207 Aexp_td <> Ava constr
+R2214:2214 Aexp_td <> s var
+R2224:2226 Aexp_td <> Apl constr
+R2237:2237 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R2247:2251 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R2261:2261 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R2238:2241 Aexp_td <> semA def
+R2246:2246 Aexp_td <> s var
+R2252:2255 Aexp_td <> semA def
+R2260:2260 Aexp_td <> s var
+R2299:2301 Aexp_td <> Amu constr
+R2312:2312 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R2322:2326 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R2336:2336 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R2313:2316 Aexp_td <> semA def
+R2321:2321 Aexp_td <> s var
+R2327:2330 Aexp_td <> semA def
+R2335:2335 Aexp_td <> s var
+R2374:2376 Aexp_td <> Amo constr
+R2387:2387 Coq.Init.Peano <> :nat_scope:x_'-'_x not
+R2397:2401 Coq.Init.Peano <> :nat_scope:x_'-'_x not
+R2411:2411 Coq.Init.Peano <> :nat_scope:x_'-'_x not
+R2388:2391 Aexp_td <> semA def
+R2396:2396 Aexp_td <> s var
+R2402:2405 Aexp_td <> semA def
+R2410:2410 Aexp_td <> s var
+def 2459:2462 <> a1_2
+R2484:2486 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2466:2469 Aexp_td <> semA def
+R2475:2480 Aexp_td <> init_x def
+R2471:2472 Aexp_td <> a1 def
+def 2524:2527 <> a1_3
+R2549:2551 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2531:2534 Aexp_td <> semA def
+R2540:2545 Aexp_td <> init_x def
+R2536:2537 Aexp_td <> a1 def
+ind 2875:2877 <> NSA
+constr 2917:2921 <> NSAnu
+constr 2961:2965 <> NSAva
+constr 3002:3006 <> NSApl
+constr 3151:3155 <> NSAmu
+constr 3300:3304 <> NSAmo
+R2884:2887 Aexp_td <> Etat def
+R2896:2899 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2903:2906 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R2900:2902 Coq.Init.Datatypes <> nat ind
+R2892:2895 Aexp_td <> Aexp ind
+R2935:2937 Aexp_td <> NSA ind
+R2950:2953 Aexp_td <> semN def
+R2955:2955 Aexp_td <> n var
+R2942:2944 Aexp_td <> Anu constr
+R2946:2946 Aexp_td <> n var
+R2939:2939 Aexp_td <> s var
+R2979:2981 Aexp_td <> NSA ind
+R2994:2994 Aexp_td <> s var
+R2996:2996 Aexp_td <> x var
+R2986:2988 Aexp_td <> Ava constr
+R2990:2990 Aexp_td <> x var
+R2983:2983 Aexp_td <> s var
+R3041:3074 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3086:3119 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3120:3122 Aexp_td <> NSA ind
+R3141:3143 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R3139:3140 Aexp_td <> n1 var
+R3144:3145 Aexp_td <> n2 var
+R3127:3129 Aexp_td <> Apl constr
+R3134:3135 Aexp_td <> a2 var
+R3131:3132 Aexp_td <> a1 var
+R3124:3124 Aexp_td <> s var
+R3075:3077 Aexp_td <> NSA ind
+R3084:3085 Aexp_td <> n2 var
+R3081:3082 Aexp_td <> a2 var
+R3079:3079 Aexp_td <> s var
+R3030:3032 Aexp_td <> NSA ind
+R3039:3040 Aexp_td <> n1 var
+R3036:3037 Aexp_td <> a1 var
+R3034:3034 Aexp_td <> s var
+R3190:3223 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3235:3268 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3269:3271 Aexp_td <> NSA ind
+R3290:3292 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R3288:3289 Aexp_td <> n1 var
+R3293:3294 Aexp_td <> n2 var
+R3276:3278 Aexp_td <> Amu constr
+R3283:3284 Aexp_td <> a2 var
+R3280:3281 Aexp_td <> a1 var
+R3273:3273 Aexp_td <> s var
+R3224:3226 Aexp_td <> NSA ind
+R3233:3234 Aexp_td <> n2 var
+R3230:3231 Aexp_td <> a2 var
+R3228:3228 Aexp_td <> s var
+R3179:3181 Aexp_td <> NSA ind
+R3188:3189 Aexp_td <> n1 var
+R3185:3186 Aexp_td <> a1 var
+R3183:3183 Aexp_td <> s var
+R3339:3372 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3384:3417 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3418:3420 Aexp_td <> NSA ind
+R3439:3441 Coq.Init.Peano <> :nat_scope:x_'-'_x not
+R3437:3438 Aexp_td <> n1 var
+R3442:3443 Aexp_td <> n2 var
+R3425:3427 Aexp_td <> Amo constr
+R3432:3433 Aexp_td <> a2 var
+R3429:3430 Aexp_td <> a1 var
+R3422:3422 Aexp_td <> s var
+R3373:3375 Aexp_td <> NSA ind
+R3382:3383 Aexp_td <> n2 var
+R3379:3380 Aexp_td <> a2 var
+R3377:3377 Aexp_td <> s var
+R3328:3330 Aexp_td <> NSA ind
+R3337:3338 Aexp_td <> n1 var
+R3334:3335 Aexp_td <> a1 var
+R3332:3332 Aexp_td <> s var
+def 3622:3628 <> NS_test
+R3642:3644 Aexp_td <> NSA ind
+R3649:3651 Aexp_td <> Apl constr
+R3667:3669 Aexp_td <> Anu constr
+R3672:3673 Aexp_td <> Nu constr
+R3654:3656 Aexp_td <> Anu constr
+R3659:3660 Aexp_td <> Nu constr
+R3646:3646 Aexp_td <> s var
+R3710:3712 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R3710:3712 Coq.Init.Peano <> :nat_scope:x_'+'_x not
+R3738:3742 Aexp_td <> NSApl constr
+R3738:3742 Aexp_td <> NSApl constr
+R3753:3757 Aexp_td <> NSAnu constr
+R3753:3757 Aexp_td <> NSAnu constr
+R3768:3772 Aexp_td <> NSAnu constr
+R3768:3772 Aexp_td <> NSAnu constr
+def 3861:3867 <> NS_a1_3
+R3888:3891 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3892:3894 Aexp_td <> NSA ind
+R3898:3899 Aexp_td <> a1 def
+R3896:3896 Aexp_td <> s var
+R3884:3886 Coq.Init.Logic <> :type_scope:x_'='_x not
+R3881:3881 Aexp_td <> s var
+R3883:3883 Aexp_td <> x def
+R3974:3974 Coq.Init.Peano <> :nat_scope:x_'-'_x not
+R3972:3972 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R3974:3974 Coq.Init.Peano <> :nat_scope:x_'-'_x not
+R3972:3972 Coq.Init.Peano <> :nat_scope:x_'*'_x not
+R4001:4002 Aexp_td <> a1 def
+R4011:4015 Aexp_td <> NSAmo constr
+R4011:4015 Aexp_td <> NSAmo constr
+R4025:4029 Aexp_td <> NSAmu constr
+R4025:4029 Aexp_td <> NSAmu constr
+R4051:4055 Aexp_td <> NSAva constr
+R4051:4055 Aexp_td <> NSAva constr
+R4078:4082 Aexp_td <> NSAva constr
+R4078:4082 Aexp_td <> NSAva constr
+R4092:4096 Aexp_td <> NSAnu constr
+R4092:4096 Aexp_td <> NSAnu constr
+prf 4278:4285 <> NSA_semA
+R4301:4303 Aexp_td <> NSA ind
+R4310:4313 Aexp_td <> semA def
+R4317:4317 Aexp_td <> s var
+R4315:4315 Aexp_td <> a var
+R4307:4307 Aexp_td <> a var
+R4305:4305 Aexp_td <> s var
+R4400:4404 Aexp_td <> NSAnu constr
+R4400:4404 Aexp_td <> NSAnu constr
+R4413:4417 Aexp_td <> NSAva constr
+R4413:4417 Aexp_td <> NSAva constr
+R4427:4431 Aexp_td <> NSApl constr
+R4427:4431 Aexp_td <> NSApl constr
+R4465:4469 Aexp_td <> NSAmu constr
+R4465:4469 Aexp_td <> NSAmu constr
+R4503:4507 Aexp_td <> NSAmo constr
+R4503:4507 Aexp_td <> NSAmo constr
+prf 4549:4556 <> semA_NSA
+R4583:4586 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R4588:4590 Coq.Init.Logic <> :type_scope:x_'='_x not
+R4587:4587 Aexp_td <> n var
+R4591:4594 Aexp_td <> semA def
+R4598:4598 Aexp_td <> s var
+R4596:4596 Aexp_td <> a var
+R4574:4576 Aexp_td <> NSA ind
+R4582:4582 Aexp_td <> n var
+R4580:4580 Aexp_td <> a var
+R4578:4578 Aexp_td <> s var
+def 5478:5488 <> elim_plus_0
+R5495:5498 Aexp_td <> Aexp ind
+R5503:5506 Aexp_td <> Aexp ind
+R5519:5519 Aexp_td <> a var
+R5530:5532 Aexp_td <> Anu constr
+R5539:5541 Aexp_td <> Anu constr
+R5549:5551 Aexp_td <> Ava constr
+R5558:5560 Aexp_td <> Ava constr
+R5568:5570 Aexp_td <> Apl constr
+R5573:5575 Aexp_td <> Anu constr
+R5578:5579 Aexp_td <> Nu constr
+R5595:5605 Aexp_td <> elim_plus_0 def
+R5614:5616 Aexp_td <> Apl constr
+R5627:5629 Aexp_td <> Apl constr
+R5649:5659 Aexp_td <> elim_plus_0 def
+R5632:5642 Aexp_td <> elim_plus_0 def
+R5669:5671 Aexp_td <> Amu constr
+R5682:5684 Aexp_td <> Amu constr
+R5704:5714 Aexp_td <> elim_plus_0 def
+R5687:5697 Aexp_td <> elim_plus_0 def
+R5724:5726 Aexp_td <> Amo constr
+R5737:5739 Aexp_td <> Amo constr
+R5759:5769 Aexp_td <> elim_plus_0 def
+R5742:5752 Aexp_td <> elim_plus_0 def
+def 5794:5795 <> a2
+R5800:5802 Aexp_td <> Apl constr
+R5818:5820 Aexp_td <> Ava constr
+R5822:5822 Aexp_td <> x def
+R5805:5807 Aexp_td <> Anu constr
+R5810:5811 Aexp_td <> Nu constr
+def 5834:5849 <> test_elim_plus_0
+R5867:5869 Coq.Init.Logic <> :type_scope:x_'='_x not
+R5853:5863 Aexp_td <> elim_plus_0 def
+R5865:5866 Aexp_td <> a2 def
+R5870:5872 Aexp_td <> Ava constr
+R5874:5874 Aexp_td <> x def

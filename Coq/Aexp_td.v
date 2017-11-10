@@ -120,6 +120,7 @@ apply NSAmo.
 -apply NSAmu.
 rewrite <-H.
 apply NSAva.
+
 rewrite <-H.
 apply NSAva.
 -apply NSAnu.
@@ -158,17 +159,24 @@ Proof.
 -rewrite ->IHNSA1.
  rewrite ->IHNSA2.
   reflexivity.
+-rewrite ->IHNSA1.
+ rewrite ->IHNSA2.
+  reflexivity.
+-rewrite ->IHNSA1.
+ rewrite ->IHNSA2.
+ reflexivity.
 
  
   
 Qed.
-
+(*
 (* Exercice (Optionel) : Prouvez en utilisant les r\u00c3\u00a9sultats pr\u00c3\u00a9c\u00c3\u00a9dents
    que la s\u00c3\u00a9mantique \u00c3  grands pas est deterministe *)
 Corollary NSA_det : forall a s n n', NSA s a n -> NSA s a n' -> n = n'.
 Proof.
   (* Compl\u00c3\u00a9tez ici *)
 Qed.
+*)
 
 (* ------------------------------------------------------------ *)
 (* Optimisation *)
@@ -201,6 +209,7 @@ Qed.
 (* Note : pour raisonner par cas sur un Num il faut utiliser 'destruct' 2 fois
    - la premi\u00c3\u00a8re fois pour exposer le constructeur Nu
    - la seconde pour distinguer le cas 0 du cas S n *)
+  (*
 Lemma semA_pl : forall a1 a2 s,
     semA (elim_plus_0 (Apl a1 a2)) s = semA (elim_plus_0 a1) s + semA (elim_plus_0 a2) s.
 Proof.
@@ -211,3 +220,4 @@ Lemma elim_plus_0_correct : forall a s, semA (elim_plus_0 a) s = semA a s.
 Proof.
   (* Compl\u00c3\u00a9tez ici *)
 Qed.
+*)

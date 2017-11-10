@@ -56,9 +56,8 @@ Inductive SOS_A (s : Etat) : Aexp -> Aexp -> Prop :=
 (* On montre la transitivité de la relation step* (SOS_A)     *)
 Lemma SOSA_trans : forall s a1 a2 a3, SOS_A s a1 a2 -> SOS_A s a2 a3 -> SOS_A s a1 a3.
 Proof.
-             (* A COMPLETER *)
-Admitted.
-
+  intro s a1.
+  simpl.
 (* Les trois lemmes suivants montrent que les les opérations binaires
    sont en relation (i.e. peuvent être réduites par step^* ) si leurs
    opérandes sont en relation.
