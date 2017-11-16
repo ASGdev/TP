@@ -75,3 +75,45 @@ for (i in 1:n){
 
 ```
 
+Partie 2
+
+```{r}
+
+play=function(n){
+  runif(n)
+}
+
+
+#automate de Shannon sur les deux dernier état
+n_2_v : FALSE
+n_2_S : NULL
+n_1_v : FALSE
+n_1_S : NULL
+
+
+
+n=500
+m_player = c()
+m_player = play(n)
+
+
+for (i in 1:n){
+    
+      if(no_m_player[i]<=1/3){
+        no_m_result = c(no_m_result,'A')
+      }else if(no_m_player[i]<=2/3){
+        no_m_result = c(no_m_result,'B')
+      }else{
+        no_m_result = c(no_m_result,'C')
+      }
+    
+      if(m_player[i]<=1/4){
+        m_result = c(m_result,'A')
+      }else if(m_player[i]<=2/4){
+        m_result = c(m_result,'B')
+      }else{
+        m_result = c(m_result,'C')
+      }
+}
+
+```
