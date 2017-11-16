@@ -1,0 +1,14 @@
+- Intro(s) permet d'introduire une variable dans la preuve.
+- destruction permet de réduire de une étape une variable en la déconstruisant
+    d'une étape selon sa régle de construction. 
+- induction (as [ | | | ...]) est le similaire de destruction pour un nombre n 
+    arbitraire d'étape. Cela est utile pour toute preuve contenant une
+    récursivité (par exemple des type définit par récursivité).
+    Les crochet (n-1 pour n étape de preuve dans la récursion) permettent
+    de nommer les variable. On peut les omettre et laissé coq les nommés.
+    Aprés une induction, on peut taper ;simpl. ou n'importe quel autre commande. 
+    Cela appliquera tout a chaque sous but généré par l'induction.
+- apply : permet d'appliquer un théorème (réecris le sous but en fonction du théorème)
+- rewrite : permet de réecrire le sous but en fonction d'une propriété ou théorème
+            On donne le sens en utilisant -> ou <- pour savoir si on l'applique sur le
+            membre gauche ou droit de l'expression.
