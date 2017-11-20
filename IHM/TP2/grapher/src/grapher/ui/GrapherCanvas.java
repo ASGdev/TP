@@ -1,9 +1,17 @@
 package grapher.ui;
 
 import static java.lang.Math.*;
-
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import java.awt.List;
 import java.util.Vector;
+import javafx.scene.shape.*;
+
 
 import javafx.util.converter.DoubleStringConverter;
 
@@ -293,7 +301,7 @@ public class GrapherCanvas extends Canvas {
 		for(double y = ystep; y < ymax; y += ystep)  { drawYTick(gc, y); }
 		for(double y = -ystep; y > ymin; y -= ystep) { drawYTick(gc, y); }
 		if(auto.drag==true && auto.D==true && auto.release==false){
-			rectangle(gc,zoom.x2-zoom.x1,zoom.y2-zoom.y1);
+			rectangle(gc,(zoom.x2-zoom.x1),(zoom.y2-zoom.y1));
 		}
 		gc.setLineDashes(null);
 	
@@ -382,9 +390,19 @@ public class GrapherCanvas extends Canvas {
 		redraw();
 	}
 
-	protected void rectangle(GraphicsContext g,double x,double y){
-		g.strokeRect(zoom.x1,zoom.y1, x, y);
-		
-
+	protected void rectangle(GraphicsContext gc,double x,double y){
+		if(x>=0 && y>=0){
+			gc.strokeRect(zoom.x1,zoom.y1,x, y);	
+			
+		}
+		else if(x<=0 && y<=0){
+			gc.strokeRect(zoom.x2,zoom.y2,-x,-y);
+		}
+		else if(x<=0 && y>=0){
+			gc.strokeRect(zoom.x2,zoom.y1,-x,y);
+		}
+		else if(x>=0 && y<=0){
+			gc.strokeRect(zoom.x1,zoom.y2,x,-y);
+		}
 	}
 }
