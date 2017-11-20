@@ -84,17 +84,22 @@ play=function(n){
 }
 
 
-#automate de Shannon sur les deux dernier �tat
-n_2_v : FALSE
-n_2_S : NULL
-n_1_v : FALSE
-n_1_S : NULL
+#automate de Shannon sur les deux dernier ?tat
+n_2_v = FALSE
+n_2_S = NULL
+n_1_v = FALSE
+n_1_S = NULL
 
 
-
+#Implementation basique : on joue le coup joué par le joueur adverse au tour précédent.
 n=500
-m_player = c()
-m_player = play(n)
+no_m_player=play(n)
+m_player =play(n)
+no_m_result = c()
+m_result = c()
+gain_no_m = 0
+gain_m = 0
+
 
 
 for (i in 1:n){
@@ -106,7 +111,6 @@ for (i in 1:n){
       }else{
         no_m_result = c(no_m_result,'C')
       }
-    
       if(m_player[i]<=1/4){
         m_result = c(m_result,'A')
       }else if(m_player[i]<=2/4){
@@ -114,6 +118,26 @@ for (i in 1:n){
       }else{
         m_result = c(m_result,'C')
       }
+}
+
+#gain
+for (i in 1:n){
+  if(no_m_result[i]=='A' && m_result[i]=='B'){
+    gain_no_m = gain_no_m +1
+  }else if (no_m_result[i]=='A' && m_result[i]=='C'){
+    gain_m = gain_m +1;
+  }else if (no_m_result[i]=='B' && m_result[i]=='A'){
+    gain_m = gain_m +1;
+  }else if (no_m_result[i]=='B' && m_result[i]=='C'){
+    gain_no_m = gain_no_m +1
+  }else if (no_m_result[i]=='C' && m_result[i]=='A'){
+    gain_no_m = gain_no_m +1
+  }else if (no_m_result[i]=='C' && m_result[i]=='B'){
+     gain_m = gain_m +1;
+  }
+  if(i!=n){
+  m_result[i+1]=no_m_result[i]
+  }
 }
 
 ```
