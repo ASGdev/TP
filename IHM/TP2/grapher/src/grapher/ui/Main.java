@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import grapher.fc.FunctionFactory;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.stage.Stage;
@@ -15,9 +16,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 
 
@@ -34,6 +39,11 @@ public class Main extends Application {
 		Button minus = new Button("-");
 		ToolBar functioncontrol = new ToolBar();
 		functionControlPanel.setOrientation(Orientation.VERTICAL);
+		MenuBar main = new MenuBar();
+		Menu listInteract = new Menu("Fonctions");
+		MenuItem plusMenuList = new MenuItem("Ajouter");
+		MenuItem minusMenuList = new MenuItem("Supprimer");
+		
 		
 		//Events
 		plus.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -55,11 +65,33 @@ public class Main extends Application {
 		    }
 	
 		});
+		plusMenuList.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		    	TextInputDialog newfunction = new TextInputDialog();
+		    	newfunction.setHeaderText("Ajouter une fonction");
+		    	newfunction.setContentText("Entrer l'expression de votre fonction :");
+		    	Optional<String> result = newfunction.showAndWait();
+		    	if (result.isPresent()){
+		    		canva.addFunction(FunctionFactory.createFunction(result.get()));
+		    	}
+		    }
+		});
+		minusMenuList.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		    	int index = functionlist.getSelectionModel().getSelectedIndex();
+		    	canva.removeFunction(index);
+		    }
+		});
+		plusMenuList.setAccelerator(KeyCombination.valueOf("Ctrl+n"));
+		minusMenuList.setAccelerator(KeyCombination.valueOf("Ctrl+Backspace"));
 		
 		
 		
 		
 		//Mise en page
+		listInteract.getItems().addAll(plusMenuList,minusMenuList);
+		main.getMenus().add(listInteract);
+		root.setTop(main);
 		functioncontrol.getItems().add(plus);
 		functioncontrol.getItems().add(minus);
 		functionControlPanel.getItems().add(functionlist);
