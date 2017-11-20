@@ -9,6 +9,7 @@ import javafx.util.converter.DoubleStringConverter;
 
 import javafx.application.Application.Parameters;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
@@ -90,18 +91,10 @@ public class GrapherCanvas extends Canvas {
 	
 	protected double zoomvaluex, zoomvaluey;
 	protected Point2D center=new Point2D(WIDTH/2,HEIGHT/2);
-	private Vector<Function> functions = new Vector<Function>();
-	protected ObservableList<Function> observableFunctions =  FXCollections.observableList(functions);
+	protected ObservableList<Function> functions =  FXCollections.observableArrayList();
 	protected String boldFunction;
 	protected double Bold = 5.0;
 	protected double Default = 1.0;
-	
-	
-	
-	
-	
-	
-	
 	
 	public GrapherCanvas(Parameters params) {
 		super(WIDTH, HEIGHT);
@@ -114,7 +107,7 @@ public class GrapherCanvas extends Canvas {
 		auto = new Automate();
 		drag = new Drag();
 		zoom =new Zoom();
-		GraphicsContext g=getGraphicsContext2D();
+		GraphicsContext g=getGraphicsContext2D();		
 		
 		
 		this.setEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -374,7 +367,7 @@ public class GrapherCanvas extends Canvas {
 	//Public part for call
 	
 	public ObservableList<Function> getFunctionList() {
-		return observableFunctions;
+		return functions;
 	}
 	
 	public void setBold(Function newValue) {
@@ -384,7 +377,12 @@ public class GrapherCanvas extends Canvas {
 
 	protected void rectangle(GraphicsContext g,double x,double y){
 		g.strokeRect(zoom.x1,zoom.y1, x, y);
-		
-
+	}
+	
+	public void removeFunction(int f) {
+		functions.remove(f);
+	}
+	public void addFunction(Function f) {
+		functions.add(f);
 	}
 }
