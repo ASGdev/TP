@@ -2,11 +2,14 @@ package grapher.ui;
 
 import static java.lang.Math.*;
 
+import java.awt.List;
 import java.util.Vector;
 
 import javafx.util.converter.DoubleStringConverter;
 
 import javafx.application.Application.Parameters;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -87,7 +90,8 @@ public class GrapherCanvas extends Canvas {
 	
 	protected double zoomvaluex, zoomvaluey;
 	protected Point2D center=new Point2D(WIDTH/2,HEIGHT/2);
-	protected Vector<Function> functions = new Vector<Function>();
+	private Vector<Function> functions = new Vector<Function>();
+	protected ObservableList<Function> observableFunctions =  FXCollections.observableList(functions);
 	protected String boldFunction;
 	protected double Bold = 5.0;
 	protected double Default = 1.0;
@@ -214,7 +218,7 @@ public class GrapherCanvas extends Canvas {
 		redraw();
 	}	
 	
-	private void redraw() {
+	public void redraw() {
 		GraphicsContext gc = getGraphicsContext2D();
 		W = getWidth();
 		H = getHeight();
@@ -369,16 +373,12 @@ public class GrapherCanvas extends Canvas {
 	
 	//Public part for call
 	
-	public Vector<String> getFuntionList() {
-		Vector<String> functionlist = new Vector<>();
-		for(int i=0;i<this.functions.size();i++) {
-			functionlist.add(this.functions.get(i).toString());
-		}
-		return functionlist;
+	public ObservableList<Function> getFunctionList() {
+		return observableFunctions;
 	}
 	
-	public void setBold(String fcnName) {
-		boldFunction = fcnName;
+	public void setBold(Function newValue) {
+		boldFunction = newValue.toString();
 		redraw();
 	}
 

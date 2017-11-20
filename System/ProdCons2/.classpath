@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="jus.poc.prodcons"/>
+	<classpathentry kind="lib" path="C:/Travail/TP/System/ProdCons2/ProdCons.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
