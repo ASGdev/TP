@@ -19,7 +19,15 @@ La probabilité de gagner pour B est de :  1-P(B=P)*P(A=F)+P(B=C)*P(A=P)+P(B=F)*
 La probablité de perdre pour B est identique à la probabilité de gagner, et on ne s'occupera pas de la probabilté du nul car il ne fait ni gagner ni perdre d'argent à B et A.
 D'où : E(B)=0.3125-0.3125=0. L'espérance de B est de 0.
 
-2-
+2-Lorsque les probabilités de B changent on obtient la même chose. 
+E(B)=0.33-0.33=0
+
+3-E(B)=1*P(B gagne)-1P(B perde)=1/0.5*x+0.25*y+0.25*(1-x-y)-(0.25*x+0.5*y+(1-x-y)*0.25)=0.5+0.25*(x-y)
+
+4-Plus l'espérance est élevé, plus le joueur B est gagnant, on va donc chercher à maximiser 0.25*(x-y).
+Donc B à tout intérêt à maximiser x et minimiser y(par exemple : x=1 et y=0)
+
+5-
 
 ```{r}
 #Papier = A, Caillou = B, Ciseaux = C
@@ -81,7 +89,12 @@ for (i in 1:n){
 
 ```
 
-Partie 2
+##Partie 2
+
+Question 2 - Apprentissage
+
+1- On part sur un algorithme qui va calculer la fréquence des coups joués par l'adversaire et notre coup suivant sera le coup qui gagne face au coup le plus joué par l'adversaire depuis le début. 
+Si au coup n, Pierre est le coup le plus joué depuis le début par le joueur A, alors nous jouerons Feuille au prochain coup. A chaque passage nous re calculons les fréquences des coups adversaires.
 
 ```{r}
 
