@@ -159,7 +159,10 @@ for (i in 1:n){
 }
 gain_m
 gain_no_m
+```
 
+
+```{r}
 #Statistiquement les résultat sont les même puisque l'algo détecte 1/3 par pick puisque l'autre joueur est "aléatoire". Il faudra plus probablement le faire jouer contre un biaisé pour voir un résultat intérressant. Ci joint le test avec biaisé
 
 #???NB : Les resultat sont comme escompté car le joueur algo gagne systématiquement contre le joueur biaisé (1/4 1/4 1/2) (notre joueur aura tendance a jouer le counter de C donc A)
