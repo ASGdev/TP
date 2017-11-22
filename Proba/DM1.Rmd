@@ -110,6 +110,14 @@ Question 2 - Apprentissage
 1- On part sur un algorithme qui va calculer la fréquence des coups joués par l'adversaire et notre coup suivant sera le coup qui gagne face au coup le plus joué par l'adversaire depuis le début. 
 Si au coup n, Pierre est le coup le plus joué depuis le début par le joueur A, alors nous jouerons Feuille au prochain coup. A chaque passage nous re calculons les fréquences des coups adversaires.
 
+2-En réalisant plusieurs test avec ce joueur A qui est biaisé P(A)=(1/4,1/4,1/2), on a un gain du joueur B qui est bien supèrieur à celui du joueur A, ce qui était attendu compte tenu de l'algorithme.
+1er test: 50.8% de victoire pour B | 23.6% de défaite pour A | 25.6 nul
+2eme test : 49% de vitoire pour B | 25% de défaite |  26 nul
+3eme test : 49% de victoire pour B | 22.6% de defaite pour A | 28.4% nul
+On remarque donc que notre algorithme tourne autour de 50% de victoire donc un gain de 0.5*nombre de partie.
+
+
+
 ```{r}
 
 #Joue le counter statistique, et préfère par défaut la stratégie pierre au premier tour
@@ -172,7 +180,6 @@ for (i in 1:n){
 }
 gain_m
 gain_no_m
-```
 
 #Statistiquement les résultat sont les méme puisque l'algo détecte 1/3 par pick puisque l'autre joueur est "aléatoire". Il faudra plus probablement le faire jouer contre un biais? pour voir un résultat intérressant. Ci joint le test avec biais?
 
