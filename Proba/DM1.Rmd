@@ -29,9 +29,22 @@ Donc B à tout intérêt à maximiser x et minimiser y(par exemple : x=1 et y=0)
 
 5-
 
+Question 2)
+Cas du joueur non biasé
+1- On retrouve une espérance de 0
+
+2-On retrouve aussi une éspérance de 0.
+
+3-P(B gagne)=1/3*x+1/3*y+1/3*(1-x-y)=1/3
+L'espếrance est donc égal à 0 ( probabilité de perdre et de gagner est égale), elle ne dépend ni de x ni de y.
+
+4-B ne peut pas vraiment adopter de stratégie, il peut seulement jouer au hasard car l'adversaire n'a pas de point faible ou de coup prévisible.
+
+Conclusion : Un joueur non biaisé peut perdre mais aussi gagner contrairement au joueur biaisé qui peut se faire battre très facile si l'on connait la probabilité du coup le plus élevé.  Un joueur biaisé aura tendance à perdre plus qu'un joueur non biaisé.
+
 ```{r}
 #Papier = A, Caillou = B, Ciseaux = C
-# no_m = non biais�, m = biais�
+# no_m = non biais?, m = biais?
 
 play=function(n){
   runif(n)
@@ -99,7 +112,7 @@ Si au coup n, Pierre est le coup le plus joué depuis le début par le joueur A,
 
 ```{r}
 
-#Joue le counter statistique, et pr�f�re par d�faut la strat�gie pierre au premier tour
+#Joue le counter statistique, et préfère par défaut la stratégie pierre au premier tour
 playOneTurn=function(liste){
     probA = sum(liste == 'A') 
     probB = sum(liste == 'B')
@@ -133,7 +146,7 @@ for (i in 1:n){
       #Jouer algo (calculer avant pour pas prendre en compte ce coup ci)
      coup = c(coup,playOneTurn(listcoupjouer))
       
-      #Joueur al�atoire
+      #Joueur aléatoire
       if(no_m_player[i]<=1/3){
         listcoupjouer = c(listcoupjouer,'A')
       }else if(no_m_player[i]<=2/3){
@@ -160,9 +173,9 @@ for (i in 1:n){
 gain_m
 gain_no_m
 
-#Statistiquement les r�sultat sont les m�me puisque l'algo d�tecte 1/3 par pick puisque l'autre joueur est "al�atoire". Il faudra plus probablement le faire jouer contre un biais� pour voir un r�sultat int�rressant. Ci joint le test avec biais�
+#Statistiquement les résultat sont les méme puisque l'algo détecte 1/3 par pick puisque l'autre joueur est "aléatoire". Il faudra plus probablement le faire jouer contre un biais? pour voir un résultat intérressant. Ci joint le test avec biais?
 
-#???NB : Les resultat sont �trange car le joueur algo perd syst�matiquement contre le joueur biais� (1/4 1/4 1/2), alors que ce devrais �tre l'inverse (notre joueur aura tendance a jouer le counter de C donc A)
+#???NB : Les resultat sont ?trange car le joueur algo perd systimatiquement contre le joueur biais? (1/4 1/4 1/2), alors que ce devrais être l'inverse (notre joueur aura tendance a jouer le counter de C donc A)
 
 listcoupjouer= c()
 coup=c()
@@ -177,7 +190,7 @@ for (i in 1:n){
       #Jouer algo (calculer avant pour pas prendre en compte ce coup ci)
       coup = c(coup,playOneTurn(listcoupjouer))
       
-      #Joueur al�atoire
+      #Joueur aléatoire
       if(no_m_player[i]<=1/4){
         listcoupjouer = c(listcoupjouer,'A')
       }else if(no_m_player[i]<=2/4){
