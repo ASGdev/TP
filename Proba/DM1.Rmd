@@ -1,6 +1,6 @@
 ---
-title: 'DM : Feuille Rock Lame'
-author: "T.V"
+title: 'DM : Pierre Feuile Ciseaux'
+author: "Thibaut Vegreville - Titouan Larnicol"
 date: "16 novembre 2017"
 output: html_document
 ---
@@ -9,11 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+##Première Partie
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Question 1)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Cas du joueur biaisé : 
+1-On veut déterminer les gains moyens du joueur B en connaissant les probabilités des choix de chaque joueurs. Alors on note P : pierre, F: Feuille et C: ciseaux .
+La probabilité de gagner pour B est de :  1-P(B=P)*P(A=F)+P(B=C)*P(A=P)+P(B=F)*P(A=C)=0.3125
+La probablité de perdre pour B est identique à la probabilité de gagner, et on ne s'occupera pas de la probabilté du nul car il ne fait ni gagner ni perdre d'argent à B et A.
+D'où : E(B)=0.3125-0.3125=0. L'espérance de B est de 0.
+
+2-
 
 ```{r}
 #Papier = A, Caillou = B, Ciseaux = C
