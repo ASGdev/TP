@@ -114,8 +114,13 @@ Si au coup n, Pierre est le coup le plus joué depuis le début par le joueur A,
 1er test: 50.8% de victoire pour B | 23.6% de défaite pour A | 25.6 nul
 2eme test : 49% de vitoire pour B | 25% de défaite |  26 nul
 3eme test : 49% de victoire pour B | 22.6% de defaite pour A | 28.4% nul
-On remarque donc que notre algorithme tourne autour de 50% de victoire donc un gain de 0.5*nombre de partie.
+On remarque donc que notre algorithme tourne autour de 50% de victoire donc un gain de 0.5*nombre de partie. On remarque bien dans le diagramme tracé que A remporte en général seulement 1/3 voir 1/4 des parties !
 
+3- Notre algorithme est vite limité et est plutôt adapté a des joueurs qui vont jouer souvent le même coup sans se rendre compte de la réaction de l'algorithme, un humain devrait assez facilement se rendre compte du fonctionnement de l'algorithme. 
+
+Amélioration possible : on pourrait , au lieu de faire des statistiques sur toute la partie qui sont assez grossière et visible par un humain, faire des statistiques basés sur 4,5 parties voir moins pour remarquer des répétitions de coups à période plus basse.
+
+5-Implémentation du nouvel algo : ?
 
 
 ```{r}
