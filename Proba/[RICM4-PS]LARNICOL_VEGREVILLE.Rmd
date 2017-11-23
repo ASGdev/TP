@@ -1,0 +1,313 @@
+---
+title: 'DM : Pierre Feuile Ciseaux'
+author: "Thibaut Vegreville - Titouan Larnicol"
+date: "16 novembre 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Première Partie
+
+Question 1)
+
+Cas du joueur biaisé : 
+1-On veut déterminer les gains moyens du joueur B en connaissant les probabilités des choix de chaque joueurs. Alors on note P : pierre, F: Feuille et C: ciseaux .
+La probabilité de gagner pour B est de :  P(B=P)*P(A=F)+P(B=C)*P(A=P)+P(B=F)*P(A=C)=0.3125
+La probablité de perdre pour B est identique à la probabilité de gagner, et on ne s'occupera pas de la probabilté du nul car il ne fait ni gagner ni perdre d'argent à B et A.
+D'où : E(B)=0.3125-0.3125=0. L'espérance de B est de 0.
+
+En réalisant l'expérience, on voit bien que les gains de A et B gagnent en moyenne autant l'un que l'autre.
+
+2-Lorsque les probabilités de B changent on obtient la même chose. 
+E(B)=0.33-0.33=0. En éxécutant l'expérience sur un grand nombre, on observe encore une fois la même chose. 
+
+3-E(B)=1*P(B gagne)-1P(B perde)
+On ne prend évidemment pas en compte le cas Nul car le facteur associé est de 0.
+
+E(B)=0.5*x+0.25*y+0.25*(1-x-y)-(0.25*x+0.5*y+(1-x-y)*0.25)=0.25*(x-y)
+L'espérance maximale du joueur est donc de 0.25 est l'éspérance minimale est de -0.25. Donc pour {x,y} qui appartient à l'intervalle {0,1}, E(B) est inclu dans l'intervalle {-0.25,+0.25}. On retrouve la fonction de répartition.
+
+4-Plus l'espérance est élevé, plus le joueur B est gagnant, on va donc chercher à maximiser 0.25*(x-y).
+Donc B à tout intérêt à maximiser x et minimiser y(par exemple : x=1 et y=0)
+
+5-J'ai du anticiper la question ou alors je n'ai pas compris, mais ma relation serait celle de la question 3. 
+
+Question 2)
+Cas du joueur non biasé
+1- On retrouve une espérance de 0
+
+2-On retrouve aussi une éspérance de 0.
+
+3-P(B gagne)=1/3*x+1/3*y+1/3*(1-x-y)=1/3
+L'espếrance est donc égal à 0 ( probabilité de perdre et de gagner est égale), elle ne dépend ni de x ni de y.
+
+4-B ne peut pas vraiment adopter de stratégie, il peut seulement jouer au hasard car l'adversaire n'a pas de point faible ou de coup prévisible.
+
+Conclusion : Un joueur non biaisé peut perdre mais aussi gagner contrairement au joueur biaisé qui peut se faire battre très facilement(gagner aussi évidemment mais plus difficilemment) si l'on connait la probabilité du coup le plus élevé.  Un joueur biaisé aura tendance à perdre plus qu'un joueur non biaisé si il joue contre une personne qui s'adapte évidemment.
+
+```{r}
+#Papier = A, Caillou = B, Ciseaux = C
+# no_m = non biais?, m = biais?
+
+play=function(n){
+  runif(n)
+}
+  
+    
+    
+    
+n=500
+no_m_player = c()
+m_player = c()
+
+no_m_player=play(n)
+m_player =play(n)
+no_m_result = c()
+m_result = c()
+gain_no_m = 0
+gain_m = 0
+
+#transformation
+for (i in 1:n){
+    
+      if(no_m_player[i]<=1/3){
+        no_m_result = c(no_m_result,'A')
+      }else if(no_m_player[i]<=2/3){
+        no_m_result = c(no_m_result,'B')
+      }else{
+        no_m_result = c(no_m_result,'C')
+      }
+    
+      if(m_player[i]<=1/4){
+        m_result = c(m_result,'A')
+      }else if(m_player[i]<=2/4){
+        m_result = c(m_result,'B')
+      }else{
+        m_result = c(m_result,'C')
+      }
+}
+
+#gain
+for (i in 1:n){
+  if(no_m_result[i]=='A' && m_result[i]=='B'){
+    gain_no_m = gain_no_m +1
+  }else if (no_m_result[i]=='A' && m_result[i]=='C'){
+    gain_m = gain_m +1;
+  }else if (no_m_result[i]=='B' && m_result[i]=='A'){
+    gain_m = gain_m +1;
+  }else if (no_m_result[i]=='B' && m_result[i]=='C'){
+    gain_no_m = gain_no_m +1
+  }else if (no_m_result[i]=='C' && m_result[i]=='A'){
+    gain_no_m = gain_no_m +1
+  }else if (no_m_result[i]=='C' && m_result[i]=='B'){
+     gain_m = gain_m +1;
+  }
+}
+
+```
+
+##Partie 2
+
+Question 2 - Apprentissage
+
+1- On part sur un algorithme qui va calculer la fréquence des coups joués par l'adversaire et notre coup suivant sera le coup qui gagne face au coup le plus joué par l'adversaire depuis le début. 
+Si au coup n, Pierre est le coup le plus joué depuis le début par le joueur A, alors nous jouerons Feuille au prochain coup. A chaque passage nous re calculons les fréquences des coups adversaires.
+
+2-En réalisant plusieurs test avec ce joueur A qui est biaisé P(A)=(1/4,1/4,1/2), on a un gain du joueur B qui est bien supèrieur à celui du joueur A, ce qui était attendu compte tenu de l'algorithme.
+1er test: 50.8% de victoire pour B | 23.6% de défaite pour A | 25.6 nul
+2eme test : 49% de vitoire pour B | 25% de défaite |  26 nul
+3eme test : 49% de victoire pour B | 22.6% de defaite pour A | 28.4% nul
+On remarque donc que notre algorithme tourne autour de 50% de victoire donc un gain de 0.5*nombre de partie. On remarque bien dans le diagramme tracé que A remporte en général seulement 1/3 voir 1/4 des parties !
+
+3- Notre algorithme est vite limité et est plutôt adapté a des joueurs qui vont jouer souvent le même coup sans se rendre compte de la réaction de l'algorithme, un humain devrait assez facilement se rendre compte du fonctionnement de l'algorithme. 
+
+Amélioration possible : on pourrait , au lieu de faire des statistiques sur toute la partie qui sont assez grossière et visible par un humain, faire des statistiques basés sur 4,5 parties voir moins pour remarquer des répétitions de coups à période plus basse.
+
+4- Notre algorithme se rapprocherait de la machine de Shannon, nous n'avons pas eu le temps de réaliser l'algorithme voulu malheureusement.
+
+
+```{r}
+
+#Joue le counter statistique, et préfère par défaut la stratégie pierre au premier tour
+playOneTurn=function(liste){
+    probA = sum(liste == 'A') 
+    probB = sum(liste == 'B')
+    probC = sum(liste == 'C')
+    if(probA>probB && probA>probC){
+      'C'
+    }else if (probB>probA && probB>probC){
+      'A'
+    }else{
+      'B'
+    }
+      
+}
+
+play=function(n){
+  runif(n)
+}
+
+#Implementation basique : on joue le counter du coup le plus jouer par le joueur
+n=500
+listcoupjouer= c()
+coup=c()
+gain_algo = 0
+gain_normal = 0
+
+no_m_player=play(n)
+gain_m = 0
+gain_no_m=0
+
+for (i in 1:n){
+      #Jouer algo (calculer avant pour pas prendre en compte ce coup ci)
+     coup = c(coup,playOneTurn(listcoupjouer))
+      
+      #Joueur aléatoire
+      if(no_m_player[i]<=1/3){
+        listcoupjouer = c(listcoupjouer,'A')
+      }else if(no_m_player[i]<=2/3){
+        listcoupjouer = c(listcoupjouer,'B')
+      }else{
+        listcoupjouer = c(listcoupjouer,'C')
+      }
+      
+      #gain
+      if(listcoupjouer[i]=='A' && coup=='B'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='A' && coup[i]=='C'){
+        gain_m = gain_m +1;
+      }else if (listcoupjouer[i]=='B' && coup[i]=='A'){
+        gain_m = gain_m +1;
+      }else if (listcoupjouer[i]=='B' && coup[i]=='C'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='C' && coup[i]=='A'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='C' && coup[i]=='B'){
+         gain_m = gain_m +1;
+      }
+}
+gain_m
+gain_no_m
+
+#Statistiquement les résultat sont les méme puisque l'algo détecte 1/3 par pick puisque l'autre joueur est "aléatoire". Il faudra plus probablement le faire jouer contre un biais? pour voir un résultat intérressant. Ci joint le test avec biais?
+
+#???NB : Les resultat sont comme escompt� car le joueur algo gagne syst�matiquement contre le joueur biais� (1/4 1/4 1/2) (notre joueur aura tendance a jouer le counter de C donc A)
+
+listcoupjouer= c()
+coup=c()
+gain_algo = 0
+gain_normal = 0
+
+no_m_player=play(n)
+gain_m = 0
+gain_no_m=0
+
+for (i in 1:n){
+      #Jouer algo (calculer avant pour pas prendre en compte ce coup ci)
+      coup = c(coup,playOneTurn(listcoupjouer))
+      
+      #Joueur aléatoire
+      if(no_m_player[i]<=1/4){
+        listcoupjouer = c(listcoupjouer,'A')
+      }else if(no_m_player[i]<=2/4){
+        listcoupjouer = c(listcoupjouer,'B')
+      }else{
+        listcoupjouer = c(listcoupjouer,'C')
+      }
+      
+      #gain
+      if(listcoupjouer[i]=='A' && coup=='B'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='A' && coup[i]=='C'){
+        gain_m = gain_m +1;
+      }else if (listcoupjouer[i]=='B' && coup[i]=='A'){
+        gain_m = gain_m +1;
+      }else if (listcoupjouer[i]=='B' && coup[i]=='C'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='C' && coup[i]=='A'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='C' && coup[i]=='B'){
+         gain_m = gain_m +1;
+      }
+}
+gain_m
+gain_no_m
+
+```
+
+
+
+```{r}
+
+#???Affiche un graph en fonction d'un nombre n de coup jouer, et le nombre de victorie au fur et a mesure de la partie ! On vois que l'algorythme bas le plus souvent l'algo al�atoire biais�
+
+
+playOneTurn=function(liste){
+    probA = sum(liste == 'A') 
+    probB = sum(liste == 'B')
+    probC = sum(liste == 'C')
+    if(probA>probB && probA>probC){
+      'C'
+    }else if (probB>probA && probB>probC){
+      'A'
+    }else{
+      'B'
+    }
+      
+}
+
+play=function(n){
+  runif(n)
+}
+
+n=500
+listcoupjouer= c()
+coup=c()
+gain_algo = 0
+gain_normal = 0
+
+no_m_player=play(n)
+gain_m = 0
+gain_no_m=0
+gain_for_n_for_m = c()
+gain_for_n_for_no_m = c()
+
+for (i in 1:n){
+      #Jouer algo (calculer avant pour pas prendre en compte ce coup ci)
+      coup = c(coup,playOneTurn(listcoupjouer))
+      
+      #Joueur al�atoire
+      if(no_m_player[i]<=1/4){
+        listcoupjouer = c(listcoupjouer,'A')
+      }else if(no_m_player[i]<=2/4){
+        listcoupjouer = c(listcoupjouer,'B')
+      }else{
+        listcoupjouer = c(listcoupjouer,'C')
+      }
+      
+      #gain
+      if(listcoupjouer[i]=='A' && coup=='B'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='A' && coup[i]=='C'){
+        gain_m = gain_m +1;
+      }else if (listcoupjouer[i]=='B' && coup[i]=='A'){
+        gain_m = gain_m +1;
+      }else if (listcoupjouer[i]=='B' && coup[i]=='C'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='C' && coup[i]=='A'){
+        gain_no_m = gain_no_m +1
+      }else if (listcoupjouer[i]=='C' && coup[i]=='B'){
+         gain_m = gain_m +1;
+      }
+      gain_for_n_for_m = c(gain_for_n_for_m, gain_m / i )
+      gain_for_n_for_no_m = c(gain_for_n_for_no_m,gain_no_m / i)
+}
+
+plot(gain_for_n_for_m)
+plot(gain_for_n_for_no_m)
+
+
+```
