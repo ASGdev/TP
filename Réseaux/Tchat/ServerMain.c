@@ -29,8 +29,6 @@ typedef struct in_addr IN_ADDR;
 int PORT = 9999;
 
 
-
-
 static void init(void)
 {
 #ifdef WIN32
