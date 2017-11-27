@@ -52,12 +52,31 @@ static void end(void)
 int main(int argc, char* argv[]){
     init();
 
-    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+    /* DECLARATION DES VARIABLES
+        
+    */
+    struct	sockaddr_in  adr_serv, adr_client;
+    int num_socket,num_socket_client ;
+    int nbClient;
+    //INIT SOCKET
+
+    SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if(sock == INVALID_SOCKET)
     {
         perror("socket()");
         exit(errno);
     }
+    //Renseignement de la structure sockaddr_in adr_serv
+  	adr_serv.sin_family = AF_INET;
+  	adr_serv.sin_port = htons(PORT);
+  	adr_serv.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	//Bind
+  	if (bind (num_socket, (struct sockaddr *) &adr_serv, sizeof adr_serv)==0)	printf("Bind bien passe\n"); else exit(-1);
+    printf("Bind bien passe\n");
+	//Mise en écoute de la socket
+  	if (listen(num_socket, SOMAXCONN)==0)	printf("Listen bien passe : j'ecoute...\n");
+    printf("Bind bien passe2\n");
 
     end();
 }
