@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <stdio.h>
 #include <unistd.h> /* close */
 #include <netdb.h> /* gethostbyname */
 #define INVALID_SOCKET -1
@@ -48,13 +49,20 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     struct sockaddr_in  adr_serv, adr_client;     
 	int  num_socket;	
 	char *mess; 		
-	char mesage[255];
+    char mesage[255];
+    
+    num_socket = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (num_socket!=-1)	printf("La socket a été créée\n");
+    //On complète la structure
+    adr_serv.sin_family = AF_INET;
+    adr_serv.sin_addr.s_addr = addIP;
+    adr_serv.sin_port = htons(port);
 }
 
 int main(int argc, char* argv[]){
     init();
     unsigned long add_IP;
-    unsigned long port;
+    unsigned short port;
     char* pseudo;
 
     //On lit les paramètres entrées en commande

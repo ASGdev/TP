@@ -84,7 +84,7 @@ int main(int argc, char* argv[]){
       }else{
          printf("La merde\n");
          exit(errno);
-        exit(-1);
+            exit(-1);
       } 
     printf("Bind bien passe\n");
 	//Mise en écoute de la socket
