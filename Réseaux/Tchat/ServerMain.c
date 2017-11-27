@@ -5,7 +5,6 @@ afin de garantir un dévellopement portable car notre groupe avais des machines 
 #ifdef WIN32 /* si vous êtes sous Windows */
 
 #include <winsock2.h> 
-#include <ws2tcpip.h>
 //Il faut compiler avec la commande gcc ServerMain.c -o prog -lws2_32
 
 #elif defined (linux) /* si vous êtes sous Linux */
@@ -14,7 +13,7 @@ afin de garantir un dévellopement portable car notre groupe avais des machines 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <unistd.h>
+#include <unistd.h> /* close */
 #include <netdb.h> /* gethostbyname */
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
@@ -28,12 +27,8 @@ typedef struct in_addr IN_ADDR;
 #endif
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#include <fcntl.h>
 
 int PORT = 9999;
-int MAX_CLIENT = 500;
 
 
 static void init(void)
@@ -60,132 +55,72 @@ int main(int argc, char* argv[]){
    
     init();
 
-    /*gérer le serveur*/
-    int sock,i=0,nb_client=0,port=1026,flags=0;
-    struct sockaddr_in sin;
+    SOCKET sock;
+    SOCKADDR_IN sin;
+    SOCKET csock;
+    SOCKADDR_IN csin;
+    char buffer[240] = "";
+    int recsize = (int) sizeof csin;
+    int sock_err;
+
+    struct Connecte {
+		int numSocket;
+		char pseudo[50];	
+	};
+	struct Connecte tabConnectes[500];
+    char *destinataire;
  
-    /*gérer les clients*/
-    int csock[MAX_CLIENT];
-    struct sockaddr_in csin[MAX_CLIENT];
+    /* Si les sockets fonctionnent */
+  
+        sock = socket(AF_INET, SOCK_STREAM, 0);
  
-    /*gérer les données*/
-    char buf[32];
-    socklen_t size=sizeof(struct sockaddr_in);
- 
-    if(argc > 1)
-    {
-        port=strtol(argv[1],NULL,10);
-    }
- 
-    sock=socket(AF_INET,SOCK_STREAM,0);
-    if (sock == -1)
-    {
-        perror("socket");
-        exit(-1);
-    }
- 
-    /*mode non bloquant ( pour accept() )*/
-    flags=fcntl(sock,F_GETFL);
-    fcntl(sock,F_SETFL,flags | O_NONBLOCK);
- 
-    sin.sin_family=AF_INET;
-    sin.sin_port=htons(port);
-    sin.sin_addr.s_addr=htonl(INADDR_ANY);
-    if (bind(sock,(struct sockaddr*)&sin,sizeof sin) == -1)
-    {
-        perror("bind");
-        exit(-1);
-    }
- 
-    listen(sock,MAX_CLIENT);
- 
-    /*on met toutes les sockets en invalides*/
-    for(i=0;i<MAX_CLIENT;i++)
-    {
-        csock[i]=-1;
-    }
- 
-    while (1)
-    {
-        i=0;
- 
-        /*si on peut encore recevoir des clients*/
-        if (nb_client < MAX_CLIENT)
+        /* Si la socket est valide */
+        if (sock != INVALID_SOCKET)
         {
-            /*gérer la connection de nouveaux clients*/
-            struct sockaddr_in new_sin;
-            int new_client=0;
-            int success=0;
+            printf("La socket %d est maintenant ouverte en mode TCP/IP\n", sock);
  
-            new_client = accept(sock,(struct sockaddr*)&new_sin,&size);
-            /*si le client est valide (il peut être invalide puisque sock est en mode non bloquante)*/
-            if (new_client != -1)
+            /* Configuration */
+            sin.sin_addr.s_addr    = htonl(INADDR_ANY);   /* Adresse IP automatique */
+            sin.sin_family         = AF_INET;             /* Protocole (IP) */
+            sin.sin_port           = htons(PORT);         /* Listage du port */
+            sock_err = bind(sock, (SOCKADDR *) &sin, sizeof sin);
+ 
+            /* Si la socket fonctionne */
+            if (sock_err != SOCKET_ERROR)
             {
-                printf("Un nouveau client tente de se connecter : «%s» .Socket : %d . ",inet_ntoa(new_sin.sin_addr),new_client);
+                /* Démarrage du listage (mode server) */
+                sock_err = listen(sock, 5);
+                printf("Listage du port %d...\n", PORT);
  
-                /*on trouve une place pour le client*/
-                while(i < MAX_CLIENT)
+                /* Si la socket fonctionne */
+                if (sock_err != SOCKET_ERROR)
                 {
-                    if(csock[i] == -1)
-                    {
-                        csock[i]=new_client;
-                        csin[i]=new_sin;
-                        success=1;
-                        break;
+                    /* Attente pendant laquelle le client se connecte */
+                    printf("Patientez pendant que le client se connecte sur le port %d...\n", PORT);
+ 
+                    csock = accept(sock, (SOCKADDR *) &csin, &recsize);
+                    printf("Un client se connecte avec la socket %d de %s:%d\n", csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
+                    
+                    while(1){
+                        
                     }
-                    i++;
-                }
+                   
  
-                if(success)
-                {
-                    puts("Accepter");
-                    nb_client++;
-                }
-                /*si il n'y a plus de place ( normalement il doit y en avoir puisqu'on à vérifier que nb_client < MAX_CLIENT )*/
-                else
-                {
-                    puts("Refuser");
+ 
+                    /* Il ne faut pas oublier de fermer la connexion (fermée dans les deux sens) */
+                    shutdown(csock, 2);
                 }
             }
+ 
+            /* Fermeture de la socket */
+            printf("Fermeture de la socket...\n");
+            closesocket(sock);
+            printf("Fermeture du serveur terminee\n");
         }
  
-        i=0;
- 
-        /*on parcours le tableau de client*/
-        while (i < MAX_CLIENT)
-        {
-            /*si client valide*/
-            if (csock[i] != -1)
-            {
-                int s_recv=0;
-                if ( (s_recv=recv(csock[i],buf,32,MSG_DONTWAIT) ) == 32)
-                {
-                    /*tout c'est bien passer*/
-                    printf("%s (csock : %d) : envoit : «%s»\n",inet_ntoa(csin[i].sin_addr),csock[i],buf);
-                    /*on renvoit*/
-                    send(csock[i],buf,32,0);
-                }
-                else if (s_recv == 0)
-                {
-                    /*si la taille reçu égale à 0 : déconnection */
-                    printf("%s (csock : %d) : déconnection\n",inet_ntoa(csin[i].sin_addr),csock[i]);
-                    /*on ferme la socket*/
-                    close(csock[i]);
-                    /*on libère une place de client*/
-                    csock[i]=-1;
-                    nb_client--;
-                }
-                else if (s_recv == -1);/* = pas de données reçu ( mode non bloquant de recv)*/
- 
-            }
-            i++;
-        }
-        /*
-        mettre gestion du temps avec usleep() si posix ou sleep() si windows
-        */
-    }
- 
-    close(sock);
+
+    /* On attend que l'utilisateur tape sur une touche, puis on ferme */
+    getchar();
 
     end();
 }
