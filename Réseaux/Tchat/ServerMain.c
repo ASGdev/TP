@@ -18,6 +18,7 @@ afin de garantir un dévellopement portable car notre groupe avais des machines 
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
 #define closesocket(s) close(s)
+#include <errno.h>
 typedef int SOCKET;
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
@@ -26,6 +27,7 @@ typedef struct in_addr IN_ADDR;
 #endif
 #include <stdio.h>
 #include <stdlib.h>
+
 int PORT = 9999;
 
 
