@@ -42,9 +42,34 @@ static void end(void)
 #endif
 }
 
+//Implémentation Client
+
+void client(unsigned long add_IP,unsigned long port, char* pseudo){
+    struct sockaddr_in  adr_serv, adr_client;     
+	int  num_socket;	
+	char *mess; 		
+	char mesage[255];
+}
+
 int main(int argc, char* argv[]){
     init();
+    unsigned long add_IP;
+    unsigned long port;
+    char* pseudo;
 
+    //On lit les paramètres entrées en commande
+    switch (argc){
+		case 4 :
+			  add_IP=inet_addr(argv[1]);
+			  port=(u_short)atoi(argv[2]);
+			  pseudo=argv[3];
+			  break;
+		default :
+			  printf("./ClientMain add_IP_serveur port pseudo\n");
+			  return -1;
+ 	}
+
+	client(add_IP, port, pseudo);
 
     end();
 }
