@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
     SOCKADDR_IN sin;
     SOCKET client_socket;
     SOCKADDR_IN csin;
-    char buffer[32] = "";
+    char buffer[240] = "";
     int recsize = (int) sizeof csin;
     int sock_err,msg_size;
     char* commande;
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]){
  
             /* Configuration */
             sin.sin_addr.s_addr    = htonl(INADDR_ANY);   /* Adresse IP automatique */
-            sin.sin_family         = AF_INET;             /* Protocole familial (IP) */
+            sin.sin_family         = AF_INET;             /* Protocole (IP) */
             sin.sin_port           = htons(PORT);         /* Listage du port */
             sock_err = bind(sock, (SOCKADDR *) &sin, sizeof sin);
             
