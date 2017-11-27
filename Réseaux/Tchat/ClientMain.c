@@ -22,13 +22,6 @@ typedef struct in_addr IN_ADDR;
 
 #endif
 
-int main(int argc, char* argv[]){
-    init();
-
-
-    end();
-}
-
 static void init(void)
 {
 #ifdef WIN32
@@ -48,3 +41,11 @@ static void end(void)
     WSACleanup();
 #endif
 }
+
+int main(int argc, char* argv[]){
+    init();
+
+
+    end();
+}
+
