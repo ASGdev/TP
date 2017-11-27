@@ -1,9 +1,11 @@
 /*Une partie des entête, inclusion et certaine fonction proviennent du site http://broux.developpez.com/articles/c/sockets/
 afin de garantir un dévellopement portable car notre groupe avais des machines linux et windows.*/
 
+
 #ifdef WIN32 /* si vous êtes sous Windows */
 
 #include <winsock2.h> 
+//Il faut compiler avec la commande gcc ServerMain.c -o prog -lws2_32
 
 #elif defined (linux) /* si vous êtes sous Linux */
 
@@ -22,21 +24,12 @@ typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 #else /* sinon vous êtes sur une plateforme non supportée */
 #endif
+#include <stdio.h>
+#include <stdlib.h>
 int PORT = 9999;
 
 
-int main(int argc, char* argv[]){
-    init(void);
 
-    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-    if(sock == INVALID_SOCKET)
-    {
-        perror("socket()");
-        exit(errno);
-    }
-
-    end(void);
-}
 
 static void init(void)
 {
@@ -56,4 +49,17 @@ static void end(void)
 #ifdef WIN32
     WSACleanup();
 #endif
+}
+
+int main(int argc, char* argv[]){
+    init();
+
+    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+    if(sock == INVALID_SOCKET)
+    {
+        perror("socket()");
+        exit(errno);
+    }
+
+    end();
 }

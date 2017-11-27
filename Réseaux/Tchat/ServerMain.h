@@ -1,7 +1,10 @@
 #ifndef SERVER_MAIN
+
 #define SERVER_MAIN
 
-static void init(void)
-static void end(void);
+
+int main(int argc, char* argv[]);
+void init(void)
+void end(void);
 
 #endif
