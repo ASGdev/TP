@@ -5,6 +5,7 @@ afin de garantir un dévellopement portable car notre groupe avais des machines 
 #ifdef WIN32 /* si vous êtes sous Windows */
 
 #include <winsock2.h> 
+#define errno WSAGetLastError()
 //Il faut compiler avec la commande gcc ServerMain.c -o prog -lws2_32
 
 #elif defined (linux) /* si vous êtes sous Linux */
@@ -82,7 +83,7 @@ int main(int argc, char* argv[]){
         	printf("Bind bien passe\n");
       }else{
          printf("La merde\n");
-         printf(errno);
+         exit(errno);
         exit(-1);
       } 
     printf("Bind bien passe\n");
