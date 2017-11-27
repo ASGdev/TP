@@ -57,11 +57,19 @@ int main(int argc, char* argv[]){
 
     SOCKET sock;
     SOCKADDR_IN sin;
+    int nbClient
     SOCKET csock;
     SOCKADDR_IN csin;
-    char buffer[32] = "";
+    char buffer[240] = "";
     int recsize = (int) sizeof csin;
     int sock_err;
+
+    struct Connecte {
+		int numSocket;
+		char pseudo[50];	
+	};
+	struct Connecte tabConnectes[500];
+    char *destinataire;
  
     /* Si les sockets fonctionnent */
   
@@ -74,7 +82,7 @@ int main(int argc, char* argv[]){
  
             /* Configuration */
             sin.sin_addr.s_addr    = htonl(INADDR_ANY);   /* Adresse IP automatique */
-            sin.sin_family         = AF_INET;             /* Protocole familial (IP) */
+            sin.sin_family         = AF_INET;             /* Protocole (IP) */
             sin.sin_port           = htons(PORT);         /* Listage du port */
             sock_err = bind(sock, (SOCKADDR *) &sin, sizeof sin);
  
@@ -93,11 +101,14 @@ int main(int argc, char* argv[]){
  
                     csock = accept(sock, (SOCKADDR *) &csin, &recsize);
                     printf("Un client se connecte avec la socket %d de %s:%d\n", csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
- 
-                    if (recv(sock, buffer, 32, 0) != SOCKET_ERROR)
+                    
+                    while(1){
+                         if (recv(sock, buffer, 240, 0) != SOCKET_ERROR)
                         printf("Recu : %s\n", buffer);
-                    else
+                        else
                         printf("ECHEC : %s\n", buffer);
+                    }
+                   
  
  
                     /* Il ne faut pas oublier de fermer la connexion (fermée dans les deux sens) */
