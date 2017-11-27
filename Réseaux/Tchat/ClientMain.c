@@ -21,14 +21,6 @@ typedef struct in_addr IN_ADDR;
 #else /* sinon vous êtes sur une plateforme non supportée */
 
 #endif
-
-int main(int argc, char* argv[]){
-    init();
-
-
-    end();
-}
-
 static void init(void)
 {
 #ifdef WIN32
@@ -41,10 +33,29 @@ static void init(void)
     }
 #endif
 }
-
 static void end(void)
 {
 #ifdef WIN32
     WSACleanup();
 #endif
 }
+
+int main(int argc, char* argv[]){
+    init();
+      /*On déclare les 3 variables entrées par l'utilisateur*/
+      unsigned long add_IP;
+
+    end();
+}
+
+
+    
+
+void client(unsigned long add_IP,int port,char* pseudo){
+    
+    }
+
+
+
+
+

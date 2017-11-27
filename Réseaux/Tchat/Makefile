@@ -2,22 +2,15 @@
 CC=gcc
 CFLAGS=-W -Wall -ansi -pedantic
 LDFLAGS=
-EXEC=ClientMain ServeurMain
+EXEC=ServerMain ClientMain
 
 all: $(EXEC)
 
-ServeurMain: ServeurMain.o ClientMain.o
-	$(CC) -o ServeurMain ServeurMain.o ClientMain.o $(LDFLAGS)
-
-ServeurMain.o: ServeurMain.c
-	$(CC) -o ServeurMain.o -c ServeurMain.c $(CFLAGS)
+ServerMain: ServerMain.c
+	$(CC) ServerMain.c -o ServerMain   $(LDFLAGS)
 
 ClientMain: ClientMain.c
-	$(CC) -o ClientMain.o -c ClientMain.c $(CFLAGS)
-
-ClientMain.o: ClientMain.c ServeurMain.h
-	$(CC) -o ClientMain.o -c ClientMain.c $(CFLAGS)
-
+	$(CC) ClientMain.c -o ClientMain   $(LDFLAGS)
 
 
 clean:
