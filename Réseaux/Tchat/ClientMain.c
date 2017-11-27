@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h> /* close */
 #include <netdb.h> /* gethostbyname */
 #define INVALID_SOCKET -1
@@ -48,16 +50,38 @@ static void end(void)
 void client(unsigned long add_IP,unsigned long port, char* pseudo){
     struct sockaddr_in  adr_serv, adr_client;     
 	int  num_socket;	
-	char *mess; 		
-    char mesage[255];
-    
+	char *message; 		
+	char msg[255];
+    int CheckConnection;
+    int recep_message;
+    char commande[100];
     num_socket = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (num_socket!=-1)	printf("La socket a été créée\n");
     //On complète la structure
     adr_serv.sin_family = AF_INET;
-    adr_serv.sin_addr.s_addr = addIP;
+    adr_serv.sin_addr.s_addr = add_IP;
     adr_serv.sin_port = htons(port);
-}
+
+    //Se connecte au serveur (le serveur bind la socket client)
+    printf("Connexion Server...\n");
+    CheckConnection = connect(num_socket,(struct sockaddr *) &adr_serv, sizeof(struct sockaddr_in));
+    if (CheckConnection==0)	printf("Connexion OK\n");
+
+    //Ecoute le message d'accueil
+    strcpy(msg,"");
+	recep_message = read( num_socket, msg, sizeof(msg));
+	message = (char*)malloc(recep_message*sizeof(char));
+	for (int i=0; i<recep_message; i++)
+		message[i] = msg[i];
+    printf("%s\n", message);
+    //commande "quit" pour se déconnecter
+    while(strcmp(commande,"quit")!=0){
+    strcpy(commande,"");
+    gets(commande);
+    write(num_socket,commande, strlen(commande));
+    close(num_socket);
+    }
+   }
 
 int main(int argc, char* argv[]){
     init();

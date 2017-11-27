@@ -13,6 +13,7 @@ afin de garantir un dévellopement portable car notre groupe avais des machines 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <string.h>
 #include <unistd.h> /* close */
 #include <netdb.h> /* gethostbyname */
 #define INVALID_SOCKET -1
@@ -54,19 +55,23 @@ static void end(void)
 int main(int argc, char* argv[]){
    
     init();
-
+    
     SOCKET sock;
     SOCKADDR_IN sin;
-    SOCKET csock;
+    SOCKET client_socket;
     SOCKADDR_IN csin;
     char buffer[32] = "";
     int recsize = (int) sizeof csin;
-    int sock_err;
- 
+    int sock_err,msg_size;
+    char* commande;
+    char* bienvenue;
+    char message[100];
+    int recep_message;
+    char msg[255];
     /* Si les sockets fonctionnent */
   
         sock = socket(AF_INET, SOCK_STREAM, 0);
- 
+
         /* Si la socket est valide */
         if (sock != INVALID_SOCKET)
         {
@@ -77,7 +82,7 @@ int main(int argc, char* argv[]){
             sin.sin_family         = AF_INET;             /* Protocole familial (IP) */
             sin.sin_port           = htons(PORT);         /* Listage du port */
             sock_err = bind(sock, (SOCKADDR *) &sin, sizeof sin);
- 
+            
             /* Si la socket fonctionne */
             if (sock_err != SOCKET_ERROR)
             {
@@ -91,24 +96,39 @@ int main(int argc, char* argv[]){
                     /* Attente pendant laquelle le client se connecte */
                     printf("Patientez pendant que le client se connecte sur le port %d...\n", PORT);
  
-                    csock = accept(sock, (SOCKADDR *) &csin, &recsize);
-                    printf("Un client se connecte avec la socket %d de %s:%d\n", csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
- 
+                    client_socket = accept(sock, (SOCKADDR *) &csin, &recsize);
+                    printf("Un client se connecte avec la socket %d de %s:%d\n", client_socket, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
+                    //message de bienvenue
+                    bienvenue=(char *) malloc (23*sizeof (char));
+                    strcpy(bienvenue, "Bienvenue sur le tchat");
+                    write(client_socket, bienvenue, strlen(bienvenue));
+                    /*   msg_size = read(i,message, sizeof(msg));
+                    commande = (char*)malloc(msg_size*sizeof(char));
                     if (recv(sock, buffer, 32, 0) != SOCKET_ERROR)
                         printf("Recu : %s\n", buffer);
                     else
-                        printf("ECHEC : %s\n", buffer);
+                        printf("ECHEC : %s\n", buffer);*/
+                    
+                          //Reçoit la comande "quit"
+                    strcpy(msg,"");
+                    recep_message = read( client_socket, msg, sizeof(msg));
+                    commande = (char*)malloc(recep_message*sizeof(char));
+                    printf("ok");
+                    if(strcmp(commande, "quit")==0){
+                        printf("Connexion close");
+                        printf("Fermeture de la socket...\n");
+                        closesocket(sock);
+                        printf("Fermeture du serveur terminee\n");
+                    
+                    }
+                  
  
- 
-                    /* Il ne faut pas oublier de fermer la connexion (fermée dans les deux sens) */
-                    shutdown(csock, 2);
+                    
                 }
             }
  
             /* Fermeture de la socket */
-            printf("Fermeture de la socket...\n");
-            closesocket(sock);
-            printf("Fermeture du serveur terminee\n");
+            
         }
  
 
