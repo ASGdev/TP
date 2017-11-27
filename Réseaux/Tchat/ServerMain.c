@@ -52,8 +52,9 @@ static void end(void)
 }
 
 int main(int argc, char* argv[]){
+   
     init();
-
+     
     /* DECLARATION DES VARIABLES
         
     */
@@ -68,13 +69,22 @@ int main(int argc, char* argv[]){
         perror("socket()");
         exit(errno);
     }
+    
+
     //Renseignement de la structure sockaddr_in adr_serv
   	adr_serv.sin_family = AF_INET;
   	adr_serv.sin_port = htons(PORT);
   	adr_serv.sin_addr.s_addr = htonl(INADDR_ANY);
+   
 
 	//Bind
-  	if (bind (num_socket, (struct sockaddr *) &adr_serv, sizeof adr_serv)==0)	printf("Bind bien passe\n"); else exit(-1);
+  	if (bind (num_socket, (struct sockaddr *) &adr_serv, sizeof adr_serv)==0){
+        	printf("Bind bien passe\n");
+      }else{
+         printf("La merde\n");
+         printf(errno);
+        exit(-1);
+      } 
     printf("Bind bien passe\n");
 	//Mise en écoute de la socket
   	if (listen(num_socket, SOMAXCONN)==0)	printf("Listen bien passe : j'ecoute...\n");
