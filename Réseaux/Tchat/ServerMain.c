@@ -5,7 +5,6 @@ afin de garantir un dévellopement portable car notre groupe avais des machines 
 #ifdef WIN32 /* si vous êtes sous Windows */
 
 #include <winsock2.h> 
-#define errno WSAGetLastError()
 //Il faut compiler avec la commande gcc ServerMain.c -o prog -lws2_32
 
 #elif defined (linux) /* si vous êtes sous Linux */
@@ -55,41 +54,66 @@ static void end(void)
 int main(int argc, char* argv[]){
    
     init();
-     
-    /* DECLARATION DES VARIABLES
-        
-    */
-    struct	sockaddr_in  adr_serv, adr_client;
-    int num_socket,num_socket_client ;
-    int nbClient;
-    //INIT SOCKET
 
-    SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if(sock == INVALID_SOCKET)
-    {
-        perror("socket()");
-        exit(errno);
-    }
-    
+    SOCKET sock;
+    SOCKADDR_IN sin;
+    SOCKET csock;
+    SOCKADDR_IN csin;
+    char buffer[32] = "";
+    int recsize = (int) sizeof csin;
+    int sock_err;
+ 
+    /* Si les sockets fonctionnent */
+  
+        sock = socket(AF_INET, SOCK_STREAM, 0);
+ 
+        /* Si la socket est valide */
+        if (sock != INVALID_SOCKET)
+        {
+            printf("La socket %d est maintenant ouverte en mode TCP/IP\n", sock);
+ 
+            /* Configuration */
+            sin.sin_addr.s_addr    = htonl(INADDR_ANY);   /* Adresse IP automatique */
+            sin.sin_family         = AF_INET;             /* Protocole familial (IP) */
+            sin.sin_port           = htons(PORT);         /* Listage du port */
+            sock_err = bind(sock, (SOCKADDR *) &sin, sizeof sin);
+ 
+            /* Si la socket fonctionne */
+            if (sock_err != SOCKET_ERROR)
+            {
+                /* Démarrage du listage (mode server) */
+                sock_err = listen(sock, 5);
+                printf("Listage du port %d...\n", PORT);
+ 
+                /* Si la socket fonctionne */
+                if (sock_err != SOCKET_ERROR)
+                {
+                    /* Attente pendant laquelle le client se connecte */
+                    printf("Patientez pendant que le client se connecte sur le port %d...\n", PORT);
+ 
+                    csock = accept(sock, (SOCKADDR *) &csin, &recsize);
+                    printf("Un client se connecte avec la socket %d de %s:%d\n", csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
+ 
+                    if (recv(sock, buffer, 32, 0) != SOCKET_ERROR)
+                        printf("Recu : %s\n", buffer);
+                    else
+                        printf("ECHEC : %s\n", buffer);
+ 
+ 
+                    /* Il ne faut pas oublier de fermer la connexion (fermée dans les deux sens) */
+                    shutdown(csock, 2);
+                }
+            }
+ 
+            /* Fermeture de la socket */
+            printf("Fermeture de la socket...\n");
+            closesocket(sock);
+            printf("Fermeture du serveur terminee\n");
+        }
+ 
 
-    //Renseignement de la structure sockaddr_in adr_serv
-  	adr_serv.sin_family = AF_INET;
-  	adr_serv.sin_port = htons(PORT);
-  	adr_serv.sin_addr.s_addr = htonl(INADDR_ANY);
-   
-
-	//Bind
-  	if (bind (num_socket, (struct sockaddr *) &adr_serv, sizeof adr_serv)==0){
-        	printf("Bind bien passe\n");
-      }else{
-         printf("La merde\n");
-         exit(errno);
-            exit(-1);
-      } 
-    printf("Bind bien passe\n");
-	//Mise en écoute de la socket
-  	if (listen(num_socket, SOMAXCONN)==0)	printf("Listen bien passe : j'ecoute...\n");
-    printf("Bind bien passe2\n");
+    /* On attend que l'utilisateur tape sur une touche, puis on ferme */
+    getchar();
 
     end();
 }
