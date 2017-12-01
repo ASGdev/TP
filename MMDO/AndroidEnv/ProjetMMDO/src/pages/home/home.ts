@@ -22,11 +22,13 @@ export class HomePage {
   private url_base: string = 'https://api.themoviedb.org/3/search/movie';
   results: Observable<Result[]>;
   searchInput: string= "";
+  result_empty: string="Aucun Résultat";
   // Inject HttpClient into your component or service.
   constructor(private http: HttpClient) {}
   //changement de page avec paramètres
   aboutDetails=DetailsPage;
-
+  image:string;
+  url_img="https://image.tmdb.org/t/p/w500/";
   private searchEngine():Observable<Result[]>{
     // Make the HTTP request:
     return this.http.get<Result[]>(this.url_base,{
@@ -37,9 +39,11 @@ export class HomePage {
 
   onInput(){
   if(!this.searchInput){
+      this.result_empty="Aucun résultat";
       this.results = Observable.of([]);
     }
   else{ 
+    this.result_empty = "";
       this.results = this.searchEngine();
     }
   };

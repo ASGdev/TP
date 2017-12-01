@@ -13,11 +13,14 @@
 </ion-header>
 
 <ion-content padding>
+    {{result_empty}}
   <ion-list>
-     
-      {{results.title}{results.author}}
-      <ion-img width="40" height="40" src="image"></ion-img>
+      
+      
     <button ion-item [navPush]="aboutDetails" [navParams]="{params:item}"  *ngFor="let item of results | async">        
+      <img width="40" height="40" [src]="'https://image.tmdb.org/t/p/w92' + item.poster_path">
+      {{item.title}}
+      {{item.status}}
     </button>  
   </ion-list>
 </ion-content>
