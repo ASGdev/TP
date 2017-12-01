@@ -6,7 +6,7 @@
   </ion-navbar>
   <ion-searchbar
   [(ngModel)]="searchInput"
-  (ionInput)="onInput($event)"
+  (ionInput)="onInput()"
   >
 
   </ion-searchbar>
@@ -15,7 +15,7 @@
 <ion-content padding>
   <ion-list>
      
-    <button ion-item [navPush]="aboutDetails" [navParams]="{params:item}"  *ngFor="let item of items">        
+    <button ion-item [navPush]="aboutDetails" [navParams]="{params:item}"  *ngFor="let item of results | async">        
       {{results}}
     </button>  
   </ion-list>
