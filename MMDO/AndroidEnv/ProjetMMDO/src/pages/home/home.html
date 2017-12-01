@@ -1,21 +1,22 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="danger">
     <ion-title>
-      Home
+      Best Apply Ever
     </ion-title>
   </ion-navbar>
   <ion-searchbar
-    [(ngModel)]="searchInput"
-    (ionInput)="onInput($event)"
-  >      
+  [(ngModel)]="searchInput"
+  (ionInput)="onInput($event)"
+  >
+  
   </ion-searchbar>
 </ion-header>
 
 <ion-content padding>
- 
   <ion-list>
-    <button ion-item *ngFor="let item of result.researchlist">
-      {{ item.title }}
+     
+    <button ion-item (tap)="showDetails()"  *ngFor="let item of items">        
+      {{item.title}}
     </button>  
   </ion-list>
 </ion-content>
