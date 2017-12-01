@@ -15,8 +15,9 @@
 <ion-content padding>
   <ion-list>
      
+      {{results.title}{results.author}}
+      <ion-img width="40" height="40" src="image"></ion-img>
     <button ion-item [navPush]="aboutDetails" [navParams]="{params:item}"  *ngFor="let item of results | async">        
-      {{results}}
     </button>  
   </ion-list>
 </ion-content>
