@@ -14,10 +14,10 @@ import { Result } from '../home/home';
 })
 export class DetailsPage {
 
-  firstParam: Result;
+  listResult: any;
+    
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.firstParam=this.navParams.get('params');
-    console.log(this.firstParam.title);
+    this.listResult=this.navParams.data;
   }
 
   ionViewDidLoad() {

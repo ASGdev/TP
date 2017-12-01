@@ -9,6 +9,7 @@ export interface Result {
   author: string;
   date: number;
   image: string;
+  overview : string;
 }
 
 @Component({

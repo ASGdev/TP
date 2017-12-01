@@ -14,5 +14,11 @@
 
 
 <ion-content padding>
-  {{firstParam.title}}
+    <img width="400" height="400" [src]="'https://image.tmdb.org/t/p/w500' + listResult.poster_path">
+    <br>
+      {{listResult.title}}    
+  <br>
+      {{listResult.overview}}
+
+  
 </ion-content>
