@@ -13,6 +13,7 @@ Pour crée un TP : (Cordova)
     - Tapé la commande ionic start NomDuTP blank --type ionic1
     - ensuite :  ionic cordova platform add android (en se placant dans le dossier TP)
     - et tester l'install avec : ionic cordova build ios | ionic cordova emulate ios
+    - pour lancer : ionic serve --lab
 
 
 
