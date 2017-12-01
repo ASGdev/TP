@@ -28,8 +28,21 @@ const result: Result[]=[{
   templateUrl: 'home.html'
   
 })
+@Component({
+  selector: 'async-promise-pipe',
+  template: `<div>
+    <code>promise|async</code>: 
+    <button (click)="clicked()">{{ arrived ? 'Reset' : 'Resolve' }}</button>
+    <span>Wait for it... {{ greeting | async }}</span>
+  </div>`
+})
 
 export class HomePage {
+
+  greeting: Promise<string>|null = null;
+  arrived: boolean = false;
+
+
   private api_key: string = 'ebb02613ce5a2ae58fde00f4db95a9c1';
   private url_base: string = 'https://api.themoviedb.org/3/search/movie';
   results: Observable<Result[]>;
@@ -55,12 +68,10 @@ export class HomePage {
 
   onInput($event){
   if(!this.searchInput){
-      this.results=null;
       return;
     }
   else{ 
-     this.results=this.searchEngine();
-     Observable.of([this.searchEngine()]);
+      this.results = this.searchEngine();
     }
   };
 }
