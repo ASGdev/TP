@@ -5,7 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 
-interface Result {
+export interface Result {
   title: string;
   author: string;
   date: number;
@@ -53,10 +53,8 @@ export class HomePage {
   items=result;
   pushPage: any;
   constructor(public navCtrl: NavController, private http: HttpClient) {}
-  //changement de page
-  private showDetails(){
-    this.navCtrl.push(DetailsPage)
-  }
+  //changement de page avec paramètres
+  aboutDetails=DetailsPage;
 
   private searchEngine():Observable<Result[]>{
     // Make the HTTP request:
