@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { DetailsPage } from '../details/details';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { HttpParams } from '@angular/common/http/src/params';
 
 
 export interface Result {
@@ -33,7 +32,7 @@ const result: Result[]=[{
 export class HomePage {
   private api_key: string = 'ebb02613ce5a2ae58fde00f4db95a9c1';
   private url_base: string = 'https://api.themoviedb.org/3/search/movie';
-  results: string[];
+  results: Observable<Result[]>;
   searchInput: string= "";
   // Inject HttpClient into your component or service.
 
@@ -54,11 +53,12 @@ export class HomePage {
 
   onInput($event){
   if(!this.searchInput){
-      this.results=[];
+      this.results=null;
       return;
     }
-  else{
+  else{ 
      this.results=this.searchEngine();
+     Observable.of([this.searchEngine()]);
     }
   };
 }
