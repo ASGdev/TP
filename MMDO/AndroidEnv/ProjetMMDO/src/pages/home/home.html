@@ -8,7 +8,7 @@
   [(ngModel)]="searchInput"
   (ionInput)="onInput($event)"
   >
-  
+
   </ion-searchbar>
 </ion-header>
 
@@ -16,7 +16,7 @@
   <ion-list>
      
     <button ion-item (tap)="showDetails()"  *ngFor="let item of items">        
-      {{item.title}}
+      {{results}}
     </button>  
   </ion-list>
 </ion-content>
