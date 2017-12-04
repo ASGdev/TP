@@ -85,6 +85,7 @@ public class Downloader implements Runnable {
 	
 	public void run() {
 		try {
+			
 			download();
 		}
 		catch(InterruptedException e) {
