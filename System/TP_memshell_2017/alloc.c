@@ -56,7 +56,32 @@ void *mem_alloc(size_t size){
 
 
 void mem_free(void *zone, size_t size){
-    
+    fb *zone_courante = firstZone;
+    fb *newBlock = (fb*) zone;
+    //même pb avec la taille que pour alloc
+    if( size % sizeof(fb) ){
+        size = size + sizeof(fb) - ( size % sizeof(fb) );
+    }
+    newBlock->size = size;
+    //Si tout était complet ou que le bloc à libérer est avant le premier bloc libre
+    if( zone_courante == NULL || zone_courante > (fb*) zone){
+        firstZone = newBlock; // on le chaine au début
+        newBlock->next = zone_courante;  //on chaine le next à la deuxième zone libre
+    }
+    else{
+        while(zone_courante->next != NULL && zone_courante->next < (fb*) zone){
+            zone_courante = zone_courante->next; 
+        }
+        //Les deux blocs doivent être fusionnés
+        if((char*) zone_courante + zone_courante->size == (char*) zone){
+            zone_courante->size = zone_courante->size + size;
+            newBlock = zone_courante;
+        }
+        else{
+            newBlock->next = zone_courante->next;
+            zone_courante->next = newBlock;
+        }
+    }
 }
 
 
