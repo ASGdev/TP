@@ -1,5 +1,5 @@
 /*
- * Copyright (C) SIEST Damien & VEGREVILLE Thibaud
+ * Copyright (C) LARNICOLE Titouan & VEGREVILLE Thibaud
  */
 
 #include <stdio.h>
@@ -10,11 +10,36 @@
 #include <sys/wait.h>  // AJOUT
 #include <fcntl.h>	 // AJOUT
 
+int creation_proc(int in, int out, int i, struct cmdline *l) //Ce code ci n'est pas entèrement de notre invention, nous nous
+															 //Aider d'un exemple, et l'avons adapté (notament la struture utilisé)
+{
+	pid_t pid;
+
+	if ((pid = fork()) == 0)
+	{	
+		if (in != 0)
+		{
+			dup2(in, 0);
+			close(in);
+		}
+
+		if (out != 1)
+		{
+			dup2(out, 1);
+			close(out);
+		}
+
+		return execvp(l->seq[i][0], l->seq[i]); //i est le numméro de la commande
+	}
+	
+	return pid;
+}
+
 int main()
 {
 	int status;
 	int num_fichier;
-	char *path;
+
 	while (1)
 	{
 		struct cmdline *l;
@@ -34,101 +59,59 @@ int main()
 			continue;
 		}
 
+		int in, out, fd[2];
+		in = 0;  // on initialise la première entrée sur l'entre standard
+		out = 1; //same there
+
 		int size = 0;
 		for (i = 0; l->seq[i] != 0; i++)
 		{
 			size++;
 		}
 		printf("command size: %d\n", size);
-		int pipes[size - 1][2];
-		for (i = 0; i < size - 1; i++)
+
+		/* CREATION DE THREADs et piping*/
+		for (i = 0; l->seq[i+1]!= 0; i++) // ici, i correspond aux nb de pipes a faire, donc size -1 (dernière commande executer par le main thread)
 		{
-			if (pipe(pipes[i]))
+			
+			pipe(fd);
+			
+			if (l->in && i == 0)
 			{
-				fprintf(stderr, "Pipe failed.\n");
-				return EXIT_FAILURE;
+				num_fichier = open(l->in, O_RDONLY);
+				if (num_fichier < 0)
+				{
+					printf("[E] Fichier introuvable\n");
+					exit(0);
+				}
+				creation_proc(num_fichier, fd[1], i, l);
+			}else{
+				
+				creation_proc(in, fd[1], i, l);
 			}
+			close(fd[1]);
+			in = fd[0];
+			
 		}
+		printf("Dernier processus lancé\n"); // a cause des n-1 pipe, je lance la nieme commande a la main
+		 									// on en profite pour gérer l'écriture en fichier
+		 if (in != 0)
+		    dup2 (in, 0);
 
-		/* CREATION DE THREADs */
-
-		int pid[size];
-		for (i = 0; i < size; i++)
+		if (l->out)
 		{
-
-			pid[i] = fork();
-			if (pid[i] == -1)
-			{
-				perror("[E] erreur création du fork()\n");
-				exit(-1);
-			}
-			else if (pid[i] == 0) // code d'un fils du shell
-			{
-
-				printf("1 processus de plus\n");
-				if (i == 0 && size > 1)
-				{	
-					close(pipes[i + 1][0]);
-					if (dup2(pipes[i + 1][1], STDOUT_FILENO) < 0)
-					{
-						printf("error dup2 start\n");
-					}
-					close(pipes[i + 1][1]);
-				}
-				if (l->seq[i + 1] == 0 && size > 1)
-				{
-					close(pipes[i][1]);
-					if (dup2(pipes[i][0], STDIN_FILENO) < 0)
-					{
-						printf("error dup2 middle\n");
-					}
-					close(pipes[i][0]);
-				}
-				if (i != 0 && l->seq[i + 1] != 0 && size > 1)
-				{
-					close(pipes[i + 1][0]);
-					close(pipes[i][1]);
-					if (dup2(pipes[i][0], STDIN_FILENO) < 0 ||
-						dup2(pipes[i + 1][1], STDOUT_FILENO) < 0)
-					{
-						printf("error dup2 last\n");
-					}
-					close(pipes[i + 1][1]);
-					close(pipes[i][0]);
-				}
-
-				if (l->in && i == 0)
-				{
-					num_fichier = open(l->in, O_RDONLY);
-					if (num_fichier < 0)
-					{
-						printf("[E] Fichier introuvable\n");
-						exit(0);
-					}
-					dup2(num_fichier, STDIN_FILENO);
-					close(num_fichier);
-				}
-				if (l->out && l->seq[i + 1] == 0)
-				{
-					num_fichier = open(l->out, O_RDWR | O_CREAT, 0666);
-					dup2(num_fichier, STDOUT_FILENO);
-					close(num_fichier);
-				}
-				if (l->err && l->seq[i + 1] == 0)
-				{
-					num_fichier = open(l->err, O_RDWR | O_CREAT, 0666);
-					dup2(num_fichier, STDOUT_FILENO);
-					close(num_fichier);
-				}
-
-				execvp(l->seq[i][0], l->seq[i]);
-			}
-			else // le pere attend la terminaison du fils
-			{
-				//nothing, on crée tout les proc
-			}
+			num_fichier = open(l->out, O_RDWR | O_CREAT, 0666);
 		}
-		//Si on sort de la boucle for, c'et que on est obligatoirement le père
+		else if (l->err)
+		{
+			num_fichier = open(l->err, O_RDWR | O_CREAT, 0666);
+			creation_proc(in,num_fichier, size-1, l);
+		}
+		else
+		{
+			creation_proc(in,out,size-1, l);
+		}
 		wait(&status);
+		pause();
 	}
 }

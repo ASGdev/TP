@@ -1,6 +1,3 @@
-/*
- * Copyright (C) SIEST Damien & VEGREVILLE Thibaud
- */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +30,6 @@ int main()
 			printf("error: %s\n", l->err);
 			continue;
 		}
-
 		int size = 0;
 		for (i = 0; l->seq[i] != 0; i++)
 		{
@@ -41,16 +37,17 @@ int main()
 		}
 		printf("command size: %d\n", size);
 		int pipes[size - 1][2];
-		for (i = 1; l->seq[i] != 0; i++)
+		if (size > 1)
 		{
-			int temp[2];
-			if (pipe(temp))
+			for (i = 1; l->seq[i] != 0; i++)
 			{
-				fprintf(stderr, "Pipe failed.\n");
-				return EXIT_FAILURE;
+
+				if (pipe(pipes[i]))
+				{
+					fprintf(stderr, "Pipe failed.\n");
+					return EXIT_FAILURE;
+				}
 			}
-			pipes[i - 1][0] = temp[0];
-			pipes[i - 1][1] = temp[1];
 		}
 
 		/* CREATION DE THREAD */

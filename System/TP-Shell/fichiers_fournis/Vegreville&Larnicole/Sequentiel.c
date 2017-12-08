@@ -9,7 +9,7 @@
 
 int main()
 {
-	int status;
+	int pid, status;
 	int num_fichier;
 	char *path;
 	while (1)
@@ -30,7 +30,6 @@ int main()
 			printf("error: %s\n", l->err);
 			continue;
 		}
-
 		int size = 0;
 		for (i = 0; l->seq[i] != 0; i++)
 		{
@@ -38,60 +37,46 @@ int main()
 		}
 		printf("command size: %d\n", size);
 		int pipes[size - 1][2];
-		for (i = 0; i < size - 1; i++)
+		if (size > 1)
 		{
-			if (pipe(pipes[i]))
+			for (i = 1; l->seq[i] != 0; i++)
 			{
-				fprintf(stderr, "Pipe failed.\n");
-				return EXIT_FAILURE;
+
+				if (pipe(pipes[i]))
+				{
+					fprintf(stderr, "Pipe failed.\n");
+					return EXIT_FAILURE;
+				}
 			}
 		}
 
-		/* CREATION DE THREADs */
-
-		int pid[size];
-		for (i = 0; i < size; i++)
+		/* CREATION DE THREAD */
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("[E] erreur création du fork()");
+			exit(-1);
+		}
+		else if (pid == 0) // code du fils du shell
 		{
 
-			pid[i] = fork();
-			if (pid[i] == -1)
-			{
-				perror("[E] erreur création du fork()\n");
-				exit(-1);
-			}
-			else if (pid[i] == 0) // code d'un fils du shell
+			for (i = 0; l->seq[i] != 0; i++)
 			{
 
-				printf("1 processus de plus\n");
+				printf("okok\n");
+				printf(l->seq[i]);
 				if (i == 0 && size > 1)
-				{	
-					close(pipes[i + 1][0]);
-					if (dup2(pipes[i + 1][1], STDOUT_FILENO) < 0)
-					{
-						printf("error dup2 start\n");
-					}
-					close(pipes[i + 1][1]);
+				{
+					dup2(pipes[i + 1][0], STDOUT_FILENO);
 				}
 				if (l->seq[i + 1] == 0 && size > 1)
 				{
-					close(pipes[i][1]);
-					if (dup2(pipes[i][0], STDIN_FILENO) < 0)
-					{
-						printf("error dup2 middle\n");
-					}
-					close(pipes[i][0]);
+					dup2(pipes[i][1], STDIN_FILENO);
 				}
 				if (i != 0 && l->seq[i + 1] != 0 && size > 1)
 				{
-					close(pipes[i + 1][0]);
-					close(pipes[i][1]);
-					if (dup2(pipes[i][0], STDIN_FILENO) < 0 ||
-						dup2(pipes[i + 1][1], STDOUT_FILENO) < 0)
-					{
-						printf("error dup2 last\n");
-					}
-					close(pipes[i + 1][1]);
-					close(pipes[i][0]);
+					dup2(pipes[i][1], STDIN_FILENO);
+					dup2(pipes[i + 1][0], STDOUT_FILENO);
 				}
 
 				if (l->in && i == 0)
@@ -117,15 +102,12 @@ int main()
 					dup2(num_fichier, STDOUT_FILENO);
 					close(num_fichier);
 				}
-
 				execvp(l->seq[i][0], l->seq[i]);
 			}
-			else // le pere attend la terminaison du fils
-			{
-				//nothing, on crée tout les proc
-			}
 		}
-		//Si on sort de la boucle for, c'et que on est obligatoirement le père
-		wait(&status);
+		else // le pere attend la terminaison du fils
+		{
+			wait(&status);
+		}
 	}
 }
