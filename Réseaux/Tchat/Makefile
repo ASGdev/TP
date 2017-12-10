@@ -15,8 +15,8 @@ ClientMain: ClientMain.c
 save: ServerMain.c
 	$(CC) save.c -o save   $(LDFLAGS)
 
-clean:
+mrproper:
 	rm -rf *.o
 
-mrproper: clean
+clean: mrproper
 	rm -rf $(EXEC)

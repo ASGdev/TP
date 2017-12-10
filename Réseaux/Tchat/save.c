@@ -204,7 +204,6 @@ int main(int argc, char *argv[])
                     /* On gère maintenant les données clients */
                     /* Erreur ou connecion close par le client */
                     if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
-
                     {
 
                         if (nbytes == 0)
@@ -229,6 +228,7 @@ int main(int argc, char *argv[])
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
+
                         strcpy(msg, "");
                         recep_message = read(newfd, msg, sizeof(msg));
                         message = (char *)malloc(recep_message * sizeof(char));
@@ -237,22 +237,23 @@ int main(int argc, char *argv[])
                         {
                         }
                         else
-                        {   //On forard le message vers le client désigné
+                        { //On forard le message vers le client désigné
                             strcpy(message, "");
-                            printf("Ca s passe\n");
                             tempInt = 0;
-                            for (int j = 0; message[j] != ' '; j++)
+                            for (int j = 0; message[j] != ' ' && j<recep_message; j++)
                                 message[j] = msg[j];
-                            for (int j = 0; strcmp(tabConnectes[j].pseudo, message)!=0; i++)
+                            printf("Ca s passe1\n");
+                            for (int j = 0; strcmp(tabConnectes[j].pseudo, message) != 0; i++)
                             {
                                 tempInt++;
                             }
-                            printf("Ca s passe\n");
+                            printf("Ca s passe2\n");
                             strcpy(message, "");
-                            for (int j = 0;j < recep_message; j++)
+                            for (int j = 0; j < recep_message; j++)
                                 message[j] = msg[j];
                             char *temp = (char *)malloc(1024 * sizeof(char));
-                            write(tabConnectes[tempInt].numSocket,temp,strlen(temp));
+                             printf("Ca s passe3\n");
+                            write(tabConnectes[tempInt].numSocket, temp, strlen(temp));
                         }
                     }
                 }
