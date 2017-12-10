@@ -1,0 +1,10 @@
+cat toto | cat titi
+
+
+c
+readcmd.h
+readcmd.o
+toto
+tst
+tst.c
+tst.o

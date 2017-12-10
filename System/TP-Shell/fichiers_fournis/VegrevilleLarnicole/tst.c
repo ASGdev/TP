@@ -16,7 +16,7 @@ int creation_proc(int in, int out, int i, struct cmdline *l) //Ce code ci n'est 
 	pid_t pid;
 
 	if ((pid = fork()) == 0)
-	{
+	{	
 		if (in != 0)
 		{
 			dup2(in, 0);
@@ -31,7 +31,7 @@ int creation_proc(int in, int out, int i, struct cmdline *l) //Ce code ci n'est 
 
 		return execvp(l->seq[i][0], l->seq[i]); //i est le numméro de la commande
 	}
-
+	
 	return pid;
 }
 
@@ -71,11 +71,11 @@ int main()
 		printf("command size: %d\n", size);
 
 		/* CREATION DE THREADs et piping*/
-		for (i = 0; l->seq[i + 1] != 0; i++) // ici, i correspond aux nb de pipes a faire, donc size -1 (dernière commande executer par le main thread)
+		for (i = 0; l->seq[i+1]!= 0; i++) // ici, i correspond aux nb de pipes a faire, donc size -1 (dernière commande executer par le main thread)
 		{
-
+			
 			pipe(fd);
-
+			
 			if (l->in && i == 0)
 			{
 				num_fichier = open(l->in, O_RDONLY);
@@ -85,44 +85,43 @@ int main()
 					exit(0);
 				}
 				creation_proc(num_fichier, fd[1], i, l);
-			}
-			else
-			{
-
+			}else{
+				
 				creation_proc(in, fd[1], i, l);
 			}
 			close(fd[1]);
 			in = fd[0];
+			
 		}
 		printf("Dernier processus lancé\n"); // a cause des n-1 pipe, je lance la nieme commande a la main
-											 // on en profite pour gérer l'écriture en fichier
-		if (in != 0)
-			dup2(in, 0);
+		 									// on en profite pour gérer l'écriture en fichier
+		 if (in != 0)
+		    dup2 (in, 0);
 
 		if (l->in && i == 0)
-		{
-			num_fichier = open(l->in, O_RDONLY);
-			if (num_fichier < 0)
 			{
-				printf("[E] Fichier introuvable\n");
-				exit(0);
-			}
-			creation_proc(num_fichier, fd[1], i, l);
-		}
-		if (l->out)
+				num_fichier = open(l->in, O_RDONLY);
+				if (num_fichier < 0)
+				{
+					printf("[E] Fichier introuvable\n");
+					exit(0);
+				}
+				creation_proc(num_fichier, fd[1], i, l);
+			}else if (l->out)
 		{
 			num_fichier = open(l->out, O_RDWR | O_CREAT, 0666);
-			creation_proc(in, num_fichier, size - 1, l);
+			creation_proc(in,num_fichier, size-1, l);
 		}
 		else if (l->err)
 		{
 			num_fichier = open(l->err, O_RDWR | O_CREAT, 0666);
-			creation_proc(in, num_fichier, size - 1, l);
+			creation_proc(in,num_fichier, size-1, l);
 		}
 		else
 		{
-			creation_proc(in, out, size - 1, l);
+			creation_proc(in,out,size-1, l);
 		}
 		wait(&status);
+		pause();
 	}
 }
