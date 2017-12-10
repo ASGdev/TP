@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 
     /***************** Déclarations des variables ******************/
     struct sockaddr_in adr_serv, adr_client;
+    socklen_t taille = sizeof(struct sockaddr_in);
     /*Le listener serveur*/
     int listener_socket, result;
     /* le descriteur de la dernière co accepté */
@@ -62,7 +63,8 @@ int main(int argc, char *argv[])
     int fdmax;
     char msg[1024];
     char cmd[50];
-    struct Connecte
+    int nbytes; // quantité d'octet lu pour le buffer
+        struct Connecte
     {
         int numSocket;
         char pseudo[50];
@@ -81,7 +83,7 @@ int main(int argc, char *argv[])
     adr_serv.sin_addr.s_addr = INADDR_ANY;
 
     //Bind
-    if (bind(listener_socket, (struct sockaddr *)&adr_serv, sizeof(adr_client)) == 0)
+    if (bind(listener_socket, (struct sockaddr *)&adr_serv, taille) == 0)
         printf("Bind Done\n"); //else exit(-1);
 
     //Mise en écoute de la socket
@@ -117,7 +119,7 @@ int main(int argc, char *argv[])
             { //On a une donnée a lire sur l'indice i
                 if (i == listener_socket)
                 {
-                    if ((newfd = accept(listener_socket, (struct sockaddr *)&adr_client, sizeof(adr_client))) == -1)
+                    if ((newfd = accept(listener_socket, (struct sockaddr *)&adr_client, taille)) == -1)
                     {
                         printf("Server accept fail\n");
                     }
@@ -131,9 +133,32 @@ int main(int argc, char *argv[])
                         printf("New connection accepted\n");
                     }
                 }
-                else//Donnée arrivant d'un client
+                else //Donnée arrivant d'un client
                 {
-                    
+                    /*Idée de l'algo :
+                        - Si nom seul : un client demande a communiquer spécifiqueent avec un autre
+                        - sinon, c'est un message
+                        donc on fait ca sous la forme suivante "Nom: Message"
+                        On parse ce qu'il y a avant les deux point (donc pseudo sans :), et on le match
+                        avec notre lsite de connecter, et ensuite on l'expédie sous la meme forme.
+                        On pensera a remplacer le nom par celui de l'expéditeur cependant.
+                    */
+                    /* handle data from a client */
+
+                    if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
+
+                    {
+                        /* got error or connection closed by client */
+                        if (nbytes == 0)
+                            /* connection closed */
+                            printf("%s: socket %d hung up\n", argv[0], i);
+                        else
+                            perror("recv() error lol!");
+                        /* close it... */
+                        close(i);
+                        /* remove from master set */
+                        FD_CLR(i, &masterset);
+                    }
                 }
             }
         }
