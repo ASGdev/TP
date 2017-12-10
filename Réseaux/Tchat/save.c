@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
     /* nombre max de file descriptor */
     int fdmax;
     char msg[SIZE];
+    int recep_message;
+    char* message;
     int nbytes; // quantité d'octet lu pour le buffer
     struct Connecte
     {
@@ -153,14 +155,32 @@ int main(int argc, char *argv[])
                             fdmax = newfd;
                         }
                         printf("New connection accepted\n");
-                        /*
+                        //Message d'accueil
+                        char* temp = (char*) malloc(25*sizeof(char));
+                        strcpy(temp,"Bienvenue sur le chat");
+                        write(newfd,temp,strlen(temp));
+                        //Réception du pseudo
+                        strcpy(msg,"");
+                        recep_message = read(newfd, msg, sizeof(msg));
+                        message = (char*)malloc(recep_message*sizeof(char));
+                        for (int j=0; j<recep_message; j++)
+                        	message[j] = msg[j];
+                        printf("%s vient de se connecter\n", message);
+                        
                         //Et on ajoute les infos de la connections (uniqument le fd au début)
                         tempInt = 0;
                         for (int j = 0; tabConnectes[j].numSocket != -1; j++)
                         {
                             tempInt++;
                         }
-                        tabConnectes[tempInt].numSocket = i;*/
+                        tabConnectes[tempInt].numSocket = i;
+                        tabConnectes[tempInt].pseudo = message;
+                        int k = 0;
+                        do
+                        {
+                            printf("%d : %s",k,tabConnectes[k].pseudo);
+                            k++;
+                        }while(tabConnectes[k].numSocket != -1);
                     }
                 }
                 else //Donnée arrivant d'un client
@@ -176,7 +196,7 @@ int main(int argc, char *argv[])
                         le détecte et l'inscrit.
                         Le client peut taper des commndes server en tapant "?Command"
                     */
-
+                    
                     /* On gère maintenant les données clients */
                     /* Erreur ou connecion close par le client */
                     if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
@@ -185,7 +205,7 @@ int main(int argc, char *argv[])
 
                         if (nbytes == 0)
                             /* connection closed */
-                            printf("Fin de connection d'un Client");
+                            printf("Fin de connection du client %s",tabConnectes[i].pseudo);
                         else
                             perror("recv() erreur!");
                         /* On ferme la cnnection */
