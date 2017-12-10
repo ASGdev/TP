@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
             { //On a une donnée a lire sur l'indice i
                 if (i == listener_socket)
                 {
-                    if ((newfd = accept(listener_socket, (struct sockaddr *)&adr_client, taille)) == -1)
+                    if ((newfd = accept(listener_socket, (struct sockaddr *)&adr_client, &taille)) == -1)
                     {
                         printf("Server accept fail\n");
                     }
@@ -143,17 +143,19 @@ int main(int argc, char *argv[])
                         avec notre lsite de connecter, et ensuite on l'expédie sous la meme forme.
                         On pensera a remplacer le nom par celui de l'expéditeur cependant.
                     */
-                    /* handle data from a client */
 
+
+                    /* On gère maintenant les données clients */                    
+                    /* Erreur ou connecion close par le client */
                     if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
 
                     {
-                        /* got error or connection closed by client */
+                        
                         if (nbytes == 0)
                             /* connection closed */
                             printf("%s: socket %d hung up\n", argv[0], i);
                         else
-                            perror("recv() error lol!");
+                            perror("recv() erreur!");
                         /* close it... */
                         close(i);
                         /* remove from master set */
