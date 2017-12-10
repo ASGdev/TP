@@ -24,10 +24,6 @@ typedef struct in_addr IN_ADDR;
 #else /* sinon vous êtes sur une plateforme non supportée */
 
 #endif
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 static void init(void)
 {
 #ifdef WIN32
@@ -47,7 +43,6 @@ static void end(void)
 #endif
 }
 
-<<<<<<< HEAD
 //Implémentation Client
 
 void client(unsigned long add_IP,unsigned long port, char* pseudo){
@@ -58,6 +53,10 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     int CheckConnection;
     int recep_message;
     char commande[100];
+
+    
+
+
     num_socket = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (num_socket!=-1)	printf("La socket a été créée\n");
     //On complète la structure
@@ -77,6 +76,8 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
 	for (int i=0; i<recep_message; i++)
 		message[i] = msg[i];
     printf("%s\n", message);
+    //Envoie du pseudo 
+    write(num_socket,pseudo,strlen(pseudo));
     //commande "quit" pour se déconnecter
     while(strcmp(commande,"quit")!=0){
     strcpy(commande,"");
@@ -101,31 +102,11 @@ int main(int argc, char* argv[]){
 			  break;
 		default :
 			  printf("./ClientMain add_IP_serveur port pseudo\n");
-			  return -1;
- 	}
-
-	client(add_IP, port, pseudo);
-=======
-int main(int argc, char* argv[]){
-    init();
-      /*On déclare les 3 variables entrées par l'utilisateur*/
-      unsigned long add_IP;
->>>>>>> master
-
-    end();
+              return -1;
+    }
+    client(add_IP, port, pseudo);
 }
 
-<<<<<<< HEAD
-=======
-
-    
-
-void client(unsigned long add_IP,int port,char* pseudo){
-    
-    }
+	
 
 
-
-
-
->>>>>>> master
