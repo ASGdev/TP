@@ -54,15 +54,13 @@ int main(int argc, char *argv[])
 
     /***************** Déclarations des variables ******************/
     struct sockaddr_in adr_serv, adr_client;
-    int num_socket, num_socket_client;
-    int nombreClients;
-    socklen_t taille = sizeof(struct sockaddr_in);
-    char *recupPseudo;
-    char rcpPseudo[50];
-    char *message;
-    char msg[200];
-    char *temp;
-    char *commande;
+    /*Le listener serveur*/
+    int listener_socket, result;
+    /* le descriteur de la dernière co accepté */
+    int newfd;
+    /* nombre max de file descriptor */
+    int fdmax;
+    char msg[1024];
     char cmd[50];
     struct Connecte
     {
@@ -70,16 +68,11 @@ int main(int argc, char *argv[])
         char pseudo[50];
     };
     struct Connecte tabConnectes[500];
-    int indiceTabConnectes = 0, nbConnectes = 0;
-    ;
-    fd_set sock_ecoutes, copie_sock_ecoutes;
-    int n, espace = 0, dest = -1, source = -1, lgmes = 0;
-    char *destinataire;
-
+    fd_set masterset, tempset;
 
     // Création de la socket client
-    num_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (num_socket != -1)
+    listener_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (listener_socket != -1)
         printf("Socket creee correctement\n");
 
     //Renseignement de la structure sockaddr_in adr_serv
@@ -88,18 +81,61 @@ int main(int argc, char *argv[])
     adr_serv.sin_addr.s_addr = INADDR_ANY;
 
     //Bind
-    if (bind(num_socket, (struct sockaddr *)&adr_serv, taille) == 0)
+    if (bind(listener_socket, (struct sockaddr *)&adr_serv, sizeof(adr_client)) == 0)
         printf("Bind Done\n"); //else exit(-1);
 
     //Mise en écoute de la socket
-    if (listen(num_socket, SOMAXCONN) == 0)
+    if (listen(listener_socket, SOMAXCONN) == 0)
         printf("Listen ON\n");
 
-    //Initialisation de la liste des sockets
-    nombreClients = getdtablesize();
-    FD_ZERO(&sock_ecoutes);
-    FD_SET(num_socket, &sock_ecoutes);
+    //Initialisation de la liste des sockets, et on ajoute le listener server
+    FD_ZERO(&masterset);
+    FD_SET(listener_socket, &masterset);
+    FD_ZERO(&tempset);
+    fdmax = listener_socket; // on garde la trace du plus grand file descriptor,
 
     //Initialisation des sockets terminee
     printf("Initialisation terminee\n\nBienvenue sur le Serveur\n\n");
+
+    while (1)
+    {
+        tempset = masterset;
+
+        if (select(fdmax + 1, &tempset, NULL, NULL, NULL) == -1)
+
+        {
+            printf("Server-select() a planté\n");
+            exit(1);
+        }
+
+        printf("Server-select() ON\n");
+
+        //On itère sur les données a lire
+        for (int i = 0; i <= fdmax; i++)
+        {
+            if (FD_ISSET(i, &tempset))
+            { //On a une donnée a lire sur l'indice i
+                if (i == listener_socket)
+                {
+                    if ((newfd = accept(listener_socket, (struct sockaddr *)&adr_client, sizeof(adr_client))) == -1)
+                    {
+                        printf("Server accept fail\n");
+                    }
+                    else
+                    {
+                        FD_SET(newfd, &masterset); /* on ajoute la connection au master set */
+                        if (newfd > fdmax)
+                        { /* On vérifie le nb max de file descriptor */
+                            fdmax = newfd;
+                        }
+                        printf("New connection accepted\n");
+                    }
+                }
+                else//Donnée arrivant d'un client
+                {
+                    
+                }
+            }
+        }
+    }
 }
