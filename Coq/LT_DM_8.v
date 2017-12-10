@@ -79,7 +79,8 @@ Qed.
 
 Lemma dm_eq_DS : forall n s, semA (Amo n n) s = semA (Anu 0) s.
 Proof.
-  intros n s. induction n;apply dm_exp_nat_eq. 
+  intros n s. induction n;
+ apply dm_exp_nat_eq. 
 Qed.
 
 (********************************************************************************)
@@ -113,20 +114,40 @@ Fixpoint Red (a : Aexp) : Aexp :=
     end.
 (* a -  Décrire succintement l'effet de Red sur les expressions Aexp           *)
            
-(*      Red décompose                                               *)
+(*      Red décompose récursivement (puisque c'est un fixpoint) les Aexp
+en appellant les Définitions des différents Red (pl,mu,mo), on obtiendra
+donc des expressions simplifiées.*)
 
 
 (* b - Montrer la correction de la fonction Red                                *)
 (*     Il est conseillé d'introduire et de montrer des lemmes intermédiaires   *)
 (*     sur red_pl, red_mu, red_mo.                                             *)
 
-
-Theorem Red_correct : forall a s, semA (Red a) s = semA a s.
-Proof. 
-  Lemma red_pl_correct : forall a1 a2 s, semA(red_pl a1 a2) s = semA (Apl a1 a2) s.
+(* On vérifie les 3 définitions de red*)
+ 
+  Lemma red_pl_checked : forall a1 a2 s, semA(red_pl a1 a2) s = semA a1 s + semA a2 s.
   Proof.
-    intros a1 a2 s. induction red_pl;simpl.
-    - induction semA;simpl. 
-  Qed.
-  intros a s.
-Admitted.
+    intros a1 a2 s. induction a1;induction a2;reflexivity.
+Qed.
+
+
+Lemma red_mu_checked : forall a1 a2 s, semA(red_mu a1 a2) s = semA a1 s * semA a2 s.
+Proof.
+intros a1 a2 s. induction a1;induction a2;reflexivity.
+Qed.
+
+Lemma red_mo_checked : forall a1 a2 s, semA(red_mo a1 a2) s = semA a1 s - semA a2 s.
+Proof.
+intros a1 a2 s. induction a1;induction a2;reflexivity.
+Qed.
+
+
+Theorem Red_checked : forall a s, semA (Red a) s = semA a s.
+Proof.
+intros a s. induction a. 
+-reflexivity. 
+-reflexivity. 
+-simpl. rewrite <- IHa1. rewrite <- IHa2. apply red_pl_checked.
+-simpl. rewrite <- IHa1. rewrite <- IHa2. apply red_mu_checked.
+-simpl. rewrite <- IHa1. rewrite <-IHa2. apply red_mo_checked.
+Qed.
