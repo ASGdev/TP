@@ -78,6 +78,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < 500; i++)
     {
         tabConnectes[i].numSocket = NULL;
+        tabConnectes[i].pseudo = "";
     }
 
     // Création de la socket client
@@ -120,7 +121,7 @@ int main(int argc, char *argv[])
 
         printf("Server-select() ON\n");
 
-        //On itère sur les données a lire
+        //On itère sur les données a lire, i donne le fd (i == fd)
         for (int i = 0; i <= fdmax; i++)
         {
             if (FD_ISSET(i, &tempset))
@@ -139,16 +140,13 @@ int main(int argc, char *argv[])
                             fdmax = newfd;
                         }
                         printf("New connection accepted\n");
-                        //Et on ajoute les infos de la connections
+                        //Et on ajoute les infos de la connections (uniqument le fd au début)
                         tempInt = 0;
-                        struct Connecte c;
-                        c.numSocket = newfd;
-                        c.pseudo = NULL;
-                        for (int i = 0; tabConnectes[i].numSocket != NULL; i++)
-                        {
+                        for (int j = 0; tabConnectes[j].numSocket != NULL; j++)
+                        { 
                             tempInt++;
                         }
-                        tabConnectes[tempInt] = c;
+                        tabConnectes[tempInt].numSocket = i;
                     }
                 }
                 else //Donnée arrivant d'un client
@@ -161,7 +159,8 @@ int main(int argc, char *argv[])
                         avec notre lsite de connecter, et ensuite on l'expédie sous la meme forme.
                         On pensera a remplacer le nom par celui de l'expéditeur cependant.
                         Un client peut set son pseudo en envoyant sous la forme "Peudo!", ler serveur
-                        le détecte et l'inscrit
+                        le détecte et l'inscrit.
+                        Le client peut taper des commndes server en tapant "Command?"
                     */
 
                     /* On gère maintenant les données clients */
@@ -179,11 +178,20 @@ int main(int argc, char *argv[])
                         close(i);
                         /* Et on l'enleve du master set */
                         FD_CLR(i, &masterset);
+                        //Et on l'enleve de la table de connection
+                        tempInt = 0;
+                        for (int j = 0; tabConnectes[j].numSocket != i; j++)
+                        {
+                            tempInt++;
+                        }
+                        tabConnectes[tempInt].numSocket = NULL;
+                        tabConnectes[tempInt].pseudo = "";
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
                         temp = strtok(msg, ":");
-                        for (int i = 0;strcmp(tabConnectes[i].pseudo,temp[1], i++){
+                        tempInt=0;
+                        for (int i = 0;strcmp(tabConnectes[i].pseudo,temp[1]) != 0; i++){
                             
                         }
                     }
