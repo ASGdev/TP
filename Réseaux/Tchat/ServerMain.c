@@ -50,6 +50,18 @@ static void end(void)
 #endif
 }
 
+int append(char *s, size_t size, char c)
+{
+    if (strlen(s) + 1 >= size)
+    {
+        return 1;
+    }
+    int len = strlen(s);
+    s[len] = c;
+    s[len + 1] = '\0';
+    return 0;
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -63,7 +75,6 @@ int main(int argc, char *argv[])
     /* nombre max de file descriptor */
     int fdmax;
     char msg[SIZE];
-    char *temp;
     int nbytes; // quantité d'octet lu pour le buffer
     struct Connecte
     {
@@ -71,13 +82,14 @@ int main(int argc, char *argv[])
         char *pseudo;
     };
     int tempInt; //utilisé pour les insertions et autre opération
+    char *temp;
     struct Connecte tabConnectes[500];
     fd_set masterset, tempset;
 
     //On vide bien la table de connection :
     for (int i = 0; i < 500; i++)
     {
-        tabConnectes[i].numSocket = NULL;
+        tabConnectes[i].numSocket = -1;
         tabConnectes[i].pseudo = "";
     }
 
@@ -142,8 +154,8 @@ int main(int argc, char *argv[])
                         printf("New connection accepted\n");
                         //Et on ajoute les infos de la connections (uniqument le fd au début)
                         tempInt = 0;
-                        for (int j = 0; tabConnectes[j].numSocket != NULL; j++)
-                        { 
+                        for (int j = 0; tabConnectes[j].numSocket != -1; j++)
+                        {
                             tempInt++;
                         }
                         tabConnectes[tempInt].numSocket = i;
@@ -158,9 +170,9 @@ int main(int argc, char *argv[])
                         On parse ce qu'il y a avant les deux point (donc pseudo sans :), et on le match
                         avec notre lsite de connecter, et ensuite on l'expédie sous la meme forme.
                         On pensera a remplacer le nom par celui de l'expéditeur cependant.
-                        Un client peut set son pseudo en envoyant sous la forme "Peudo!", ler serveur
+                        Un client peut set son pseudo en envoyant sous la forme "!Peudo", ler serveur
                         le détecte et l'inscrit.
-                        Le client peut taper des commndes server en tapant "Command?"
+                        Le client peut taper des commndes server en tapant "?Command"
                     */
 
                     /* On gère maintenant les données clients */
@@ -184,15 +196,43 @@ int main(int argc, char *argv[])
                         {
                             tempInt++;
                         }
-                        tabConnectes[tempInt].numSocket = NULL;
+                        tabConnectes[tempInt].numSocket = -1;
                         tabConnectes[tempInt].pseudo = "";
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-                        temp = strtok(msg, ":");
-                        tempInt=0;
-                        for (int i = 0;strcmp(tabConnectes[i].pseudo,temp[1]) != 0; i++){
-                            
+                        if (msg[0]=='!')//On recois un pseudo pour les communication
+                        {
+                            tempInt = 0;
+                            temp = memset(temp, 0, sizeof temp);
+                            for (int j = 0; msg[j] != ':' && j < nbytes; j++)
+                            {
+                                tempInt++;
+                                append(temp, sizeof temp, msg[j]);
+                            }
+                            //Une fois ici, on a le pseudo de la communication
+                        }
+                        else if (msg[0]=='?')//On recois une commande serveur
+                        {
+                            tempInt = 0;
+                            temp = memset(temp, 0, sizeof temp);
+                            for (int j = 0; msg[j] != ':' && j < nbytes; j++)
+                            {
+                                tempInt++;
+                                append(temp, sizeof temp, msg[j]);
+                            }
+                            //Une fois ici, on a le pseudo de la communication
+                        }
+                        else
+                        {
+                            tempInt = 0;
+                            temp = memset(temp, 0, sizeof temp);
+                            for (int j = 0; msg[j] != ':' && j < nbytes; j++)
+                            {
+                                tempInt++;
+                                append(temp, sizeof temp, msg[j]);
+                            }
+                            //Une fois ici, on a le pseudo de la communication
                         }
                     }
                 }
