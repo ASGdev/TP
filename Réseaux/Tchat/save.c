@@ -186,7 +186,8 @@ int main(int argc, char *argv[])
                     message = (char *)malloc(recep_message * sizeof(char));
                     for (int j = 0; j < recep_message; j++)
                         message[j] = msg[j];
-                    if(strcmp(msg,liste)){
+                    printf("%s",message);
+                    if(strcmp(message,liste)){
                         printf("on va afficher la liste");
                     }
                     /*Idée de l'algo :

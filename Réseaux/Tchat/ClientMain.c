@@ -84,24 +84,19 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     
     //Envoie du pseudo , on rajoute "!" pour parser facilement
     temp=(char *) malloc (25*sizeof (char));
-    printf("1");
     strcpy(temp, pseudo);
-    printf("2");
     write(num_socket, temp, strlen(temp));  
-    printf("3");
+    
 
     
 
     //Tant que l'utilisateur ne tape pas "quit", il reste connecté
     while(strcmp(commande,"quit")!=0){
-        
-
-        
+        //Nouvelle commande
         strcpy(commande,"");
         gets(commande);
         write(num_socket,commande, strlen(commande));
         close(num_socket);
-        
     }
 }
 
