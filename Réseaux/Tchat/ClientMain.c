@@ -53,6 +53,10 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     int CheckConnection;
     int recep_message;
     char commande[100];
+
+    
+
+
     num_socket = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (num_socket!=-1)	printf("La socket a été créée\n");
     //On complète la structure
@@ -72,6 +76,8 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
 	for (int i=0; i<recep_message; i++)
 		message[i] = msg[i];
     printf("%s\n", message);
+    //Envoie du pseudo 
+    write(num_socket,pseudo,strlen(pseudo));
     //commande "quit" pour se déconnecter
     while(strcmp(commande,"quit")!=0){
     strcpy(commande,"");

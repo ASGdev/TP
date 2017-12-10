@@ -68,6 +68,15 @@ int main(int argc, char* argv[]){
     char message[100];
     int recep_message;
     char msg[255];
+
+    //Structure connexion d'un client 
+    typedef struct new_client new_client;
+    struct new_client{
+        char pseudo[30];
+        int id;
+    };
+    new_client tab_client[30]; // on limite à 30 client en même temps
+
     /* Si les sockets fonctionnent */
   
         sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -102,12 +111,7 @@ int main(int argc, char* argv[]){
                     bienvenue=(char *) malloc (23*sizeof (char));
                     strcpy(bienvenue, "Bienvenue sur le tchat");
                     write(client_socket, bienvenue, strlen(bienvenue));
-                    /*   msg_size = read(i,message, sizeof(msg));
-                    commande = (char*)malloc(msg_size*sizeof(char));
-                    if (recv(sock, buffer, 32, 0) != SOCKET_ERROR)
-                        printf("Recu : %s\n", buffer);
-                    else
-                        printf("ECHEC : %s\n", buffer);*/
+                    
                     
                           //Reçoit la comande "quit"
                     strcpy(msg,"");
