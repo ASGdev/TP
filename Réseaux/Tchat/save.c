@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     int fdmax;
     char msg[SIZE];
     int recep_message;
-    char* message;
+    char *message;
     int nbytes; // quantité d'octet lu pour le buffer
     struct Connecte
     {
@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
         //On itère sur les données a lire, i donne le fd (i == fd)
         for (int i = 0; i <= fdmax; i++)
         {
+
             if (FD_ISSET(i, &tempset))
             { //On a une donnée a lire sur l'indice i
                 if (i == listener_socket)
@@ -156,18 +157,18 @@ int main(int argc, char *argv[])
                         }
                         printf("New connection accepted\n");
                         //Message d'accueil
-                        char* temp = (char*) malloc(25*sizeof(char));
-                        strcpy(temp,"Bienvenue sur le chat");
-                        write(newfd,temp,strlen(temp));
+                        char *temp = (char *)malloc(25 * sizeof(char));
+                        strcpy(temp, "Bienvenue sur le chat");
+                        write(newfd, temp, strlen(temp));
                         //Réception du pseudo
-                        strcpy(msg,"");
+                        strcpy(msg, "");
                         recep_message = read(newfd, msg, sizeof(msg));
-                        message = (char*)malloc(recep_message*sizeof(char));
-                        for (int j=0; j<recep_message; j++)
-                        	message[j] = msg[j];
+                        message = (char *)malloc(recep_message * sizeof(char));
+                        for (int j = 0; j < recep_message; j++)
+                            message[j] = msg[j];
                         printf("%s vient de se connecter\n", message);
-                        
-                        //Et on ajoute les infos de la connections (uniqument le fd au début)
+
+                        //Et on ajoute les infos de la connections
                         tempInt = 0;
                         for (int j = 0; tabConnectes[j].numSocket != -1; j++)
                         {
@@ -175,12 +176,6 @@ int main(int argc, char *argv[])
                         }
                         tabConnectes[tempInt].numSocket = i;
                         tabConnectes[tempInt].pseudo = message;
-                        int k = 0;
-                        do
-                        {
-                            printf("%d : %s",k,tabConnectes[k].pseudo);
-                            k++;
-                        }while(tabConnectes[k].numSocket != -1);
                     }
                 }
                 else //Donnée arrivant d'un client
@@ -196,7 +191,7 @@ int main(int argc, char *argv[])
                         le détecte et l'inscrit.
                         Le client peut taper des commndes server en tapant "?Command"
                     */
-                    
+
                     /* On gère maintenant les données clients */
                     /* Erreur ou connecion close par le client */
                     if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
@@ -205,7 +200,7 @@ int main(int argc, char *argv[])
 
                         if (nbytes == 0)
                             /* connection closed */
-                            printf("Fin de connection du client %s",tabConnectes[i].pseudo);
+                            printf("Fin de connection du client %s", tabConnectes[i].pseudo);
                         else
                             perror("recv() erreur!");
                         /* On ferme la cnnection */
@@ -225,7 +220,16 @@ int main(int argc, char *argv[])
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-                        printf("wesh ca yest");
+                        strcpy(msg, "");
+                        recep_message = read(newfd, msg, sizeof(msg));
+                        message = (char *)malloc(recep_message * sizeof(char));
+                        for (int j = 0; j < recep_message; j++)
+                            message[j] = msg[j];
+                        if(message[0]=='?'){
+                            
+                        }else{
+
+                        }
                     }
                 }
             }
