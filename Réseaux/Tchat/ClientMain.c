@@ -7,10 +7,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <errno.h>
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h> /* close */
 #include <netdb.h> /* gethostbyname */
 #define INVALID_SOCKET -1
@@ -54,7 +57,7 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     int recep_message;
     char commande[100];
     int nbclient;
-    FD_SET sock_listening, socket_list;
+    fd_set sock_listening, socket_list;
     
 
 
@@ -93,7 +96,7 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
         //Copie de la liste des sockets
         bcopy ( (char*) &sock_listening, (char*) &socket_list, sizeof(sock_listening)); 
         //Permet d'ecouter plusieurs descripteurs a la fois
-        select(nombreClients, &socket_list, 0, 0, 0);
+        select(nbclient, &socket_list, 0, 0, 0);
         //Nouvelle commande
         strcpy(commande,"");
         gets(commande);
