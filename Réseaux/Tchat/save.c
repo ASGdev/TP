@@ -219,11 +219,10 @@ int main(int argc, char *argv[])
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-                        printf("Ca s passe pas bie\n");
+
                         strcpy(msg, "");
                         recep_message = read(newfd, msg, sizeof(msg));
                         message = (char *)malloc(recep_message * sizeof(char));
-                        printf("Ca s passe pas bie2\n");
 
                         if (msg[0] == '?')
                         {
@@ -231,10 +230,10 @@ int main(int argc, char *argv[])
                         else
                         { //On forard le message vers le client désigné
                             strcpy(message, "");
-                            printf("Ca s passe\n");
                             tempInt = 0;
-                            for (int j = 0; message[j] != ' '; j++)
+                            for (int j = 0; message[j] != ' ' && j<recep_message; j++)
                                 message[j] = msg[j];
+                            printf("Ca s passe1\n");
                             for (int j = 0; strcmp(tabConnectes[j].pseudo, message) != 0; i++)
                             {
                                 tempInt++;
