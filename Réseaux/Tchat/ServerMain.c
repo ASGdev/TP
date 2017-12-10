@@ -28,6 +28,7 @@ typedef struct in_addr IN_ADDR;
 #include <stdlib.h>
 
 int PORT = 9999;
+int SIZE = 1024;
 
 static void init(void)
 {
@@ -61,16 +62,23 @@ int main(int argc, char *argv[])
     int newfd;
     /* nombre max de file descriptor */
     int fdmax;
-    char msg[1024];
-    char cmd[50];
+    char msg[SIZE];
+    char *temp;
     int nbytes; // quantité d'octet lu pour le buffer
-        struct Connecte
+    struct Connecte
     {
         int numSocket;
-        char pseudo[50];
+        char *pseudo;
     };
+    int tempInt; //utilisé pour les insertions et autre opération
     struct Connecte tabConnectes[500];
     fd_set masterset, tempset;
+
+    //On vide bien la table de connection :
+    for (int i = 0; i < 500; i++)
+    {
+        tabConnectes[i].numSocket = NULL;
+    }
 
     // Création de la socket client
     listener_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -131,6 +139,16 @@ int main(int argc, char *argv[])
                             fdmax = newfd;
                         }
                         printf("New connection accepted\n");
+                        //Et on ajoute les infos de la connections
+                        tempInt = 0;
+                        struct Connecte c;
+                        c.numSocket = newfd;
+                        c.pseudo = NULL;
+                        for (int i = 0; tabConnectes[i].numSocket != NULL; i++)
+                        {
+                            tempInt++;
+                        }
+                        tabConnectes[tempInt] = c;
                     }
                 }
                 else //Donnée arrivant d'un client
@@ -142,24 +160,32 @@ int main(int argc, char *argv[])
                         On parse ce qu'il y a avant les deux point (donc pseudo sans :), et on le match
                         avec notre lsite de connecter, et ensuite on l'expédie sous la meme forme.
                         On pensera a remplacer le nom par celui de l'expéditeur cependant.
+                        Un client peut set son pseudo en envoyant sous la forme "Peudo!", ler serveur
+                        le détecte et l'inscrit
                     */
 
-
-                    /* On gère maintenant les données clients */                    
+                    /* On gère maintenant les données clients */
                     /* Erreur ou connecion close par le client */
                     if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
 
                     {
-                        
+
                         if (nbytes == 0)
                             /* connection closed */
-                            printf("%s: socket %d hung up\n", argv[0], i);
+                            printf("Fin de connection d'un Client");
                         else
                             perror("recv() erreur!");
-                        /* close it... */
+                        /* On ferme la cnnection */
                         close(i);
-                        /* remove from master set */
+                        /* Et on l'enleve du master set */
                         FD_CLR(i, &masterset);
+                    }
+                    else //On a un message en attente : on le parse et le redirige
+                    {
+                        temp = strtok(msg, ":");
+                        for (int i = 0;strcmp(tabConnectes[i].pseudo,temp[1], i++){
+                            
+                        }
                     }
                 }
             }
