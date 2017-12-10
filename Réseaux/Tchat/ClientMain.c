@@ -81,7 +81,11 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
 	// 	message[i] = msg[i];
     // printf("%s\n", message);
     
-    //Envoie du pseudo 
+    //Envoie du pseudo , on rajoute "!" pour parser facilement
+    char chaine[] = "!", send_pseudo[100] = {0};
+    strcpy(send_pseudo, pseudo);
+    strcat(send_pseudo,chaine);    
+        
     write(num_socket,pseudo,strlen(pseudo));
 
     //Liste
@@ -97,13 +101,16 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
         bcopy ( (char*) &sock_listening, (char*) &socket_list, sizeof(sock_listening)); 
         //Permet d'ecouter plusieurs descripteurs a la fois
         select(nbclient, &socket_list, 0, 0, 0);
+
+        if (FD_ISSET(0, &sock_listening)) {
         //Nouvelle commande
         strcpy(commande,"");
         gets(commande);
         write(num_socket,commande, strlen(commande));
         close(num_socket);
+        }
     }
-   }
+}
 
 int main(int argc, char* argv[]){
     init();
