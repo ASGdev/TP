@@ -52,7 +52,8 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     struct sockaddr_in  adr_serv, adr_client;     
 	int  num_socket;	
 	char *message; 		
-	char msg[255];
+    char msg[255];
+    char* temp;
     int CheckConnection;
     int recep_message;
     char commande[100];
@@ -74,19 +75,20 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     if (CheckConnection==0)	printf("Connexion OK\n");
 
     //Ecoute le message d'accueil
-    //strcpy(msg,"");
-	// recep_message = read( num_socket, msg, sizeof(msg));
-	// message = (char*)malloc(recep_message*sizeof(char));
-	// for (int i=0; i<recep_message; i++)
-	// 	message[i] = msg[i];
-    // printf("%s\n", message);
+    strcpy(msg,"");
+	recep_message = read( num_socket, msg, sizeof(msg));
+	message = (char*)malloc(recep_message*sizeof(char));
+	for (int i=0; i<recep_message; i++)
+		message[i] = msg[i];
+    printf("%s\n", message);
     
     //Envoie du pseudo , on rajoute "!" pour parser facilement
-    char chaine[] = "!", send_pseudo[100] = {0};
-    strcpy(send_pseudo, pseudo);
-    strcat(send_pseudo,chaine);    
-        
-    write(num_socket,pseudo,strlen(pseudo));
+    temp=(char *) malloc (25*sizeof (char));
+    printf("1");
+    strcpy(temp, pseudo);
+    printf("2");
+    write(num_socket, temp, strlen(temp));  
+    printf("3");
 
     //Liste
     nbclient = getdtablesize();                         
