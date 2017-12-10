@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
                         }
                         printf("New connection accepted\n");
                         //Message d'accueil
-                        char *temp = (char *)malloc(25 * sizeof(char));
+                        char *temp = (char *)malloc(50 * sizeof(char));
                         strcpy(temp, "Bienvenue sur le chat");
                         write(newfd, temp, strlen(temp));
                         //Réception du pseudo
@@ -223,12 +223,27 @@ int main(int argc, char *argv[])
                         strcpy(msg, "");
                         recep_message = read(newfd, msg, sizeof(msg));
                         message = (char *)malloc(recep_message * sizeof(char));
-                        for (int j = 0; j < recep_message; j++)
-                            message[j] = msg[j];
-                        if(message[0]=='?'){
-                            
-                        }else{
 
+                        if (msg[0] == '?')
+                        {
+                        }
+                        else
+                        {   //On forard le message vers le client désigné
+                            strcpy(message, "");
+                            printf("Ca s passe\n");
+                            tempInt = 0;
+                            for (int j = 0; message[j] != ' '; j++)
+                                message[j] = msg[j];
+                            for (int j = 0; strcmp(tabConnectes[j].pseudo, message)!=0; i++)
+                            {
+                                tempInt++;
+                            }
+                            printf("Ca s passe\n");
+                            strcpy(message, "");
+                            for (int j = 0;j < recep_message; j++)
+                                message[j] = msg[j];
+                            char *temp = (char *)malloc(1024 * sizeof(char));
+                            write(tabConnectes[tempInt].numSocket,temp,strlen(temp));
                         }
                     }
                 }
