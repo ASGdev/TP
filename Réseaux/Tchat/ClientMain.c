@@ -90,27 +90,18 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     write(num_socket, temp, strlen(temp));  
     printf("3");
 
-    //Liste
-    nbclient = getdtablesize();                         
-    printf("size tab : %d",nbclient);
-    FD_ZERO(&sock_listening);
-	FD_SET(0, &sock_listening);
-	FD_SET( num_socket, &sock_listening);
+    
 
     //Tant que l'utilisateur ne tape pas "quit", il reste connecté
     while(strcmp(commande,"quit")!=0){
-        //Copie de la liste des sockets
-        bcopy ( (char*) &sock_listening, (char*) &socket_list, sizeof(sock_listening)); 
-        //Permet d'ecouter plusieurs descripteurs a la fois
-        select(nbclient, &socket_list, 0, 0, 0);
+        
 
-        if (FD_ISSET(0, &sock_listening)) {
-        //Nouvelle commande
+        
         strcpy(commande,"");
         gets(commande);
         write(num_socket,commande, strlen(commande));
         close(num_socket);
-        }
+        
     }
 }
 

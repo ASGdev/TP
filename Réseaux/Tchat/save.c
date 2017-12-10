@@ -180,6 +180,15 @@ int main(int argc, char *argv[])
                 }
                 else //Donnée arrivant d'un client
                 {
+                    char liste[5]="liste";
+                    strcpy(msg, "");
+                    recep_message = read(newfd, msg, sizeof(msg));
+                    message = (char *)malloc(recep_message * sizeof(char));
+                    for (int j = 0; j < recep_message; j++)
+                        message[j] = msg[j];
+                    if(strcmp(msg,liste)){
+                        printf("on va afficher la liste");
+                    }
                     /*Idée de l'algo :
                         - Si nom seul : un client demande a communiquer spécifiqueent avec un autre
                         - sinon, c'est un message
