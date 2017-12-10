@@ -226,7 +226,7 @@ int main(int argc, char *argv[])
 
                         if (msg[0] == '?')
                         {
-                            
+                            /*
                             char liste[5] = "liste";
                             strcpy(msg, "");
                             recep_message = read(newfd, msg, sizeof(msg));
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
                             if (strcmp(msg, liste))
                             {
                                 printf("on va afficher la liste");
-                            }
+                            }*/
                         }
                         else
                         { //On forard le message vers le client désigné
