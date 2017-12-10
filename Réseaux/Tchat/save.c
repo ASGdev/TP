@@ -180,16 +180,6 @@ int main(int argc, char *argv[])
                 }
                 else //Donnée arrivant d'un client
                 {
-                    char liste[5]="liste";
-                    strcpy(msg, "");
-                    recep_message = read(newfd, msg, sizeof(msg));
-                    message = (char *)malloc(recep_message * sizeof(char));
-                    for (int j = 0; j < recep_message; j++)
-                        message[j] = msg[j];
-                    printf("%s",message);
-                    if(strcmp(message,liste)){
-                        printf("on va afficher la liste");
-                    }
                     /*Idée de l'algo :
                         - Si nom seul : un client demande a communiquer spécifiqueent avec un autre
                         - sinon, c'est un message
@@ -229,19 +219,30 @@ int main(int argc, char *argv[])
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-
+                        printf("Ca s passe1\n");
                         strcpy(msg, "");
                         recep_message = read(newfd, msg, sizeof(msg));
                         message = (char *)malloc(recep_message * sizeof(char));
 
                         if (msg[0] == '?')
                         {
+                            
+                            char liste[5] = "liste";
+                            strcpy(msg, "");
+                            recep_message = read(newfd, msg, sizeof(msg));
+                            message = (char *)malloc(recep_message * sizeof(char));
+                            for (int j = 0; j < recep_message; j++)
+                                message[j] = msg[j];
+                            if (strcmp(msg, liste))
+                            {
+                                printf("on va afficher la liste");
+                            }
                         }
                         else
                         { //On forard le message vers le client désigné
                             strcpy(message, "");
                             tempInt = 0;
-                            for (int j = 0; message[j] != ' ' && j<recep_message; j++)
+                            for (int j = 0; message[j] != ' ' && j < recep_message; j++)
                                 message[j] = msg[j];
                             printf("Ca s passe1\n");
                             for (int j = 0; strcmp(tabConnectes[j].pseudo, message) != 0; i++)
@@ -253,7 +254,7 @@ int main(int argc, char *argv[])
                             for (int j = 0; j < recep_message; j++)
                                 message[j] = msg[j];
                             char *temp = (char *)malloc(1024 * sizeof(char));
-                             printf("Ca s passe3\n");
+                            printf("Ca s passe3\n");
                             write(tabConnectes[tempInt].numSocket, temp, strlen(temp));
                         }
                     }
