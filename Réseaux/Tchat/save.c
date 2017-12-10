@@ -202,42 +202,7 @@ int main(int argc, char *argv[])
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-                        if (msg[0] == '!') //On recois un pseudo pour les communication
-                        {
-                            tempInt = 1;
-                            memset(temp, 0, sizeof temp);
-                            for (int j = 1; msg[j] != '\n' && j < nbytes; j++)
-                            {
-                                tempInt++;
-                                append(temp, sizeof temp, msg[j]);
-                            }
-                            //Une fois ici, on a le pseudo de la communication
-                            tempInt = 0;
-                            for (int j = 0; tabConnectes[j].numSocket != i; j++)
-                            {
-                                tempInt++;
-                            }
-                            tabConnectes[tempInt].numSocket = -1;
-                            tabConnectes[tempInt].pseudo = "";
-                        }
-                        else if (msg[0] == '?') //On recois une commande serveur
-                        {
-                            //Vue que la seul commande est getlist, on s'embete pas a parser et on envois directe
-                        }
-                        else
-                        {
-                            tempInt = 0;
-                            memset(temp, 0, sizeof temp);
-                            for (int j = 0; msg[j] != ':' && j < nbytes; j++)
-                            {
-                                tempInt++;
-                                append(temp, sizeof temp, msg[j]);
-                            }
-                            //Une fois ici, on a le pseudo de la communication
-                        }
-
-                        //et enfin on nettois le buffer msg pour eviter les erreures
-                        memset(msg, '\n', sizeof msg);
+                        printf("wesh ca yest");
                     }
                 }
             }
