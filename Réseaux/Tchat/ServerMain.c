@@ -1,21 +1,19 @@
 /*Une partie des entête, inclusion et certaine fonction proviennent du site http://broux.developpez.com/articles/c/sockets/
 afin de garantir un dévellopement portable car notre groupe avais des machines linux et windows.*/
 
-
 #ifdef WIN32 /* si vous êtes sous Windows */
 
-#include <winsock2.h> 
+#include <winsock2.h>
 //Il faut compiler avec la commande gcc ServerMain.c -o prog -lws2_32
 
-#elif defined (linux) /* si vous êtes sous Linux */
-
+#elif defined(linux) /* si vous êtes sous Linux */
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
 #include <unistd.h> /* close */
-#include <netdb.h> /* gethostbyname */
+#include <netdb.h>  /* gethostbyname */
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
 #define closesocket(s) close(s)
@@ -31,13 +29,12 @@ typedef struct in_addr IN_ADDR;
 
 int PORT = 9999;
 
-
 static void init(void)
 {
 #ifdef WIN32
     WSADATA wsa;
     int err = WSAStartup(MAKEWORD(2, 2), &wsa);
-    if(err < 0)
+    if (err < 0)
     {
         puts("WSAStartup failed !");
         exit(EXIT_FAILURE);
@@ -52,88 +49,57 @@ static void end(void)
 #endif
 }
 
-int main(int argc, char* argv[]){
-   
-    init();
-    
-    SOCKET sock;
-    SOCKADDR_IN sin;
-    SOCKET client_socket;
-    SOCKADDR_IN csin;
-    char buffer[240] = "";
-    int recsize = (int) sizeof csin;
-    int sock_err,msg_size;
-    char* commande;
-    char* bienvenue;
-    char message[100];
-    int recep_message;
-    char msg[255];
-    /* Si les sockets fonctionnent */
-  
-        sock = socket(AF_INET, SOCK_STREAM, 0);
+int main(int argc, char *argv[])
+{
 
-        /* Si la socket est valide */
-        if (sock != INVALID_SOCKET)
-        {
-            printf("La socket %d est maintenant ouverte en mode TCP/IP\n", sock);
- 
-            /* Configuration */
-            sin.sin_addr.s_addr    = htonl(INADDR_ANY);   /* Adresse IP automatique */
-            sin.sin_family         = AF_INET;             /* Protocole (IP) */
-            sin.sin_port           = htons(PORT);         /* Listage du port */
-            sock_err = bind(sock, (SOCKADDR *) &sin, sizeof sin);
-            
-            /* Si la socket fonctionne */
-            if (sock_err != SOCKET_ERROR)
-            {
-                /* Démarrage du listage (mode server) */
-                sock_err = listen(sock, 5);
-                printf("Listage du port %d...\n", PORT);
- 
-                /* Si la socket fonctionne */
-                if (sock_err != SOCKET_ERROR)
-                {
-                    /* Attente pendant laquelle le client se connecte */
-                    printf("Patientez pendant que le client se connecte sur le port %d...\n", PORT);
- 
-                    client_socket = accept(sock, (SOCKADDR *) &csin, &recsize);
-                    printf("Un client se connecte avec la socket %d de %s:%d\n", client_socket, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
-                    //message de bienvenue
-                    bienvenue=(char *) malloc (23*sizeof (char));
-                    strcpy(bienvenue, "Bienvenue sur le tchat");
-                    write(client_socket, bienvenue, strlen(bienvenue));
-                    /*   msg_size = read(i,message, sizeof(msg));
-                    commande = (char*)malloc(msg_size*sizeof(char));
-                    if (recv(sock, buffer, 32, 0) != SOCKET_ERROR)
-                        printf("Recu : %s\n", buffer);
-                    else
-                        printf("ECHEC : %s\n", buffer);*/
-                    
-                          //Reçoit la comande "quit"
-                    strcpy(msg,"");
-                    recep_message = read( client_socket, msg, sizeof(msg));
-                    commande = (char*)malloc(recep_message*sizeof(char));
-                    printf("ok");
-                    if(strcmp(commande, "quit")==0){
-                        printf("Connexion close");
-                        printf("Fermeture de la socket...\n");
-                        closesocket(sock);
-                        printf("Fermeture du serveur terminee\n");
-                    
-                    }
-                  
- 
-                    
-                }
-            }
- 
-            /* Fermeture de la socket */
-            
-        }
- 
+    /***************** Déclarations des variables ******************/
+    struct sockaddr_in adr_serv, adr_client;
+    int num_socket, num_socket_client;
+    int nombreClients;
+    socklen_t taille = sizeof(struct sockaddr_in);
+    char *recupPseudo;
+    char rcpPseudo[50];
+    char *message;
+    char msg[200];
+    char *temp;
+    char *commande;
+    char cmd[50];
+    struct Connecte
+    {
+        int numSocket;
+        char pseudo[50];
+    };
+    struct Connecte tabConnectes[500];
+    int indiceTabConnectes = 0, nbConnectes = 0;
+    ;
+    fd_set sock_ecoutes, copie_sock_ecoutes;
+    int n, espace = 0, dest = -1, source = -1, lgmes = 0;
+    char *destinataire;
 
-    /* On attend que l'utilisateur tape sur une touche, puis on ferme */
-    getchar();
 
-    end();
+    // Création de la socket client
+    num_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (num_socket != -1)
+        printf("Socket creee correctement\n");
+
+    //Renseignement de la structure sockaddr_in adr_serv
+    adr_serv.sin_family = AF_INET;
+    adr_serv.sin_port = htons(PORT);
+    adr_serv.sin_addr.s_addr = INADDR_ANY;
+
+    //Bind
+    if (bind(num_socket, (struct sockaddr *)&adr_serv, taille) == 0)
+        printf("Bind Done\n"); //else exit(-1);
+
+    //Mise en écoute de la socket
+    if (listen(num_socket, SOMAXCONN) == 0)
+        printf("Listen ON\n");
+
+    //Initialisation de la liste des sockets
+    nombreClients = getdtablesize();
+    FD_ZERO(&sock_ecoutes);
+    FD_SET(num_socket, &sock_ecoutes);
+
+    //Initialisation des sockets terminee
+    printf("Initialisation terminee\n\nBienvenue sur le Serveur\n\n");
 }
