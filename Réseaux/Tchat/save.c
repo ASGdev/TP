@@ -153,13 +153,14 @@ int main(int argc, char *argv[])
                             fdmax = newfd;
                         }
                         printf("New connection accepted\n");
+                        /*
                         //Et on ajoute les infos de la connections (uniqument le fd au début)
                         tempInt = 0;
                         for (int j = 0; tabConnectes[j].numSocket != -1; j++)
                         {
                             tempInt++;
                         }
-                        tabConnectes[tempInt].numSocket = i;
+                        tabConnectes[tempInt].numSocket = i;*/
                     }
                 }
                 else //Donnée arrivant d'un client
@@ -191,14 +192,16 @@ int main(int argc, char *argv[])
                         close(i);
                         /* Et on l'enleve du master set */
                         FD_CLR(i, &masterset);
+
                         //Et on l'enleve de la table de connection
+                        /*
                         tempInt = 0;
                         for (int j = 0; tabConnectes[j].numSocket != i; j++)
                         {
                             tempInt++;
                         }
                         tabConnectes[tempInt].numSocket = -1;
-                        tabConnectes[tempInt].pseudo = "";
+                        tabConnectes[tempInt].pseudo = "";*/
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
