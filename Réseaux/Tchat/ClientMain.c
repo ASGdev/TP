@@ -86,17 +86,14 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     temp=(char *) malloc (50*sizeof (char));
     strcpy(temp, pseudo);
     write(num_socket, temp, strlen(temp));  
-    
-
-    printf("1");
 
     //Tant que l'utilisateur ne tape pas "quit", il reste connecté
     while(strcmp(commande,"quit")!=0){
-        //Nouvelle commande
+        printf(">");
+        //Nouvelle commande;
         strcpy(commande,"");
-        printf("1");
-        scanf("%s",commande);
-        printf("%s",commande);
+        scanf("%s",&commande);
+        printf("Commande envoyé : %s\n",commande);
         write(num_socket,commande, strlen(commande));
     }
     close(num_socket);

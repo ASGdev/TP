@@ -222,20 +222,12 @@ int main(int argc, char *argv[])
                         printf("Ca s passe1\n");
                         strcpy(msg, "");
                         recep_message = read(i, msg, sizeof(msg));
+                        printf("On affiche %s",msg);
                         message = (char *)malloc(recep_message * sizeof(char));
 
                         if (msg[0] == '?')
                         {
-                            char liste[5] = "liste";
-                            strcpy(msg, "");
-                            recep_message = read(newfd, msg, sizeof(msg));
-                            message = (char *)malloc(recep_message * sizeof(char));
-                            for (int j = 0; j < recep_message; j++)
-                                message[j] = msg[j];
-                            if (strcmp(msg, liste))
-                            {
-                                printf("on va afficher la liste");
-                            }
+                            printf("on va afficher la liste");
                         }
                         else
                         { //On forard le message vers le client désigné
