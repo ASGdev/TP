@@ -225,8 +225,18 @@ int main(int argc, char *argv[])
                         message = (char *)malloc(recep_message * sizeof(char));
 
                         if (msg[0] == '?')
-                        {                        
-                            printf("on va afficher la liste");
+                        {
+                            /*
+                            char liste[5] = "liste";
+                            strcpy(msg, "");
+                            recep_message = read(newfd, msg, sizeof(msg));
+                            message = (char *)malloc(recep_message * sizeof(char));
+                            for (int j = 0; j < recep_message; j++)
+                                message[j] = msg[j];
+                            if (strcmp(msg, liste))
+                            {
+                                printf("on va afficher la liste");
+                            }*/
                         }
                         else
                         { //On forard le message vers le client désigné
