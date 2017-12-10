@@ -120,12 +120,10 @@ int main(int argc, char* argv[]){
 
     
 
-void client(unsigned long add_IP,int port,char* pseudo){
-    
-    }
 
 
 
 
 
 >>>>>>> master
+
