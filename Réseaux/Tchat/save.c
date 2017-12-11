@@ -157,25 +157,25 @@ int main(int argc, char *argv[])
                         char *temp = (char *)malloc(50 * sizeof(char));
                         strcpy(temp, "Bienvenue sur le chat");
                         write(newfd, temp, strlen(temp));
+                        
                         //Réception du pseudo
-                        char *pseudo_rcv;
-                        strcpy(msg, "");
-                        recep_message = read(newfd, msg, sizeof(msg));
-                        pseudo_rcv = (char *)malloc(recep_message * sizeof(char));
-                        for (int j = 0; j < recep_message; j++)
-                            pseudo_rcv[j] = msg[j];
-                        printf("%s vient de se connecter\n", pseudo_rcv);
-
-
-                        //Et on ajoute les infos de la connections
-                        tempInt = 0;
-                        for (int j = 0; tabConnectes[j].numSocket != -1; j++)
-                        {
-                            tempInt++;
-                        }
-                        tabConnectes[tempInt].numSocket = i;
-                        tabConnectes[tempInt].pseudo = message;
+                    char *pseudo_rcv;
+                    strcpy(msg, "");
+                    recep_message = read(newfd, msg, sizeof(msg));
+                    pseudo_rcv = (char *)malloc(recep_message * sizeof(char));
+                    for (int j = 0; j < recep_message; j++)
+                        pseudo_rcv[j] = msg[j];
+                    printf("%s vient de se connecter\n", pseudo_rcv);
+                    //Et on ajoute les infos de la connections
+                    tempInt = 0;
+                    while(tabConnectes[tempInt].numSocket != -1)
+                    {
+                        tempInt++;
                     }
+                    tabConnectes[tempInt].numSocket = i;
+                    tabConnectes[tempInt].pseudo = pseudo_rcv;
+                    }
+                    
                 }
                 else //Donnée arrivant d'un client
                 {
@@ -188,8 +188,14 @@ int main(int argc, char *argv[])
                         message[i] = msg[i];
                     if(strcmp(message,liste)==0){
                         char *temp_list = (char *)malloc(50 * sizeof(char));
-                        printf("pseudo :  %s",tabConnectes[i].pseudo);
-                        strcpy(temp_list, "toto");
+                        int parcours=0;
+                        while(tabConnectes[parcours].numSocket != -1)
+                        {
+                            strcat(temp_list, tabConnectes[parcours].pseudo);
+                            strcat(temp_list," ");
+                            parcours++;
+                        }
+                        
                         write(i, temp_list, strlen(temp_list));
                     }
                     else{

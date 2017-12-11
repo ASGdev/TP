@@ -116,6 +116,8 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
         printf("%s\n", message);
         
     }
+    free(temp);
+    free(commande);
     close(num_socket);
 }
 
