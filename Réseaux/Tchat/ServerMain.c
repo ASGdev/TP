@@ -76,6 +76,8 @@ int main(int argc, char *argv[])
     /* nombre max de file descriptor */
     int fdmax;
     char msg[SIZE];
+    int recep_message;
+    char *message;
     int nbytes; // quantité d'octet lu pour le buffer
     struct Connecte
     {
@@ -137,6 +139,7 @@ int main(int argc, char *argv[])
         //On itère sur les données a lire, i donne le fd (i == fd)
         for (int i = 0; i <= fdmax; i++)
         {
+
             if (FD_ISSET(i, &tempset))
             { //On a une donnée a lire sur l'indice i
                 if (i == listener_socket)
@@ -153,13 +156,26 @@ int main(int argc, char *argv[])
                             fdmax = newfd;
                         }
                         printf("New connection accepted\n");
-                        //Et on ajoute les infos de la connections (uniqument le fd au début)
+                        //Message d'accueil
+                        char *temp = (char *)malloc(50 * sizeof(char));
+                        strcpy(temp, "Bienvenue sur le chat");
+                        write(newfd, temp, strlen(temp));
+                        //Réception du pseudo
+                        strcpy(msg, "");
+                        recep_message = read(newfd, msg, sizeof(msg));
+                        message = (char *)malloc(recep_message * sizeof(char));
+                        for (int j = 0; j < recep_message; j++)
+                            message[j] = msg[j];
+                        printf("%s vient de se connecter\n", message);
+
+                        //Et on ajoute les infos de la connections
                         tempInt = 0;
                         for (int j = 0; tabConnectes[j].numSocket != -1; j++)
                         {
                             tempInt++;
                         }
                         tabConnectes[tempInt].numSocket = i;
+                        tabConnectes[tempInt].pseudo = message;
                     }
                 }
                 else //Donnée arrivant d'un client
@@ -179,65 +195,42 @@ int main(int argc, char *argv[])
                     /* On gère maintenant les données clients */
                     /* Erreur ou connecion close par le client */
                     if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
-
                     {
 
                         if (nbytes == 0)
                             /* connection closed */
-                            printf("Fin de connection d'un Client");
+                            printf("Fin de connection du client %s", tabConnectes[i].pseudo);
                         else
                             perror("recv() erreur!");
                         /* On ferme la cnnection */
                         close(i);
                         /* Et on l'enleve du master set */
                         FD_CLR(i, &masterset);
+
                         //Et on l'enleve de la table de connection
+                        /*
                         tempInt = 0;
                         for (int j = 0; tabConnectes[j].numSocket != i; j++)
                         {
                             tempInt++;
                         }
                         tabConnectes[tempInt].numSocket = -1;
-                        tabConnectes[tempInt].pseudo = "";
+                        tabConnectes[tempInt].pseudo = "";*/
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-                        if (msg[0] == '!') //On recois un pseudo pour les communication
+                        for (int j = 0; j <= fdmax; j++)
                         {
-                            tempInt = 1;
-                            memset(temp, 0, sizeof temp);
-                            for (int j = 1; msg[j] != '\n' && j < nbytes; j++)
+                            if (FD_ISSET(j, &masterset))
                             {
-                                tempInt++;
-                                append(temp, sizeof temp, msg[j]);
+                                /* except the listener and ourselves */
+                                if (j != listener_socket && j != i)
+                                {
+                                    if (send(j, msg, nbytes, 0) == -1)
+                                        perror("send() erreur!");
+                                }
                             }
-                            //Une fois ici, on a le pseudo de la communication
-                            tempInt = 0;
-                            for (int j = 0; tabConnectes[j].numSocket != i; j++)
-                            {
-                                tempInt++;
-                            }
-                            tabConnectes[tempInt].numSocket = -1;
-                            tabConnectes[tempInt].pseudo = "";
                         }
-                        else if (msg[0] == '?') //On recois une commande serveur
-                        {
-                            //Vue que la seul commande est getlist, on s'embete pas a parser et on envois directe
-                        }
-                        else
-                        {
-                            tempInt = 0;
-                            memset(temp, 0, sizeof temp);
-                            for (int j = 0; msg[j] != ':' && j < nbytes; j++)
-                            {
-                                tempInt++;
-                                append(temp, sizeof temp, msg[j]);
-                            }
-                            //Une fois ici, on a le pseudo de la communication
-                        }
-
-                        //et enfin on nettois le buffer msg pour eviter les erreures
-                        memset(msg, '\n', sizeof msg);
                     }
                 }
             }
