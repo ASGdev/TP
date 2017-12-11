@@ -96,14 +96,15 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     temp=(char *) malloc (50*sizeof (char));
     strcpy(temp, pseudo);
     write(num_socket, temp, strlen(temp));  
-
+    char liste[5]="liste";
+   
+    char* commande= (char*) malloc(50*sizeof(char));
     //Tant que l'utilisateur ne tape pas "quit", il reste connecté
     while(strcmp(commande,"quit")!=0){
-        printf(">");
-        //Nouvelle commande;
-        strcpy(commande,"");
-        scanf("%s",&commande);
-        printf("Commande envoyé : %s\n",commande);
+        //Nouvelle commande
+        printf("Rentrez une commande : ");   
+        fgets(commande,sizeof(commande),stdin);
+        search(commande);
         write(num_socket,commande, strlen(commande));
 
         //Ecoute le retour

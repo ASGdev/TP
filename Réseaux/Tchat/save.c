@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     int fdmax;
     char msg[255];
     int recep_message;
-    char *message;
+    char* message;
     int nbytes; // quantité d'octet lu pour le buffer
     struct Connecte
     {
@@ -158,12 +158,13 @@ int main(int argc, char *argv[])
                         strcpy(temp, "Bienvenue sur le chat");
                         write(newfd, temp, strlen(temp));
                         //Réception du pseudo
+                        char *pseudo_rcv;
                         strcpy(msg, "");
                         recep_message = read(newfd, msg, sizeof(msg));
-                        message = (char *)malloc(recep_message * sizeof(char));
+                        pseudo_rcv = (char *)malloc(recep_message * sizeof(char));
                         for (int j = 0; j < recep_message; j++)
-                            message[j] = msg[j];
-                        printf("%s vient de se connecter\n", message);
+                            pseudo_rcv[j] = msg[j];
+                        printf("%s vient de se connecter\n", pseudo_rcv);
 
 
                         //Et on ajoute les infos de la connections
@@ -187,6 +188,7 @@ int main(int argc, char *argv[])
                         message[i] = msg[i];
                     if(strcmp(message,liste)==0){
                         char *temp_list = (char *)malloc(50 * sizeof(char));
+                        printf("pseudo :  %s",tabConnectes[i].pseudo);
                         strcpy(temp_list, "toto");
                         write(i, temp_list, strlen(temp_list));
                     }
@@ -251,4 +253,5 @@ int main(int argc, char *argv[])
             }
         }
     }
+}
 }
