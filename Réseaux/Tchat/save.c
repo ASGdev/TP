@@ -180,13 +180,13 @@ int main(int argc, char *argv[])
                 else //Donnée arrivant d'un client
                 {
                     char liste[5] = "liste";
-                    char quit[4] = "quit";
                     strcpy(msg,"");
                     recep_message = read(i, msg, sizeof(msg));
                     message = (char*)malloc(recep_message*sizeof(char));
                     for (int i=0; i<recep_message; i++)
                         message[i] = msg[i];
-                    if(strcmp(message,liste)==0){
+                    
+                        if(strcmp(message,liste)==0){
                         char *temp_list = (char *)malloc(50 * sizeof(char));
                         int parcours=0;
                         while(tabConnectes[parcours].numSocket != -1)
@@ -198,66 +198,41 @@ int main(int argc, char *argv[])
                         
                         write(i, temp_list, strlen(temp_list));
                     }
-                    else{
-
-                    printf("damn not");
-                    /* On gère maintenant les données clients */
-                    /* Erreur ou connecion close par le client */
-                    if (strcmp(message,quit)==0)
-                    {
-                        /* connection closed */
-                        printf("Fin de connection du client %s", tabConnectes[i].pseudo);
-                        
-                        /* On ferme la cnnection */
-                        close(i);
-                        /* Et on l'enleve du master set */
-                        FD_CLR(i, &masterset);
-
-                        //Et on l'enleve de la table de connection
-                        /*
-                        tempInt = 0;
-                        for (int j = 0; tabConnectes[j].numSocket != i; j++)
+                    if (strcmp(message,"quit")==0)
                         {
-                            tempInt++;
-                        }
-                        tabConnectes[tempInt].numSocket = -1;
-                        tabConnectes[tempInt].pseudo = "";*/
-                    }
-                    else //On a un message en attente : on le parse et le redirige
-                    {
-                        printf("Ca s passe1\n");
-                        strcpy(msg, "");
-                        recep_message = read(i, msg, sizeof(msg));
-                        printf("On affiche %s",msg);
-                        message = (char *)malloc(recep_message * sizeof(char));
+                            /* connection closed */
+                            printf("Fin de connection du client %s \n", tabConnectes[tempInt].pseudo);
+                            tabConnectes[tempInt].pseudo = "";
+                            /* On ferme la cnnection */
+                            close(i);
+                            tabConnectes[tempInt].numSocket = -1;
+                            /* Et on l'enleve du master set */
+                            FD_CLR(i, &masterset);
 
-                        if (msg[0] == '?')
+                           
+                        }
+                    if(strcmp(message,"quit")!=0 && strcmp(message,"liste")!=0)
                         {
-                            printf("on va afficher la liste");
+                                strcpy(message, "");
+                                tempInt = 0;
+                                for (int j = 0; message[j] != ' ' && j < recep_message; j++)
+                                    message[j] = msg[j];
+                                printf("Ca s passe1\n");
+                                for (int j = 0; strcmp(tabConnectes[j].pseudo, message) != 0; i++)
+                                {
+                                    tempInt++;
+                                }
+                                printf("Ca s passe2\n");
+                                strcpy(message, "");
+                                for (int j = 0; j < recep_message; j++)
+                                    message[j] = msg[j];
+                                char *temp = (char *)malloc(1024 * sizeof(char));
+                                printf("Ca s passe3\n");
+                                write(tabConnectes[tempInt].numSocket, temp, strlen(temp));
                         }
-                        else
-                        { //On forard le message vers le client désigné
-                            strcpy(message, "");
-                            tempInt = 0;
-                            for (int j = 0; message[j] != ' ' && j < recep_message; j++)
-                                message[j] = msg[j];
-                            printf("Ca s passe1\n");
-                            for (int j = 0; strcmp(tabConnectes[j].pseudo, message) != 0; i++)
-                            {
-                                tempInt++;
-                            }
-                            printf("Ca s passe2\n");
-                            strcpy(message, "");
-                            for (int j = 0; j < recep_message; j++)
-                                message[j] = msg[j];
-                            char *temp = (char *)malloc(1024 * sizeof(char));
-                            printf("Ca s passe3\n");
-                            write(tabConnectes[tempInt].numSocket, temp, strlen(temp));
-                        }
-                    }
                 }
             }
         }
     }
 }
-}
+

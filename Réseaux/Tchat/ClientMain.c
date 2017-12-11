@@ -105,6 +105,9 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
         printf("Rentrez une commande : ");   
         fgets(commande,sizeof(commande),stdin);
         search(commande);
+        if(strcmp(commande,"quit")==0){
+            printf("On a bien quit fdp");
+        }
         write(num_socket,commande, strlen(commande));
 
         //Ecoute le retour
@@ -117,7 +120,7 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
         
     }
     free(temp);
-    free(commande);
+    
     close(num_socket);
 }
 
