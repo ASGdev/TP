@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     int newfd;
     /* nombre max de file descriptor */
     int fdmax;
-    char msg[SIZE];
+    char msg[255];
     int recep_message;
     char *message;
     int nbytes; // quantité d'octet lu pour le buffer
@@ -133,9 +133,6 @@ int main(int argc, char *argv[])
             printf("Server-select() a planté\n");
             exit(1);
         }
-
-        printf("Server-select() ON\n");
-
         //On itère sur les données a lire, i donne le fd (i == fd)
         for (int i = 0; i <= fdmax; i++)
         {
@@ -168,6 +165,7 @@ int main(int argc, char *argv[])
                             message[j] = msg[j];
                         printf("%s vient de se connecter\n", message);
 
+
                         //Et on ajoute les infos de la connections
                         tempInt = 0;
                         for (int j = 0; tabConnectes[j].numSocket != -1; j++)
@@ -180,28 +178,28 @@ int main(int argc, char *argv[])
                 }
                 else //Donnée arrivant d'un client
                 {
-                    /*Idée de l'algo :
-                        - Si nom seul : un client demande a communiquer spécifiqueent avec un autre
-                        - sinon, c'est un message
-                        donc on fait ca sous la forme suivante "Nom: Message"
-                        On parse ce qu'il y a avant les deux point (donc pseudo sans :), et on le match
-                        avec notre lsite de connecter, et ensuite on l'expédie sous la meme forme.
-                        On pensera a remplacer le nom par celui de l'expéditeur cependant.
-                        Un client peut set son pseudo en envoyant sous la forme "!Peudo", ler serveur
-                        le détecte et l'inscrit.
-                        Le client peut taper des commndes server en tapant "?Command"
-                    */
+                    char liste[5] = "liste";
+                    char quit[4] = "quit";
+                    strcpy(msg,"");
+                    recep_message = read(i, msg, sizeof(msg));
+                    message = (char*)malloc(recep_message*sizeof(char));
+                    for (int i=0; i<recep_message; i++)
+                        message[i] = msg[i];
+                    if(strcmp(message,liste)==0){
+                        char *temp_list = (char *)malloc(50 * sizeof(char));
+                        strcpy(temp_list, "toto");
+                        write(i, temp_list, strlen(temp_list));
+                    }
+                    else{
 
+                    printf("damn not");
                     /* On gère maintenant les données clients */
                     /* Erreur ou connecion close par le client */
-                    if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
+                    if (strcmp(message,quit)==0)
                     {
-
-                        if (nbytes == 0)
-                            /* connection closed */
-                            printf("Fin de connection du client %s", tabConnectes[i].pseudo);
-                        else
-                            perror("recv() erreur!");
+                        /* connection closed */
+                        printf("Fin de connection du client %s", tabConnectes[i].pseudo);
+                        
                         /* On ferme la cnnection */
                         close(i);
                         /* Et on l'enleve du master set */
@@ -219,27 +217,7 @@ int main(int argc, char *argv[])
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-                        printf("Ca s passe1\n");
-                        strcpy(msg, "");
-                        recep_message = read(i, msg, sizeof(msg));
-                        message = (char *)malloc(recep_message * sizeof(char));
-
-                        if (msg[0] == '?')
-                        {
-                            /*
-                            char liste[5] = "liste";
-                            strcpy(msg, "");
-                            recep_message = read(newfd, msg, sizeof(msg));
-                            message = (char *)malloc(recep_message * sizeof(char));
-                            for (int j = 0; j < recep_message; j++)
-                                message[j] = msg[j];
-                            if (strcmp(msg, liste))
-                            {
-                                printf("on va afficher la liste");
-                            }*/
-                        }
-                        else
-                        { //On forard le message vers le client désigné
+                        //Ecoute le message d'accueil
                             strcpy(message, "");
                             tempInt = 0;
                             for (int j = 0; message[j] != ' ' && j < recep_message; j++)

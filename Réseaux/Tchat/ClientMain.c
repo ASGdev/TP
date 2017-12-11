@@ -48,6 +48,17 @@ static void end(void)
 
 //Implémentation Client
 
+static void search(char *chaine)
+{
+    char *p = strchr(chaine, '\n');
+    if (p)
+    {
+        *p = 0;
+    }
+}
+
+
+
 void client(unsigned long add_IP,unsigned long port, char* pseudo){
     struct sockaddr_in  adr_serv, adr_client;     
 	int  num_socket;	
@@ -56,7 +67,6 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     char* temp;
     int CheckConnection;
     int recep_message;
-    char commande[100];
     int nbclient;
     fd_set sock_listening, socket_list;
     
@@ -86,18 +96,25 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     temp=(char *) malloc (50*sizeof (char));
     strcpy(temp, pseudo);
     write(num_socket, temp, strlen(temp));  
-    
-
-    printf("1");
-
+    char liste[5]="liste";
+   
+    char* commande= (char*) malloc(50*sizeof(char));
     //Tant que l'utilisateur ne tape pas "quit", il reste connecté
     while(strcmp(commande,"quit")!=0){
         //Nouvelle commande
-        strcpy(commande,"");
-        printf("1");
-        scanf("%s",commande);
-        printf("%s",commande);
+        printf("Rentrez une commande : ");   
+        fgets(commande,sizeof(commande),stdin);
+        search(commande);
         write(num_socket,commande, strlen(commande));
+
+        //Ecoute le retour
+        strcpy(msg,"");
+        recep_message = read( num_socket, msg, sizeof(msg));
+        message = (char*)malloc(recep_message*sizeof(char));
+        for (int i=0; i<recep_message; i++)
+            message[i] = msg[i];
+        printf("%s\n", message);
+        
     }
     close(num_socket);
 }
