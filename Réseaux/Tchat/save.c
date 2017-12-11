@@ -217,7 +217,18 @@ int main(int argc, char *argv[])
                     }
                     else //On a un message en attente : on le parse et le redirige
                     {
-                        //Ecoute le message d'accueil
+                        printf("Ca s passe1\n");
+                        strcpy(msg, "");
+                        recep_message = read(i, msg, sizeof(msg));
+                        printf("On affiche %s",msg);
+                        message = (char *)malloc(recep_message * sizeof(char));
+
+                        if (msg[0] == '?')
+                        {
+                            printf("on va afficher la liste");
+                        }
+                        else
+                        { //On forard le message vers le client désigné
                             strcpy(message, "");
                             tempInt = 0;
                             for (int j = 0; message[j] != ' ' && j < recep_message; j++)
