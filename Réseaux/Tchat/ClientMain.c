@@ -67,8 +67,7 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
     char* temp;
     int CheckConnection;
     int recep_message;
-    int nbclient;
-    fd_set sock_listening, socket_list;
+    
     
 
 
@@ -92,22 +91,18 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
 		message[i] = msg[i];
     printf("%s\n", message);
 
-    //Envoie du pseudo , on rajoute "!" pour parser facilement
+    //Envoie du pseudo
     temp=(char *) malloc (50*sizeof (char));
     strcpy(temp, pseudo);
     write(num_socket, temp, strlen(temp));  
-    char liste[5]="liste";
+    
    
     char* commande= (char*) malloc(50*sizeof(char));
     //Tant que l'utilisateur ne tape pas "quit", il reste connecté
     while(strcmp(commande,"quit")!=0){
-        //Nouvelle commande
-        printf("Rentrez une commande : ");   
+        //Nouvelle commande 
         fgets(commande,sizeof(commande),stdin);
         search(commande);
-        if(strcmp(commande,"quit")==0){
-            printf("On a bien quit fdp");
-        }
         write(num_socket,commande, strlen(commande));
 
         //Ecoute le retour
@@ -117,10 +112,8 @@ void client(unsigned long add_IP,unsigned long port, char* pseudo){
         for (int i=0; i<recep_message; i++)
             message[i] = msg[i];
         printf("%s\n", message);
-        
     }
     free(temp);
-    
     close(num_socket);
 }
 
@@ -129,7 +122,6 @@ int main(int argc, char* argv[]){
     unsigned long add_IP;
     unsigned short port;
     char* pseudo;
-
     //On lit les paramètres entrées en commande
     switch (argc){
 		case 4 :

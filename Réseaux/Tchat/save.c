@@ -179,14 +179,13 @@ int main(int argc, char *argv[])
                 }
                 else //Donnée arrivant d'un client
                 {
-                    char liste[5] = "liste";
                     strcpy(msg,"");
                     recep_message = read(i, msg, sizeof(msg));
                     message = (char*)malloc(recep_message*sizeof(char));
                     for (int i=0; i<recep_message; i++)
                         message[i] = msg[i];
                     
-                        if(strcmp(message,liste)==0){
+                    if(strcmp(message,"liste")==0){
                         char *temp_list = (char *)malloc(50 * sizeof(char));
                         int parcours=0;
                         while(tabConnectes[parcours].numSocket != -1)
@@ -212,23 +211,35 @@ int main(int argc, char *argv[])
                            
                         }
                     if(strcmp(message,"quit")!=0 && strcmp(message,"liste")!=0)
-                        {
-                                strcpy(message, "");
-                                tempInt = 0;
-                                for (int j = 0; message[j] != ' ' && j < recep_message; j++)
-                                    message[j] = msg[j];
-                                printf("Ca s passe1\n");
-                                for (int j = 0; strcmp(tabConnectes[j].pseudo, message) != 0; i++)
-                                {
-                                    tempInt++;
-                                }
-                                printf("Ca s passe2\n");
-                                strcpy(message, "");
-                                for (int j = 0; j < recep_message; j++)
-                                    message[j] = msg[j];
-                                char *temp = (char *)malloc(1024 * sizeof(char));
-                                printf("Ca s passe3\n");
-                                write(tabConnectes[tempInt].numSocket, temp, strlen(temp));
+                         {
+                            int p=0;
+                            int temp_bis=0;
+                            char message_send[500];
+                            char pseudo_bis[50];
+                            
+                            char str[80] = "robert coucou";
+                            const char s[2] = " ";
+                            char *token;
+                        //     /* get the first token */
+                            token = strtok(str, s);
+                            strcpy(pseudo_bis,token);
+                             /* walk through other tokens */
+                            while( token != NULL ) {
+                                token = strtok(NULL, s);
+                                strcat(message_send,token);
+                            }
+
+                        //     // token = strtok(message," ");
+                        //     // printf("pseudo envoyé : %s",token);
+                        //     // strcpy(pseudo_bis,token);
+                        //     // while(token != NULL){
+                        //     //     token=strtok(NULL," ");
+                        //     //     strcat(message_send,token);
+                        //     // }
+                        //     while(strcmp(tabConnectes[temp_bis].pseudo,pseudo_bis)!=0){
+                        //         temp_bis++;
+                        //     }
+                        //     write(tabConnectes[temp_bis].numSocket, message_send, strlen(message_send));
                         }
                 }
             }
