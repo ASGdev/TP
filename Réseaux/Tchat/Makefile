@@ -2,7 +2,7 @@
 CC=gcc
 CFLAGS=-W -Wall -ansi -pedantic
 LDFLAGS=
-EXEC=ServerMain ClientMain save
+EXEC=ServerMain ClientMain
 
 all: $(EXEC)
 
@@ -11,9 +11,6 @@ ServerMain: ServerMain.c
 
 ClientMain: ClientMain.c
 	$(CC) ClientMain.c -o ClientMain   $(LDFLAGS)
-
-save: ServerMain.c
-	$(CC) save.c -o save   $(LDFLAGS)
 
 mrproper:
 	rm -rf *.o

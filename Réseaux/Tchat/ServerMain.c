@@ -75,9 +75,9 @@ int main(int argc, char *argv[])
     int newfd;
     /* nombre max de file descriptor */
     int fdmax;
-    char msg[SIZE];
+    char msg[255];
     int recep_message;
-    char *message;
+    char* message;
     int nbytes; // quantité d'octet lu pour le buffer
     struct Connecte
     {
@@ -133,13 +133,10 @@ int main(int argc, char *argv[])
             printf("Server-select() a planté\n");
             exit(1);
         }
-
-        printf("Server-select() ON\n");
-
         //On itère sur les données a lire, i donne le fd (i == fd)
         for (int i = 0; i <= fdmax; i++)
         {
-
+            
             if (FD_ISSET(i, &tempset))
             { //On a une donnée a lire sur l'indice i
                 if (i == listener_socket)
@@ -160,80 +157,93 @@ int main(int argc, char *argv[])
                         char *temp = (char *)malloc(50 * sizeof(char));
                         strcpy(temp, "Bienvenue sur le chat");
                         write(newfd, temp, strlen(temp));
+                        
                         //Réception du pseudo
-                        strcpy(msg, "");
-                        recep_message = read(newfd, msg, sizeof(msg));
-                        message = (char *)malloc(recep_message * sizeof(char));
-                        for (int j = 0; j < recep_message; j++)
-                            message[j] = msg[j];
-                        printf("%s vient de se connecter\n", message);
-
-                        //Et on ajoute les infos de la connections
-                        tempInt = 0;
-                        for (int j = 0; tabConnectes[j].numSocket != -1; j++)
-                        {
-                            tempInt++;
-                        }
-                        tabConnectes[tempInt].numSocket = i;
-                        tabConnectes[tempInt].pseudo = message;
+                    char *pseudo_rcv;
+                    strcpy(msg, "");
+                    recep_message = read(newfd, msg, sizeof(msg));
+                    pseudo_rcv = (char *)malloc(recep_message * sizeof(char));
+                    for (int j = 0; j < recep_message; j++)
+                        pseudo_rcv[j] = msg[j];
+                    printf("%s vient de se connecter\n", pseudo_rcv);
+                    //Et on ajoute les infos de la connections
+                    tempInt = 0;
+                    while(tabConnectes[tempInt].numSocket != -1)
+                    {
+                        tempInt++;
                     }
+                    tabConnectes[tempInt].numSocket = i;
+                    tabConnectes[tempInt].pseudo = pseudo_rcv;
+                    }
+                    
                 }
                 else //Donnée arrivant d'un client
                 {
-                    /*Idée de l'algo :
-                        - Si nom seul : un client demande a communiquer spécifiqueent avec un autre
-                        - sinon, c'est un message
-                        donc on fait ca sous la forme suivante "Nom: Message"
-                        On parse ce qu'il y a avant les deux point (donc pseudo sans :), et on le match
-                        avec notre lsite de connecter, et ensuite on l'expédie sous la meme forme.
-                        On pensera a remplacer le nom par celui de l'expéditeur cependant.
-                        Un client peut set son pseudo en envoyant sous la forme "!Peudo", ler serveur
-                        le détecte et l'inscrit.
-                        Le client peut taper des commndes server en tapant "?Command"
-                    */
-
-                    /* On gère maintenant les données clients */
-                    /* Erreur ou connecion close par le client */
-                    if ((nbytes = recv(i, msg, sizeof(msg), 0)) <= 0)
-                    {
-
-                        if (nbytes == 0)
+                    strcpy(msg,"");
+                    recep_message = read(i, msg, sizeof(msg));
+                    message = (char*)malloc(recep_message*sizeof(char));
+                    for (int i=0; i<recep_message; i++)
+                        message[i] = msg[i];
+                    
+                    if(strcmp(message,"liste")==0){
+                        char *temp_list = (char *)malloc(50 * sizeof(char));
+                        int parcours=0;
+                        while(tabConnectes[parcours].numSocket != -1)
+                        {
+                            strcat(temp_list, tabConnectes[parcours].pseudo);
+                            strcat(temp_list," ");
+                            parcours++;
+                        }
+                        
+                        write(i, temp_list, strlen(temp_list));
+                    }
+                    if (strcmp(message,"quit")==0)
+                        {
                             /* connection closed */
-                            printf("Fin de connection du client %s", tabConnectes[i].pseudo);
-                        else
-                            perror("recv() erreur!");
-                        /* On ferme la cnnection */
-                        close(i);
-                        /* Et on l'enleve du master set */
-                        FD_CLR(i, &masterset);
+                            printf("Fin de connection du client %s \n", tabConnectes[tempInt].pseudo);
+                            tabConnectes[tempInt].pseudo = "";
+                            /* On ferme la cnnection */
+                            close(i);
+                            tabConnectes[tempInt].numSocket = -1;
+                            /* Et on l'enleve du master set */
+                            FD_CLR(i, &masterset);
 
-                        //Et on l'enleve de la table de connection
-                        /*
-                        tempInt = 0;
-                        for (int j = 0; tabConnectes[j].numSocket != i; j++)
-                        {
-                            tempInt++;
+                           
                         }
-                        tabConnectes[tempInt].numSocket = -1;
-                        tabConnectes[tempInt].pseudo = "";*/
-                    }
-                    else //On a un message en attente : on le parse et le redirige
-                    {
-                        for (int j = 0; j <= fdmax; j++)
-                        {
-                            if (FD_ISSET(j, &masterset))
-                            {
-                                /* except the listener and ourselves */
-                                if (j != listener_socket && j != i)
-                                {
-                                    if (send(j, msg, nbytes, 0) == -1)
-                                        perror("send() erreur!");
-                                }
+                    if(strcmp(message,"quit")!=0 && strcmp(message,"liste")!=0)
+                         {
+                            int p=0;
+                            int temp_bis=0;
+                            char message_send[500];
+                            char pseudo_bis[50];
+                            
+                            char str[80] = "robert coucou";
+                            const char s[2] = " ";
+                            char *token;
+                        //     /* get the first token */
+                            token = strtok(str, s);
+                            strcpy(pseudo_bis,token);
+                             /* walk through other tokens */
+                            while( token != NULL ) {
+                                token = strtok(NULL, s);
+                                strcat(message_send,token);
                             }
+                        
+                        //     // token = strtok(message," ");
+                        //     // printf("pseudo envoyé : %s",token);
+                        //     // strcpy(pseudo_bis,token);
+                        //     // while(token != NULL){
+                        //     //     token=strtok(NULL," ");
+                        //     //     strcat(message_send,token);
+                        //     // }
+                        //     while(strcmp(tabConnectes[temp_bis].pseudo,pseudo_bis)!=0){
+                        //         temp_bis++;
+                        //     }
+                        //     write(tabConnectes[temp_bis].numSocket, message_send, strlen(message_send));
                         }
-                    }
                 }
             }
         }
     }
 }
+
