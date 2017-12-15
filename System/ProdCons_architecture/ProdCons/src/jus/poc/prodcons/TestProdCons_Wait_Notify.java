@@ -4,7 +4,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
-public class TestProdCons_Wait_Notify extends Simulateur{
+public class TestProdCons_Wait_Notify  extends Simulateur {
+	
 
 	public TestProdCons_Wait_Notify(Observateur observateur) {
 		super(observateur);
@@ -34,5 +35,4 @@ public class TestProdCons_Wait_Notify extends Simulateur{
 			System.out.println("Main lancé :\n");
 		
 	}
-
 }

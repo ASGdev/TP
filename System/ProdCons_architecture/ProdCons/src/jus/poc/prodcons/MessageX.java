@@ -1,7 +1,7 @@
 package jus.poc.prodcons;
 
 public class MessageX implements Message{
-	int msg;
+	public int msg;
 	
 	public MessageX(int i) {
 		super();
