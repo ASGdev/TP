@@ -1,0 +1,9 @@
+\beamer@endinputifotherversion {3.10pt}
+\beamer@sectionintoc {1}{Travail r\IeC {\'e}alis\IeC {\'e}}{3}{0}{1}
+\beamer@sectionintoc {2}{Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{4}{0}{2}
+\beamer@sectionintoc {3}{Jeux de tests}{5}{0}{3}
+\beamer@sectionintoc {4}{Sorties}{6}{0}{4}
+\beamer@sectionintoc {5}{Objectif 1}{7}{0}{5}
+\beamer@sectionintoc {6}{Objectif 2}{8}{0}{6}
+\beamer@sectionintoc {7}{Objectif 3}{9}{0}{7}
+\beamer@sectionintoc {8}{Objectif 4}{10}{0}{8}
