@@ -1,0 +1,81 @@
+\documentclass{beamer}
+%\usepackage{beamerthemeshadow}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+
+\usetheme{Hannover}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+ 
+\begin{document}
+
+\title[ProdCons]{Producteurs / Consommateurs}
+\subtitle{Projet Systèmes d'Exploitation}
+\author{Matthieu Caneill\\--\\Minyi Gu}
+\institute{RICM4 -- Polytech Grenoble}
+\date{\today}
+
+\maketitle
+
+\begin{frame}{Table des matières}
+\tableofcontents
+\end{frame}
+
+\section{Travail réalisé}
+\begin{frame}{Travail réalisé}
+\begin{itemize}
+\item Objectifs 1,
+\item Jeux de tests : options\{1$\vert$2$\vert$3$\vert$4\}.xml
+\end{itemize}
+\end{frame}
+
+\section{Difficultés rencontrées}
+\begin{frame}{Difficultés rencontrées}
+\begin{itemize}
+\item Se plonger dans le projet
+\item Appréhender les classes abstraites fournies
+\item Nouvelles notions en Java : threads, sémaphores
+\end{itemize}
+\end{frame}
+
+\section{Objectif 1}
+\begin{frame}{Objectif 1}
+\begin{itemize}
+\item Fonctionne bien
+\item L'inhibition est contrôlée par la classe Display
+\item Tout est géré par \textit{wait()} et \textit{notify()}
+\item Démonstration : options*.xml
+\end{itemize}
+~\\
+Producteur 1 -- message: 0; producteur: 1
+
+Consommateur 1 -- message: 0; producteur: 1
+
+Producteur 1 -- message: 1; producteur: 1
+
+Consommateur 1 -- message: 1; producteur: 1
+
+Producteur 1 -- message: 2; producteur: 1
+
+Consommateur 2 -- message: 2; producteur: 1
+
+[...]
+\end{frame}
+
+\section{Objectif 2}
+\begin{frame}{Objectif 2}
+\begin{itemize}
+\item Fonctionne bien
+\item Tout est encapsulé dans la classe Semaphore
+\item Démonstration : options*.xml
+\end{itemize}
+
+\end{frame}
+
+
+\end{document}

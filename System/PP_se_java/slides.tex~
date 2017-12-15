@@ -1,0 +1,134 @@
+\documentclass{beamer}
+%\usepackage{beamerthemeshadow}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+
+\usetheme{Hannover}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+ 
+\begin{document}
+
+\title[ProdCons]{Producteurs / Consommateurs}
+\subtitle{Projet Systèmes d'Exploitation}
+\author{Matthieu Caneill\\--\\Minyi Gu}
+\institute{RICM4 -- Polytech Grenoble}
+\date{\today}
+
+\maketitle
+
+\begin{frame}{Table des matières}
+\tableofcontents
+\end{frame}
+
+\section{Travail réalisé}
+\begin{frame}{Travail réalisé}
+\begin{itemize}
+\item Objectif 1
+\item Objectif 2
+\item Objectif 3
+\item Objectif 4 : inachevé
+\item Jeux de tests : options\{1$\vert$2$\vert$3$\vert$4\}.xml
+\end{itemize}
+\end{frame}
+
+\section{Difficultés rencontrées}
+\begin{frame}{Difficultés rencontrées}
+\begin{itemize}
+\item Se plonger dans le projet
+\item Appréhender les classes abstraites fournies
+\item Nouvelles notions en Java : threads, sémaphores
+\end{itemize}
+\end{frame}
+
+\section{Jeux de tests}
+\begin{frame}{Jeux de tests}
+\begin{itemize}
+\item options1.xml : nbProd = 5 ; nbCons = 5 ; nbBuffer = 1
+\item options2.xml : nbProd = 1 ; nbCons = 10 ; nbBuffer = 3
+\item options3.xml : nbProd = 10 ; nbCons = 1 ; nbBuffer = 3
+\item options4.xml : nbProd = 5 ; nbCons = 10 ; nbBuffer = 5
+%\item =
+\end{itemize}
+\end{frame}
+
+\section{Sorties}
+\begin{frame}{Sorties}
+[...]
+
+Producteur 4 -- message: 3; producteur: 4
+
+Consommateur 5 -- message: 3; producteur: 3
+
+Consommateur 6 -- message: 3; producteur: 4
+
+Producteur 1 -- message: 3; producteur: 1
+
+Consommateur 9 -- message: 3; producteur: 1
+
+Producteur 5 -- message: 3; producteur: 5
+
+Producteur 2 -- message: 4; producteur: 2
+
+Consommateur 10 -- message: 3; producteur: 5
+
+Consommateur 1 -- message: 4; producteur: 2
+
+Producteur 3 -- message: 4; producteur: 3
+
+Consommateur 2 -- message: 4; producteur: 3
+
+Producteur 4 -- message: 4; producteur: 4
+
+Consommateur 3 -- message: 4; producteur: 4
+
+[...]
+
+\end{frame}
+
+\section{Objectif 1}
+\begin{frame}{Objectif 1}
+\begin{itemize}
+\item Fonctionne bien
+\item L'inhibition est contrôlée par la classe Display
+\item Tout est géré par \textit{wait()} et \textit{notify()}
+\item Démonstration : options*.xml
+\end{itemize}
+\end{frame}
+
+\section{Objectif 2}
+\begin{frame}{Objectif 2}
+\begin{itemize}
+\item Fonctionne bien
+\item Tout est encapsulé dans la classe Semaphore
+\item Démonstration : options*.xml
+\end{itemize}
+
+\end{frame}
+
+\section{Objectif 3}
+\begin{frame}{Objectif 3}
+\begin{itemize}
+\item Fonctionne bien
+\item On a ajouté l'objet Observateur et ses appels
+\item Démonstration : options*.xml
+\end{itemize}
+
+\end{frame}
+
+\section{Objectif 4}
+\begin{frame}{Objectif 4}
+\begin{itemize}
+\item En cours d'implémentation
+\item On ajoute la propriété nbEx pour un Producteur
+\item Démonstration : non fonctionnelle.
+\end{itemize}
+
+\end{frame}
+
+\end{document}
