@@ -1,5 +1,6 @@
 package jus.poc.prodcons.v1;
 import jus.poc.prodcons.*;
+
 public class Producteur extends Acteur implements _Producteur {
 	int nbMessage =0;
 	ProdCons tampon;
@@ -9,28 +10,11 @@ public class Producteur extends Acteur implements _Producteur {
 		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		// TODO Auto-generated constructor stub
 	}
-
-	@Override
-	public int deviationTempsDeTraitement() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int identification() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int moyenneTempsDeTraitement() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	
 	@Override
 	public int nombreDeMessages() {
-		return nbMessage;
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
@@ -68,5 +52,8 @@ public class Producteur extends Acteur implements _Producteur {
 		return m;
 
 	}
+
+
+	
 
 }

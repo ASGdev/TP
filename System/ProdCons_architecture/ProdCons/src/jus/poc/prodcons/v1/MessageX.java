@@ -1,14 +1,17 @@
 package jus.poc.prodcons.v1;
 import jus.poc.prodcons.*;
 public class MessageX implements Message{
-	public int msg;
+	public int numMsg;
+	public int numProd;
+	public String contentMsg = new String();
 	
-	public MessageX(int i) {
+	public MessageX(int numMsg, int numProd) {
 		super();
-		msg = i;
+		this.numMsg = numMsg;
+		this.numProd = numProd;
 	}
 	
 	public String toString() {
-		return ""+msg;
+		return ""+numMsg;
 	}
 }
