@@ -4,16 +4,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
-public class TestProdCons extends Simulateur{
+public class TestProdCons_Wait_Notify extends Simulateur{
 
-	public TestProdCons(Observateur observateur) {
+	public TestProdCons_Wait_Notify(Observateur observateur) {
 		super(observateur);
 		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new TestProdCons(new Observateur()).start();
+		new TestProdCons_Wait_Notify(new Observateur()).start();
 	}
 
 	@Override
@@ -30,6 +30,8 @@ public class TestProdCons extends Simulateur{
 				value = Integer.parseInt((String)entry.getValue());
 				thisOne.getDeclaredField(key).set(this,value);
 			}
+			
+			System.out.println("Main lancé :\n");
 		
 	}
 
