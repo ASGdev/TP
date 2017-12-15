@@ -1,20 +1,21 @@
-package jus.poc.prodcons;
+package jus.poc.prodcons.v1;
+import jus.poc.prodcons.*;
 
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
-public class TestProdCons_Wait_Notify  extends Simulateur {
+public class TestProdCons  extends Simulateur {
 	
 
-	public TestProdCons_Wait_Notify(Observateur observateur) {
+	public TestProdCons(Observateur observateur) {
 		super(observateur);
 		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new TestProdCons_Wait_Notify(new Observateur()).start();
+		new TestProdCons(new Observateur()).start();
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class TestProdCons_Wait_Notify  extends Simulateur {
 				thisOne.getDeclaredField(key).set(this,value);
 			}
 			
-			System.out.println("Main lancé :\n");
+			System.out.println("Main lancï¿½ :\n");
 		
 	}
 }

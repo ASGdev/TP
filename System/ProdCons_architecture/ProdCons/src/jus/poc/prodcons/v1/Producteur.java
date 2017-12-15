@@ -1,5 +1,5 @@
-package jus.poc.prodcons;
-
+package jus.poc.prodcons.v1;
+import jus.poc.prodcons.*;
 public class Producteur extends Acteur implements _Producteur {
 	int nbMessage =0;
 	ProdCons tampon;
@@ -41,15 +41,15 @@ public class Producteur extends Acteur implements _Producteur {
 	}
 
 	private void addMessage(Message m){
-		System.out.println("Demande d'accee de "+this.getName()+"N°"+this.identification()+"");
+		System.out.println("Demande d'accee de "+this.getName()+"Nï¿½"+this.identification()+"");
 		try {
 			tampon.put(this,m);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		nbMessage -=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+this.getName()+"N°"+this.identification()+", reste "+nbMessage+"a traiter");
-		System.out.println("Sortie d'accee de "+this.getName()+"N°"+this.identification()+"");	
+		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+this.getName()+"Nï¿½"+this.identification()+", reste "+nbMessage+"a traiter");
+		System.out.println("Sortie d'accee de "+this.getName()+"Nï¿½"+this.identification()+"");	
 
 	}
 
@@ -63,7 +63,7 @@ public class Producteur extends Acteur implements _Producteur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification());
+		System.out.println("Traitement de production du thread "+this.getName()+"Nï¿½"+this.identification());
 
 		return m;
 
