@@ -13,7 +13,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			int randToDo)
 					throws ControlException {
 
-		super(1, observateur, tempsMoyenProduction, deviationTemps);
+		super(2, observateur, tempsMoyenProduction, deviationTemps);
 		this.tampon = tampon;
 		nbrMsg = randToDo;
 	}
@@ -33,7 +33,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	
 	private Message getMessage(){
 		Message tamp = null;
-		System.out.println("Demande d'accee de "+this.getName()+"N°"+this.identification()+"");
+		System.out.println("Demande d'accee de "+name()+"");
 		try {
 			tamp = tampon.get(this);
 		} catch (Exception e) {

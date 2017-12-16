@@ -6,7 +6,6 @@ public class Producteur extends Acteur implements _Producteur {
 	int msg_send;
 	String message;
 	ProdCons tampon;
-	Aleatoire rand;
 	
 
 
@@ -19,7 +18,6 @@ public class Producteur extends Acteur implements _Producteur {
 
 		super(1, observateur, tempsMoyenProduction, deviationTemps);
 
-		rand = new Aleatoire(tempsMoyenProduction, deviationTemps);
 		//nbr de message à produire
 		msg_send=0;
 		msg_toSend = msgRemain;
@@ -28,8 +26,7 @@ public class Producteur extends Acteur implements _Producteur {
 
 	@Override
 	public int nombreDeMessages() {
-		// TODO Auto-generated method stub
-		return 0;
+		return msg_send;
 	}
 
 	@Override

@@ -31,7 +31,9 @@ public class ProdCons implements Tampon{
 	        	verrou.wait();
 	        }else {
 	        	verrou.notifyAll();
-	        	return buffer.firstElement();
+	        	Message g= buffer.firstElement();
+	        	buffer.remove(0);
+	        	return  g;
 	        }
 	    }
 		return null;
