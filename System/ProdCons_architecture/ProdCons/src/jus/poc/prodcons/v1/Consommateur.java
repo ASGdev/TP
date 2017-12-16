@@ -26,7 +26,9 @@ public class Consommateur extends Acteur implements _Consommateur {
 
 	@Override
 	public void run() {
-		System.out.println("ok");
+		while(this.nbrMsg > 0){			
+			treatment(getMessage());
+		}
 	}
 	
 	private Message getMessage(){

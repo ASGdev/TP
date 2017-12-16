@@ -2,7 +2,6 @@ package jus.poc.prodcons.v1;
 import jus.poc.prodcons.*;
 
 
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
 import java.io.IOException;
@@ -54,12 +53,12 @@ public class TestProdCons extends Simulateur {
    
         //Déclaration new buffer
         tampon = new ProdCons(nbBuffer);
-        
-        
         prod = new Vector<Producteur>();
         cons = new Vector<Consommateur>();
+        
         // on génère une variable aléatoire
         random = new Aleatoire(tempsMoyenProduction,deviationTempsMoyenProduction);
+        
         //On utilise les données du xml pour générer les consommateur, producteur etc
         //Cons : nbr de message a lire aléatoire
        
