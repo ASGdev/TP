@@ -5,21 +5,16 @@ import java.util.Vector;
 
 public class ProdCons implements Tampon{
 	int taille;
-	private Vector<Message> buffer;
+	private Vector<Message> buffer = new  Vector<Message>();
 	private final Object verrou = new Object();
 
-	int head=0;
-	int tail=0;
-    int messWaiting;
-    
 	//CEST ICI QUON VA GERER LES "VERROUS" ETC
     
     boolean stop = false;
         
-	//Alloue le buffer
+
 	public ProdCons(int taille){
 		this.taille = taille;
-		messWaiting = 0;
 	}
 	
 	

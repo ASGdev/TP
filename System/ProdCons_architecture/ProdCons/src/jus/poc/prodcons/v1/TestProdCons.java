@@ -4,6 +4,7 @@ import jus.poc.prodcons.*;
 
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Vector;
 import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
 
@@ -19,8 +20,8 @@ public class TestProdCons extends Simulateur {
     
     protected ProdCons tampon;
     Aleatoire random;
-    ArrayList<Producteur> prod;
-    ArrayList<Consommateur> cons;
+    Vector<Producteur> prod;
+    Vector<Consommateur> cons;
 
     protected void init(String file) {
         Properties properties = new Properties();
@@ -55,24 +56,25 @@ public class TestProdCons extends Simulateur {
         tampon = new ProdCons(nbBuffer);
         
         
-        prod = new ArrayList<Producteur>();
-        cons = new ArrayList<Consommateur>();
+        prod = new Vector<Producteur>();
+        cons = new Vector<Consommateur>();
         // on génère une variable aléatoire
         random = new Aleatoire(tempsMoyenProduction,deviationTempsMoyenProduction);
         //On utilise les données du xml pour générer les consommateur, producteur etc
         //Cons : nbr de message a lire aléatoire
        
         for(int i = 0 ; i < nbProd ; i++){
-        	
-        	prod.add(new Producteur(new Observateur(), tempsMoyenProduction, deviationTempsMoyenProduction, tampon, random.next()));
-        	prod.get(prod.size()-1).start();
+        	Producteur p = new Producteur(new Observateur(), tempsMoyenProduction, deviationTempsMoyenProduction, tampon, random.next());
+        	prod.add(p);
+        	p.start();
             
         }
        
         /* on génère les consommateurs */
         for(int i = 0 ; i < nbCons ; i++){
-           cons.add(new Consommateur(new Observateur(), tempsMoyenConsommation, deviationTempsMoyenConsommation,tampon,random.next()));
-           cons.get(cons.size()-1).start();
+        	Consommateur p = new Consommateur(new Observateur(), tempsMoyenConsommation, deviationTempsMoyenConsommation,tampon,random.next());
+           cons.add(p);
+           p.start();
         }
         
 
