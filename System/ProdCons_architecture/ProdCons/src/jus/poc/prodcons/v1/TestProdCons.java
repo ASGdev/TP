@@ -17,7 +17,7 @@ public class TestProdCons extends Simulateur {
     	tempsMoyenProduction,deviationTempsMoyenProduction,
     	tempsMoyenConsommation,deviationTempsMoyenConsommation;
     
-
+    protected ProdCons tampon;
     Aleatoire random;
     
     ArrayList<Producteur> prod;
@@ -52,14 +52,30 @@ public class TestProdCons extends Simulateur {
     	//appel fichier xml
         init("./jus/poc/prodcons/option/"+option);
    
+        //Déclaration new buffer
+        tampon = new ProdCons(nbBuffer);
         
         
-        /* producteurs, consommateurs */
         prod = new ArrayList<Producteur>();
         cons = new ArrayList<Consommateur>();
-     
-
-
+        // on génère une variable aléatoire
+        random = new Aleatoire(tempsMoyenProduction,deviationTempsMoyenProduction);
+        //On utilise les données du xml pour générer les consommateur, producteur etc
+        //Cons : nbr de message a lire aléatoire
+       
+        for(int i = 0 ; i < nbProd ; i++){
+        	
+        	prod.add(new Producteur(new Observateur(), tempsMoyenProduction, deviationTempsMoyenProduction, tampon, random.next()));
+        	prod.get(prod.size()-1).start();
+            
+        }
+       
+        /* on génère les consommateurs */
+        for(int i = 0 ; i < nbCons ; i++){
+           cons.add(new Consommateur(new Observateur(), tempsMoyenConsommation, deviationTempsMoyenConsommation,tampon,random.next()));
+           cons.get(cons.size()-1).start();
+        }
+        
 
     }
     

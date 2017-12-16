@@ -3,13 +3,29 @@ import jus.poc.prodcons.*;
 
 public class Producteur extends Acteur implements _Producteur {
 	int nbMessage =0;
+	int msg_remaining;
+	int msg_send;
+	int idProd;
+	String message;
 	ProdCons tampon;
+	Aleatoire rand;
+	
+	
+	
+	protected Producteur(Observateur observateur,
+			 int tempsMoyenProduction,
+			 int deviationTemps,
+			 ProdCons tampon,
+			 int msgRemain)
+ throws ControlException {
 
-	protected Producteur(int type, Observateur observateur, int moyenneTempsDeTraitement,
-			int deviationTempsDeTraitement,int nbMessage) throws ControlException {
-		super(type, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
-		// TODO Auto-generated constructor stub
-	}
+super(1, observateur, tempsMoyenProduction, deviationTemps);
+
+rand = new Aleatoire(tempsMoyenProduction, deviationTemps);
+//nbr de message à produire
+msg_remaining = msgRemain;
+this.tampon = tampon;
+}
 	
 	@Override
 	public int nombreDeMessages() {
@@ -19,41 +35,7 @@ public class Producteur extends Acteur implements _Producteur {
 
 	@Override
 	public void run() {
-		while(this.nbMessage > 0){			
-			addMessage(production());
-		}
+		
 	}
-
-	private void addMessage(Message m){
-		System.out.println("Demande d'accee de "+this.getName()+"N�"+this.identification()+"");
-		try {
-			tampon.put(this,m);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		nbMessage -=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+this.getName()+"N�"+this.identification()+", reste "+nbMessage+"a traiter");
-		System.out.println("Sortie d'accee de "+this.getName()+"N�"+this.identification()+"");	
-
-	}
-
-
-
-	private Message production(){
-		MessageX m = new MessageX(this.nbMessage);
-		try {
-			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Traitement de production du thread "+this.getName()+"N�"+this.identification());
-
-		return m;
-
-	}
-
-
-	
 
 }
