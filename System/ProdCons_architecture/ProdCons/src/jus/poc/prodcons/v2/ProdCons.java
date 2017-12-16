@@ -7,10 +7,10 @@ import java.util.concurrent.Semaphore;
 public class ProdCons implements Tampon{
 	int taille;
 	private Vector<Message> buffer = new  Vector<Message>();
-	private final Object verrou = new Object();
-	private final Object verrou2 = new Object();
-	private  Semaphore depot ;
-	private  Semaphore retrait = new Semaphore(0);
+	private static final Object verrou = new Object();
+	private static final Object verrou2 = new Object();
+	private static  Semaphore depot ;
+	private static  Semaphore retrait = new Semaphore(0);
 
 	//CEST ICI QUON VA GERER LES "VERROUS" ETC
     
