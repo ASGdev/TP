@@ -2,31 +2,30 @@ package jus.poc.prodcons.v1;
 import jus.poc.prodcons.*;
 
 public class Producteur extends Acteur implements _Producteur {
-	int nbMessage =0;
-	int msg_remaining;
+	int msg_toSend;
 	int msg_send;
-	int idProd;
 	String message;
 	ProdCons tampon;
 	Aleatoire rand;
 	
-	
-	
+
+
 	protected Producteur(Observateur observateur,
-			 int tempsMoyenProduction,
-			 int deviationTemps,
-			 ProdCons tampon,
-			 int msgRemain)
- throws ControlException {
+			int tempsMoyenProduction,
+			int deviationTemps,
+			ProdCons tampon,
+			int msgRemain)
+					throws ControlException {
 
-super(1, observateur, tempsMoyenProduction, deviationTemps);
+		super(1, observateur, tempsMoyenProduction, deviationTemps);
 
-rand = new Aleatoire(tempsMoyenProduction, deviationTemps);
-//nbr de message Ã  produire
-msg_remaining = msgRemain;
-this.tampon = tampon;
-}
-	
+		rand = new Aleatoire(tempsMoyenProduction, deviationTemps);
+		//nbr de message Ã  produire
+		msg_send=0;
+		msg_toSend = msgRemain;
+		this.tampon = tampon;
+	}
+
 	@Override
 	public int nombreDeMessages() {
 		// TODO Auto-generated method stub
@@ -35,7 +34,45 @@ this.tampon = tampon;
 
 	@Override
 	public void run() {
+		while(this.msg_toSend - msg_send >0){			
+			addMessage(production());
+			
+		}
+	}
+	
+	private void addMessage(Message m){
+		System.out.println("Demande d'accee de "+this.getName()+"N°"+this.identification()+"");
+		try {
+			tampon.put(this,m);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		msg_send +=1;
+		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+this.getName()+"N°"+this.identification()+", reste "+msg_send+"a traiter");
+		System.out.println("Sortie d'accee de "+this.getName()+"N°"+this.identification()+"");	
 		
+	}
+	
+	
+	
+	
+	private Message production(){
+		MessageX m = new MessageX(this.msg_send, this.identification(), "Yolo");
+		try {
+			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification());
+
+		return m;
+		
+	}
+	
+	public String name(){
+		return this.getName()+"N°"+this.identification();
 	}
 
 }

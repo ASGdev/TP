@@ -9,7 +9,8 @@ public class ProdCons implements Tampon{
 	int head=0;
 	int tail=0;
     int messWaiting;
- 
+    
+	//CEST ICI QUON VA GERER LES "VERROUS" ETC
     
     boolean stop = false;
         
@@ -19,8 +20,7 @@ public class ProdCons implements Tampon{
 		messWaiting = 0;
 		buffers = new Message[taille];
 	}
-	Vector<MessageX> tampon = new Vector<>();
-	//CEST ICI QUON VA GERER LES "VERROUS" ETC
+	
 	
 	@Override
 	public int enAttente() {
