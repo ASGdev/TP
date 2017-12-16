@@ -19,7 +19,6 @@ public class TestProdCons extends Simulateur {
     
     protected ProdCons tampon;
     Aleatoire random;
-    
     ArrayList<Producteur> prod;
     ArrayList<Consommateur> cons;
 

@@ -39,8 +39,8 @@ public class Consommateur extends Acteur implements _Consommateur {
 			e.printStackTrace();
 		}
 		nbrMsg -=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec le retrait de "+this.getName()+"N°"+this.identification()+", reste "+nbrMsg+"a traiter");
-		System.out.println("Sortie d'accee de "+this.getName()+"N°"+this.identification()+"");
+		System.out.println("Tampon libre:"+tampon.taille()+" avec le retrait de "+name()+", reste "+nbrMsg+"a traiter");
+		System.out.println("Sortie d'accee de "+name());
 		return tamp;		
 	}
 	
@@ -53,11 +53,11 @@ public class Consommateur extends Acteur implements _Consommateur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Traitement de consommation du thread "+this.getName()+"N°"+this.identification()+", reste "+nbrMsg+"a traiter");
+			System.out.println("Traitement de consommation du thread "+name()+", reste "+nbrMsg+"a traiter");
 		}else{
-			System.out.println("Rien a faire pour thread "+this.getName()+"N°"+this.identification());
+			System.out.println("GetMessage a renvoyé null, rien a faire pour thread "+name());
 			try {
-				Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+				Thread.sleep(delay);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

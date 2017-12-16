@@ -5,7 +5,9 @@ import java.util.Vector;
 
 public class ProdCons implements Tampon{
 	int taille;
-	private Message buffers[];
+	private Vector<Message> buffer;
+	private final Object verrou = new Object();
+
 	int head=0;
 	int tail=0;
     int messWaiting;
@@ -18,7 +20,6 @@ public class ProdCons implements Tampon{
 	public ProdCons(int taille){
 		this.taille = taille;
 		messWaiting = 0;
-		buffers = new Message[taille];
 	}
 	
 	
@@ -30,18 +31,32 @@ public class ProdCons implements Tampon{
 
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
-		// TODO Auto-generated method stub
+		synchronized(verrou) {
+	        if(buffer.size()==0) {
+	        	verrou.wait();
+	        }else {
+	        	verrou.notifyAll();
+	        	return buffer.firstElement();
+	        }
+	    }
 		return null;
 	}
 
 	@Override
 	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
-		// TODO Auto-generated method stub
+		synchronized(verrou) {
+	        if(buffer.size()<taille) {
+	        	buffer.addElement(arg1);
+	        	verrou.notifyAll();
+	        }else {
+	        	verrou.wait();
+	        }
+	    }
 		
 	}
 
 	@Override
 	public int taille() {
-		return tampon.size();
+		return buffer.size();
 	}
 }

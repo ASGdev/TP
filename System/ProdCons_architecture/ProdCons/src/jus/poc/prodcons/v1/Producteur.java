@@ -41,7 +41,7 @@ public class Producteur extends Acteur implements _Producteur {
 	}
 	
 	private void addMessage(Message m){
-		System.out.println("Demande d'accee de "+this.getName()+"N°"+this.identification()+"");
+		System.out.println("Demande d'accee de "+name()+"");
 		try {
 			tampon.put(this,m);
 		} catch (Exception e) {
@@ -49,8 +49,8 @@ public class Producteur extends Acteur implements _Producteur {
 			e.printStackTrace();
 		}
 		msg_send +=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+this.getName()+"N°"+this.identification()+", reste "+msg_send+"a traiter");
-		System.out.println("Sortie d'accee de "+this.getName()+"N°"+this.identification()+"");	
+		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+name()+", reste "+msg_send+"a traiter");
+		System.out.println("Sortie d'accee de "+name()+"");	
 		
 	}
 	
@@ -65,7 +65,7 @@ public class Producteur extends Acteur implements _Producteur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Traitement de production du thread "+this.getName()+"N°"+this.identification());
+		System.out.println("Traitement de production du thread "+name());
 
 		return m;
 		
