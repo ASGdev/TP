@@ -47,7 +47,7 @@ public class Producteur extends Acteur implements _Producteur {
 		}
 		msg_send +=1;
 		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+name()+", reste "+(msg_toSend-msg_send)+"a traiter");
-		System.out.println("Sortie d'accès de "+name()+"");	
+		System.out.println("Sortie d'accee de "+name()+"");	
 		
 	}
 	
@@ -63,13 +63,13 @@ public class Producteur extends Acteur implements _Producteur {
 			e.printStackTrace();
 		}
 		System.out.println("Traitement de production du thread "+name());
-		m.toString();
+
 		return m;
 		
 	}
 	
 	public String name(){
-		return this.getName()+"N."+this.identification();
+		return this.getName()+"N�"+this.identification();
 	}
 
 }

@@ -1,20 +1,26 @@
 package jus.poc.prodcons.v3;
 import jus.poc.prodcons.*;
 import java.util.Vector;
+import java.util.concurrent.Semaphore;
 
 
 public class ProdCons implements Tampon{
 	int taille;
 	private Vector<Message> buffer = new  Vector<Message>();
 	private static final Object verrou = new Object();
-
+	private static final Object verrou2 = new Object();
+	private static  Semaphore depot ;
+	private static  Semaphore retrait = new Semaphore(0);
+	Observateur observateur;
 	//CEST ICI QUON VA GERER LES "VERROUS" ETC
     
     boolean stop = false;
         
 
-	public ProdCons(int taille){
+	public ProdCons(int taille,Observateur observateur){
+		depot = new Semaphore(taille);
 		this.taille = taille;
+		this.observateur = observateur;
 	}
 	
 	
@@ -24,37 +30,27 @@ public class ProdCons implements Tampon{
 		return 0;
 	}
 
+	//Dans cette version, un consommateur peut r�cup�r� un �lement tandis qu'un producteur peut en d�pos�
+	// un simultanement. Par contre, deux consomateur ou deux producteur ne peuvent agir de mani�re simultan�e.
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
+		retrait.acquire();
 		Message g = null;
 		synchronized(verrou) {
-			System.out.println(arg0.identification()+" est entré");
-			while(buffer.size()==0) {
-				System.out.println(arg0.identification()+" se met en pause et libre");
-				verrou.wait();
-			}
-			g= buffer.firstElement();
+			g = buffer.firstElement();
 			buffer.remove(0);
-			System.out.println(arg0.identification()+" sort après avoir enlever un msg");
-			verrou.notifyAll();
-
 		}
+		depot.release();
 		return g;
 	}
 
 	@Override
 	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
-		synchronized(verrou) {
-			System.out.println(arg0.identification()+" est entré");
-			while(buffer.size()>=taille) {
-				System.out.println(arg0.identification()+" se met en pause et libre");
-				verrou.wait();
-			}			
+		depot.acquire();
+		synchronized(verrou2) {
 			buffer.addElement(arg1);
-			System.out.println(arg0.identification()+" sort après avoir ajouter un msg");
-			verrou.notifyAll();
-
 		}
+		retrait.release();
 
 	}
 

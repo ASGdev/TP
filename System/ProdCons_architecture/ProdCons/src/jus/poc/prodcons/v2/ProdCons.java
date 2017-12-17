@@ -29,8 +29,8 @@ public class ProdCons implements Tampon{
 		return 0;
 	}
 
-	//Dans cette version, un consommateur peut récupéré un élement tandis qu'un producteur peut en déposé
-	// un simultanement. Par contre, deux consomateur ou deux producteur ne peuvent agir de manière simultanée.
+	//Dans cette version, un consommateur peut rï¿½cupï¿½rï¿½ un ï¿½lement tandis qu'un producteur peut en dï¿½posï¿½
+	// un simultanement. Par contre, deux consomateur ou deux producteur ne peuvent agir de maniï¿½re simultanï¿½e.
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
 		retrait.acquire();

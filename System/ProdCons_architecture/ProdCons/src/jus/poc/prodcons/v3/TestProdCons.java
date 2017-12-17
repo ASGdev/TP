@@ -21,7 +21,7 @@ public class TestProdCons extends Simulateur {
     Aleatoire random;
     Vector<Producteur> prod;
     Vector<Consommateur> cons;
-
+    
     protected void init(String file) {
         Properties properties = new Properties();
         try {
@@ -52,10 +52,10 @@ public class TestProdCons extends Simulateur {
         init("./jus/poc/prodcons/option/"+option);
    
         //Déclaration new buffer
-        tampon = new ProdCons(nbBuffer);
+        tampon = new ProdCons(nbBuffer,observateur);
         prod = new Vector<Producteur>();
         cons = new Vector<Consommateur>();
-        
+        observateur.init(nbProd, nbCons, nbBuffer);
         // on génère une variable aléatoire
         random = new Aleatoire(tempsMoyenProduction,deviationTempsMoyenProduction);
         
@@ -63,16 +63,20 @@ public class TestProdCons extends Simulateur {
         //Cons : nbr de message a lire aléatoire
        
         for(int i = 0 ; i < nbProd ; i++){
-        	Producteur p = new Producteur(new Observateur(), tempsMoyenProduction, deviationTempsMoyenProduction, tampon, random.next());
+        	Producteur p = new Producteur(this.observateur, tempsMoyenProduction, deviationTempsMoyenProduction, tampon, random.next());
         	prod.add(p);
+        	observateur.newProducteur(p);
         	p.start();
+        	
+        	
             
         }
        
         /* on génère les consommateurs */
         for(int i = 0 ; i < nbCons ; i++){
-        	Consommateur p = new Consommateur(new Observateur(), tempsMoyenConsommation, deviationTempsMoyenConsommation,tampon,random.next());
+        	Consommateur p = new Consommateur(this.observateur,tempsMoyenConsommation, deviationTempsMoyenConsommation,tampon,random.next());
            cons.add(p);
+           observateur.newConsommateur(p);
            p.start();
         }
         

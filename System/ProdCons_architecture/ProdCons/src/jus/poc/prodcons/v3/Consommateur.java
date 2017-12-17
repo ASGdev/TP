@@ -58,7 +58,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			}
 			System.out.println("Traitement de consommation du thread "+name());
 		}else{
-			System.out.println("GetMessage a renvoyé null, rien a faire pour thread "+name());
+			System.out.println("GetMessage a renvoy� null, rien a faire pour thread "+name());
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
@@ -69,7 +69,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	}
 	
 	public String name(){
-		return this.getName()+"N."+this.identification();
+		return this.getName()+"N�"+this.identification();
 	}
 	
 
