@@ -7,7 +7,7 @@ public class Producteur extends Acteur implements _Producteur {
 	String message;
 	ProdCons tampon;
 	
-
+	Observateur observateur;
 
 	protected Producteur(Observateur observateur,
 			int tempsMoyenProduction,
@@ -17,7 +17,7 @@ public class Producteur extends Acteur implements _Producteur {
 					throws ControlException {
 
 		super(1, observateur, tempsMoyenProduction, deviationTemps);
-
+		this.observateur = observateur;
 		//nbr de message à produire
 		msg_send=0;
 		msg_toSend = msgRemain;
@@ -32,7 +32,12 @@ public class Producteur extends Acteur implements _Producteur {
 	@Override
 	public void run() {
 		while(this.msg_toSend - msg_send >0){			
-			addMessage(production());
+			try {
+				addMessage(production());
+			} catch (ControlException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 	}
@@ -54,14 +59,16 @@ public class Producteur extends Acteur implements _Producteur {
 	
 	
 	
-	private Message production(){
+	private Message production() throws ControlException{
 		MessageX m = new MessageX(this.msg_send, this.identification(), "Yolo");
+		int delay = Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		try {
-			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
+			Thread.sleep(delay);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		observateur.productionMessage(this, m, delay);
 		System.out.println("Traitement de production du thread "+name());
 
 		return m;
@@ -69,7 +76,7 @@ public class Producteur extends Acteur implements _Producteur {
 	}
 	
 	public String name(){
-		return this.getName()+"N�"+this.identification();
+		return this.getName()+" N "+this.identification();
 	}
 
 }

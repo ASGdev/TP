@@ -27,7 +27,12 @@ public class Consommateur extends Acteur implements _Consommateur {
 	@Override
 	public void run() {
 		while(this.nbrMsg > 0){			
-			treatment(getMessage());
+			try {
+				treatment(getMessage());
+			} catch (InterruptedException | ControlException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -42,12 +47,12 @@ public class Consommateur extends Acteur implements _Consommateur {
 		}
 		if(tamp != null)
 			nbrMsg -=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec le retrait de "+name()+", reste "+nbrMsg+"a traiter");
+		System.out.println("Tampon libre: "+tampon.taille()+" avec le retrait de "+name()+", reste "+nbrMsg+" a traiter");
 		System.out.println("Sortie d'accee de "+name());
 		return tamp;		
 	}
 	
-	private void treatment(Message m){
+	private void treatment(Message m) throws InterruptedException, ControlException{
 		int delay = Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		if(m!=null){
 			try {
@@ -56,9 +61,12 @@ public class Consommateur extends Acteur implements _Consommateur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			observateur.consommationMessage(this, m, delay);
 			System.out.println("Traitement de consommation du thread "+name());
+			
+			
 		}else{
-			System.out.println("GetMessage a renvoy� null, rien a faire pour thread "+name());
+			System.out.println("GetMessage a renvoye null, rien a faire pour thread "+name());
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
@@ -69,7 +77,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	}
 	
 	public String name(){
-		return this.getName()+"N�"+this.identification();
+		return this.getName()+" N "+this.identification();
 	}
 	
 
