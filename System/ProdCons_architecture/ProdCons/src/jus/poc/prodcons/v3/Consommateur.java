@@ -1,4 +1,4 @@
-package jus.poc.prodcons.v1;
+package jus.poc.prodcons.v3;
 import jus.poc.prodcons.*;
 
 public class Consommateur extends Acteur implements _Consommateur {
@@ -69,7 +69,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	}
 	
 	public String name(){
-		return this.getName()+"N"+this.identification();
+		return this.getName()+"N."+this.identification();
 	}
 	
 

@@ -1,4 +1,4 @@
-package jus.poc.prodcons.v1;
+package jus.poc.prodcons.v3;
 import jus.poc.prodcons.*;
 import java.util.Vector;
 
@@ -28,9 +28,9 @@ public class ProdCons implements Tampon{
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
 		Message g = null;
 		synchronized(verrou) {
-			System.out.println(arg0.identification()+"est entré");
+			System.out.println(arg0.identification()+" est entré");
 			while(buffer.size()==0) {
-				System.out.println(arg0.identification()+"se met en pause et libre");
+				System.out.println(arg0.identification()+" se met en pause et libre");
 				verrou.wait();
 			}
 			g= buffer.firstElement();
@@ -45,7 +45,7 @@ public class ProdCons implements Tampon{
 	@Override
 	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
 		synchronized(verrou) {
-			System.out.println(arg0.identification()+"est entré");
+			System.out.println(arg0.identification()+" est entré");
 			while(buffer.size()>=taille) {
 				System.out.println(arg0.identification()+" se met en pause et libre");
 				verrou.wait();
