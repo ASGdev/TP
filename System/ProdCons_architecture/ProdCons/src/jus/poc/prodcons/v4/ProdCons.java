@@ -51,7 +51,6 @@ public class ProdCons implements Tampon{
 					if(buffer.firstElement().size()<=0) {
 						buffer.remove(0);
 						prodMemory.remove(0);
-						prodMemory.remove(0); // Problème d'ajout double, on a pas trouve pourquoi, donc on supprime en double
 						consoMemory.clear();
 										
 
@@ -76,7 +75,6 @@ public class ProdCons implements Tampon{
 						msg.addElement(arg1);
 					}
 					buffer.addElement(msg);
-					prodMemory.addElement(arg0);
 					System.out.println("Le thread producteur n°"+arg0.identification()+" a posé le message ("+arg1+")");
 					jobdone = true;
 				}else {
