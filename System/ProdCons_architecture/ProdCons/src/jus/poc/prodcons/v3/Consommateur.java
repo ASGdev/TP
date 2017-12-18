@@ -5,7 +5,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 	ProdCons tampon;
 	int idCons;
 	int nbrMsg;
-	
+	Observateur observateur;
 	protected Consommateur(Observateur observateur,
 			int tempsMoyenProduction,
 			int deviationTemps,
@@ -16,6 +16,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 		super(2, observateur, tempsMoyenProduction, deviationTemps);
 		this.tampon = tampon;
 		nbrMsg = randToDo;
+		this.observateur = observateur;
 	}
 
 	@Override
@@ -38,7 +39,6 @@ public class Consommateur extends Acteur implements _Consommateur {
 	
 	private Message getMessage(){
 		Message tamp = null;
-		System.out.println("Demande d'accee de "+name()+"");
 		try {
 			tamp = tampon.get(this);
 		} catch (Exception e) {
@@ -47,8 +47,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 		}
 		if(tamp != null)
 			nbrMsg -=1;
-		System.out.println("Tampon libre: "+tampon.taille()+" avec le retrait de "+name()+", reste "+nbrMsg+" a traiter");
-		System.out.println("Sortie d'accee de "+name());
+		
 		return tamp;		
 	}
 	
@@ -61,12 +60,8 @@ public class Consommateur extends Acteur implements _Consommateur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			observateur.consommationMessage(this, m, delay);
-			System.out.println("Traitement de consommation du thread "+name());
-			
-			
+			observateur.consommationMessage(this, m, delay);			
 		}else{
-			System.out.println("GetMessage a renvoye null, rien a faire pour thread "+name());
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {

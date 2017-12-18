@@ -6,8 +6,6 @@ public class Producteur extends Acteur implements _Producteur {
 	int msg_send;
 	String message;
 	ProdCons tampon;
-	
-	Observateur observateur;
 
 	protected Producteur(Observateur observateur,
 			int tempsMoyenProduction,
@@ -17,8 +15,6 @@ public class Producteur extends Acteur implements _Producteur {
 					throws ControlException {
 
 		super(1, observateur, tempsMoyenProduction, deviationTemps);
-		this.observateur = observateur;
-		//nbr de message à produire
 		msg_send=0;
 		msg_toSend = msgRemain;
 		this.tampon = tampon;
@@ -43,24 +39,20 @@ public class Producteur extends Acteur implements _Producteur {
 	}
 	
 	private void addMessage(Message m){
-		System.out.println("Demande d'accee de "+name()+"");
 		try {
 			tampon.put(this,m);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		msg_send +=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+name()+", reste "+(msg_toSend-msg_send)+"a traiter");
-		System.out.println("Sortie d'accee de "+name()+"");	
-		
+		msg_send +=1;		
 	}
 	
 	
 	
 	
 	private Message production() throws ControlException{
-		MessageX m = new MessageX(this.msg_send, this.identification(), "Yolo");
+		MessageX m = new MessageX(this.msg_send, this.identification(), " ProdCons");
 		int delay = Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		try {
 			Thread.sleep(delay);
@@ -68,9 +60,7 @@ public class Producteur extends Acteur implements _Producteur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		observateur.productionMessage(this, m, delay);
-		System.out.println("Traitement de production du thread "+name());
-
+		this.observateur.productionMessage(this, m, delay);
 		return m;
 		
 	}
