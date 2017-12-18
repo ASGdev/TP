@@ -38,6 +38,7 @@ public class ProdCons implements Tampon{
 		synchronized(verrou) {
 			g = buffer.firstElement();
 			buffer.remove(0);
+			System.out.println("Le thread consomateur n°"+arg0.identification()+" a retiré le message ("+g+")");
 		}
 		depot.release();
 		return g;
@@ -48,6 +49,7 @@ public class ProdCons implements Tampon{
 		depot.acquire();
 		synchronized(verrou2) {
 			buffer.addElement(arg1);
+			System.out.println("Le thread producteur n°"+arg0.identification()+" a posé le message ("+arg1+")");
 		}
 		retrait.release();
 
