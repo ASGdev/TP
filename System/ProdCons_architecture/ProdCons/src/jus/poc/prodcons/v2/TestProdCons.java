@@ -66,7 +66,6 @@ public class TestProdCons extends Simulateur {
         	Producteur p = new Producteur(new Observateur(), tempsMoyenProduction, deviationTempsMoyenProduction, tampon, random.next());
         	prod.add(p);
         	p.start();
-            
         }
        
         /* on génère les consommateurs */

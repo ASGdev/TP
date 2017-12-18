@@ -13,6 +13,6 @@ public class MessageX implements Message{
 	}
 	
 	public String toString() {
-		return "Message : "+numMsg+" <- Producteur "+numProd+"| content :"+contentMsg;
+		return numMsg+"( Producteur "+numProd+" )";
 	}
 }

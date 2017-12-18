@@ -51,7 +51,7 @@ public class Producteur extends Acteur implements _Producteur {
 	
 	
 	private Message production(){
-		MessageX m = new MessageX(this.msg_send, this.identification(), "Yolo");
+		MessageX m = new MessageX(this.msg_send, this.identification(), " prodcons ");
 		try {
 			Thread.sleep(Aleatoire.valeur(moyenneTempsDeTraitement, deviationTempsDeTraitement));
 		} catch (InterruptedException e) {
