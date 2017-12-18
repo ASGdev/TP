@@ -8,13 +8,13 @@ import java.util.concurrent.Semaphore;
 
 public class ProdCons implements Tampon{
 	int taille;
-	private Vector<MessageX> buffer = new  Vector<MessageX>();
+	private Vector<Message> buffer = new  Vector<Message>();
 	private static final Object verrou = new Object();
 	private static final Object verrou2 = new Object();
 	private static  Semaphore depot ;
 	private static  Semaphore retrait = new Semaphore(0);
 	private HashMap<_Consommateur,Integer> consoMemory; // Conso associé avec l'id du msg qu'il a lu en dernier
-	private HashMap<_Consommateur,Integer> prodMemory;//Prod associé a l'id du msg qu'il a produit en dernier
+	private HashMap<_Producteur,Integer> prodMemory;//Prod associé a l'id du msg qu'il a produit en dernier
 
 	//CEST ICI QUON VA GERER LES "VERROUS" ETC
     
@@ -51,7 +51,7 @@ public class ProdCons implements Tampon{
 	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
 		depot.acquire();
 		synchronized(verrou2) {
-			buffer.addElement((MessageX) arg1);
+			buffer.addElement(arg1);
 		}
 		retrait.release();
 

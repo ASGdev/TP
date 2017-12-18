@@ -28,14 +28,12 @@ public class ProdCons implements Tampon{
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
 		Message g = null;
 		synchronized(verrou) {
-			System.out.println(arg0.identification()+"est entrÃ©");
 			while(buffer.size()==0) {
-				System.out.println(arg0.identification()+"se met en pause et libre");
 				verrou.wait();
 			}
 			g= buffer.firstElement();
 			buffer.remove(0);
-			System.out.println(arg0.identification()+" sort aprÃ¨s avoir enlever un msg");
+			System.out.println("Le thread consomateur n°"+arg0.identification()+" a retiré le message ("+g+")");
 			verrou.notifyAll();
 
 		}
@@ -45,13 +43,11 @@ public class ProdCons implements Tampon{
 	@Override
 	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
 		synchronized(verrou) {
-			System.out.println(arg0.identification()+"est entrÃ©");
 			while(buffer.size()>=taille) {
-				System.out.println(arg0.identification()+" se met en pause et libre");
 				verrou.wait();
-			}			
+			}
+			System.out.println("Le thread producteur n°"+arg0.identification()+" a posé le message ("+arg1+")");
 			buffer.addElement(arg1);
-			System.out.println(arg0.identification()+" sort aprÃ¨s avoir ajouter un msg");
 			verrou.notifyAll();
 
 		}

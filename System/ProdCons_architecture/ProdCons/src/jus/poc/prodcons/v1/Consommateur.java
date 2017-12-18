@@ -33,7 +33,6 @@ public class Consommateur extends Acteur implements _Consommateur {
 	
 	private Message getMessage(){
 		Message tamp = null;
-		System.out.println("Demande d'accee de "+name()+"");
 		try {
 			tamp = tampon.get(this);
 		} catch (Exception e) {
@@ -42,8 +41,6 @@ public class Consommateur extends Acteur implements _Consommateur {
 		}
 		if(tamp != null)
 			nbrMsg -=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec le retrait de "+name()+", reste "+nbrMsg+"a traiter");
-		System.out.println("Sortie d'accee de "+name());
 		return tamp;		
 	}
 	
@@ -56,9 +53,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Traitement de consommation du thread "+name());
 		}else{
-			System.out.println("GetMessage a renvoyé null, rien a faire pour thread "+name());
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException e) {
