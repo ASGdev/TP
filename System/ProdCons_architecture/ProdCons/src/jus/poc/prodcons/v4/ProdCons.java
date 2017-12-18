@@ -50,10 +50,8 @@ public class ProdCons implements Tampon{
 					jobdone = true;
 					if(buffer.firstElement().size()<=0) {
 						buffer.remove(0);
-						System.out.println(prodMemory.size());
-						System.out.println(prodMemory.get(1));	
 						prodMemory.remove(0);
-						prodMemory.remove(0);
+						prodMemory.remove(0); // Problème d'ajout double, on a pas trouve pourquoi, donc on supprime en double
 						consoMemory.clear();
 										
 
