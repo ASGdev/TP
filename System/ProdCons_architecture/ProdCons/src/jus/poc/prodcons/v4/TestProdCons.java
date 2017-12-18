@@ -52,7 +52,7 @@ public class TestProdCons extends Simulateur {
         init("./jus/poc/prodcons/option/"+option);
    
         //Déclaration new buffer
-        tampon = new ProdCons(nbBuffer);
+        tampon = new ProdCons(nbBuffer,nbCons,nbProd);
         prod = new Vector<Producteur>();
         cons = new Vector<Consommateur>();
         

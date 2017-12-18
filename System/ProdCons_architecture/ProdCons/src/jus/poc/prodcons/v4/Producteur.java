@@ -38,17 +38,13 @@ public class Producteur extends Acteur implements _Producteur {
 	}
 	
 	private void addMessage(Message m){
-		System.out.println("Demande d'accee de "+name()+"");
 		try {
 			tampon.put(this,m);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		msg_send +=1;
-		System.out.println("Tampon libre:"+tampon.taille()+" avec l'ajout de "+name()+", reste "+(msg_toSend-msg_send)+"a traiter");
-		System.out.println("Sortie d'accee de "+name()+"");	
-		
+		msg_send +=1;		
 	}
 	
 	
@@ -62,14 +58,13 @@ public class Producteur extends Acteur implements _Producteur {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Traitement de production du thread "+name());
 
 		return m;
 		
 	}
 	
 	public String name(){
-		return this.getName()+"N°"+this.identification();
+		return this.getName()+""+this.identification();
 	}
 
 }

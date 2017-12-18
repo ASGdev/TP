@@ -1,29 +1,29 @@
 package jus.poc.prodcons.v4;
 import jus.poc.prodcons.*;
-
-import java.util.HashMap;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
 
 public class ProdCons implements Tampon{
 	int taille;
-	private Vector<Message> buffer = new  Vector<Message>();
+	private Vector<Vector<Message>> buffer = new  Vector<Vector<Message>>();
+	private Vector<_Consommateur> consoMemory = new Vector<_Consommateur>();
+	private Vector<_Producteur> prodMemory = new Vector<_Producteur>();
 	private static final Object verrou = new Object();
 	private static final Object verrou2 = new Object();
+	private static final Object notificationMessageConsome = new Object();
+	private static final Object notificationMessagePose = new Object();
 	private static  Semaphore depot ;
 	private static  Semaphore retrait = new Semaphore(0);
-	private HashMap<_Consommateur,Integer> consoMemory; // Conso associé avec l'id du msg qu'il a lu en dernier
-	private HashMap<_Producteur,Integer> prodMemory;//Prod associé a l'id du msg qu'il a produit en dernier
+	private int nbconsomateur =0;
 
 	//CEST ICI QUON VA GERER LES "VERROUS" ETC
-    
-    boolean stop = false;
         
 
-	public ProdCons(int taille){
+	public ProdCons(int taille,int nbconsomateur, int nbproducer){
 		depot = new Semaphore(taille);
 		this.taille = taille;
+		this.nbconsomateur = nbconsomateur;
 	}
 	
 	
@@ -37,24 +37,55 @@ public class ProdCons implements Tampon{
 	// un simultanement. Par contre, deux consomateur ou deux producteur ne peuvent agir de maniï¿½re simultanï¿½e.
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
-		retrait.acquire();
+		boolean jobdone=false;
 		Message g = null;
-		synchronized(verrou) {
-			g = buffer.firstElement();
-			buffer.remove(0);
+		while(!jobdone) {
+			synchronized(verrou) {
+				if(!consoMemory.contains(arg0) && !buffer.isEmpty() ) {
+
+					consoMemory.add(arg0);
+					g = buffer.firstElement().firstElement();
+					buffer.firstElement().remove(0);
+					System.out.println("Le thread consomateur n°"+arg0.identification()+" a retiré le message ("+g+")");
+					jobdone = true;
+					if(buffer.firstElement().size()<=0) {
+						buffer.remove(0);
+						System.out.println(prodMemory.size());
+						System.out.println(prodMemory.get(1));	
+						prodMemory.remove(0);
+						prodMemory.remove(0);
+						consoMemory.clear();
+										
+
+					}
+				}else {
+
+				}
+			}
 		}
-		depot.release();
 		return g;
 	}
 
 	@Override
 	public void put(_Producteur arg0, Message arg1) throws Exception, InterruptedException {
-		depot.acquire();
-		synchronized(verrou2) {
-			buffer.addElement(arg1);
-		}
-		retrait.release();
+		boolean jobdone=false;
+		while(!jobdone) {
+			synchronized(verrou2) {
+				if(!prodMemory.contains(arg0) && buffer.size() <taille) {
+					prodMemory.addElement(arg0);
+					Vector<Message> msg = new Vector<Message>();
+					for(int i=0;i<nbconsomateur;i++) {
+						msg.addElement(arg1);
+					}
+					buffer.addElement(msg);
+					prodMemory.addElement(arg0);
+					System.out.println("Le thread producteur n°"+arg0.identification()+" a posé le message ("+arg1+")");
+					jobdone = true;
+				}else {
 
+				}
+			}
+		}	
 	}
 
 	@Override
