@@ -27,7 +27,7 @@ public class ProdCons implements Tampon{
 	@Override
 	public int enAttente() {
 		// TODO Auto-generated method stub
-		return 0;
+		return buffer.size();
 	}
 
 	

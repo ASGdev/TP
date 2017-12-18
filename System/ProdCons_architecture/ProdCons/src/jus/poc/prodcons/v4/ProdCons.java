@@ -11,17 +11,12 @@ public class ProdCons implements Tampon{
 	private Vector<_Producteur> prodMemory = new Vector<_Producteur>();
 	private static final Object verrou = new Object();
 	private static final Object verrou2 = new Object();
-	private static final Object notificationMessageConsome = new Object();
-	private static final Object notificationMessagePose = new Object();
-	private static  Semaphore depot ;
-	private static  Semaphore retrait = new Semaphore(0);
 	private int nbconsomateur =0;
 
 	//CEST ICI QUON VA GERER LES "VERROUS" ETC
         
 
 	public ProdCons(int taille,int nbconsomateur, int nbproducer){
-		depot = new Semaphore(taille);
 		this.taille = taille;
 		this.nbconsomateur = nbconsomateur;
 	}
@@ -30,11 +25,9 @@ public class ProdCons implements Tampon{
 	@Override
 	public int enAttente() {
 		// TODO Auto-generated method stub
-		return 0;
+		return buffer.size();
 	}
 
-	//Dans cette version, un consommateur peut r�cup�r� un �lement tandis qu'un producteur peut en d�pos�
-	// un simultanement. Par contre, deux consomateur ou deux producteur ne peuvent agir de mani�re simultan�e.
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
 		boolean jobdone=false;

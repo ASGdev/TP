@@ -26,7 +26,7 @@ public class ProdCons implements Tampon{
 	@Override
 	public int enAttente() {
 		// TODO Auto-generated method stub
-		return 0;
+		return buffer.size();
 	}
 
 	//Dans cette version, un consommateur peut r�cup�r� un �lement tandis qu'un producteur peut en d�pos�
