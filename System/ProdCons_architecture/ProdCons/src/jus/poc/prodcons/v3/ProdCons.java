@@ -30,8 +30,7 @@ public class ProdCons implements Tampon{
 		return 0;
 	}
 
-	//Dans cette version, un consommateur peut r�cup�r� un �lement tandis qu'un producteur peut en d�pos�
-	// un simultanement. Par contre, deux consomateur ou deux producteur ne peuvent agir de mani�re simultan�e.
+	
 	@Override
 	public Message get(_Consommateur arg0) throws Exception, InterruptedException {
 		retrait.acquire();
@@ -39,7 +38,9 @@ public class ProdCons implements Tampon{
 		synchronized(verrou) {
 			g = buffer.firstElement();
 			buffer.remove(0);
+			System.out.println("Le thread consomateur "+arg0.identification()+" a retire le message "+g+" ");
 		}
+		this.observateur.retraitMessage(arg0, g);
 		depot.release();
 		return g;
 	}
@@ -49,7 +50,9 @@ public class ProdCons implements Tampon{
 		depot.acquire();
 		synchronized(verrou2) {
 			buffer.addElement(arg1);
+			System.out.println("Le thread producteur "+arg0.identification()+" a poste le message "+arg1+" ");
 		}
+		this.observateur.depotMessage(arg0,arg1);
 		retrait.release();
 
 	}
