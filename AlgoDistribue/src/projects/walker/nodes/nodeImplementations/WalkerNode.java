@@ -1,14 +1,11 @@
 package projects.walker.nodes.nodeImplementations;
 
 import java.awt.Color;
-import java.util.Iterator;
 import java.util.Random;
 import projects.walker.nodes.messages.WalkerMessage;
 import sinalgo.nodes.Node;
-import sinalgo.nodes.edges.Edge;
 
 public class WalkerNode extends sinalgo.nodes.Node {
-	boolean inonded = false;
 
 	/* WalkerNode() { 
 	 *   // no constructor code, it breaks the way sinalgo builds the nodes. 
@@ -24,23 +21,16 @@ public class WalkerNode extends sinalgo.nodes.Node {
 	}
 
 	public void handleMessages(sinalgo.nodes.messages.Inbox inbox) {
-		if(!inonded){
-			while(inbox.hasNext()) {
-				sinalgo.nodes.messages.Message msg = inbox.next();
-				if (msg instanceof WalkerMessage) {
-					WalkerMessage walker = (WalkerMessage) msg;
-					Iterator t = outgoingConnections.iterator();
-					while(t.hasNext()){					
-						Edge next = (Edge) t.next();
-						send(walker,next.endNode);
-						System.out.println(this + " received message " + walker + 
+		while(inbox.hasNext()) {
+			sinalgo.nodes.messages.Message msg = inbox.next();
+			if (msg instanceof WalkerMessage) {
+				WalkerMessage walker = (WalkerMessage) msg;
+				Node next = randomWalkChoice(outgoingConnections);		
+				send(walker, next);
+				System.out.println(this + " received message " + walker + 
 								   " and sends it now to " + next);
-					}
-					
-				}
 			}
 		}
-		
 	}
 	
 	private static Random random = new Random();
