@@ -1,0 +1,97 @@
+---
+title: 'Eval de perf : TD1&2'
+author: "T.V"
+date: "2 fÃfÂ©vrier 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+## Simulation à évènement discrets de file d'attentes
+L'objectif du TD est de comprendre la bonne façon d'organiser une simulation à évènement discret (sans reposer trop intensément sur les hypothèse type arrivées de Poisson) avec la notion d'état du système, d'évènements possible et de mise à jour de l'état du système. Si vous lisiez des bouquins qui expliquent comment faire de la simulation à évènement discret, il n'est pas clair que ça vous aiderait vraiment. Le mieux est d'en écrire un ensemble pour que vous compreniez comment procéder. Pour celà, on va s'intéresser au cas simple d'une file d'attente.
+
+## Modélisation et principe de simulation
+# Paramètres du système
+Taux d'arrivée dans le système lambda (en tâches par seconde)
+Taux de service du système mu (en tâches par seconde)
+Politique de service (on va coder FIFO là mais on essaye de coder tout ça de la façon la plus générique possible)
+
+# Description des variables d'état importantes:
+
+- Date courante t
+- Dates d'arrivées Arrival: dates calculées à partir d'inter-arrivées (input)
+- Temps de service Service: temps générés (input)
+- Temps résiduel Remaining: initialisé à NA, passe à Service quand un job arrive dans le système et décroit alors vers 0.
+- Date de terminaison Completion: initialisé à NA, passe à la date courante t lorsque Remaining passe à 0.
+- Client actuellement servi CurrClient (utile pour caractériser la politique de service utilisée): initialisé à NA
+J'ai finalement rajouté une variable NextArrival qui permet d'éviter des contortions ou des notations un peu lourdes. Cette variable est initialisée à 1 et sera incrémentée jusqu'à dépasser le nombre de tâches total.
+
+# Évolution possible
+Soit une arrivée
+Soit la terminaison d'une tâche
+
+
+```{r TD1}
+set.seed(37);
+N = 10; # N <- 100; # N <<- 100;
+Arrival = cumsum(rexp(n=N, rate = .2));
+Service = rep(N,x=1);
+Remaining = rep(N, x=NA);
+Completion = rep(N, x=NA);
+t = 0;
+CurrentTask = NA;
+NextArrival = 1;
+while (TRUE) {
+    print(t);
+    print(Arrival);
+    print(Service);
+    print(Remaining);
+    dtA = NA;
+    dtC = NA;
+    if(length(Arrival[Arrival>t])>0) {
+        dtA = head(Arrival[Arrival>t],n=1)-t  # temps jusqu'à la prochaine arrivée
+    }
+    if(!is.na(CurrentTask)) {
+        dtC = Remaining[CurrentTask]; # temps jusqu'à la prochaine terminaison
+    }
+    if(is.na(dtA) & is.na(dtC)) {
+        break;
+    } 
+    dt = min(dtA,dtC,na.rm=T)
+
+    # Mettre à jour comme il faut:
+    #   la date
+    t = t + dt;
+    #   les arrivées
+    if((NextArrival <=N) & (Arrival[NextArrival] <= t)) { ## je met un <= et pas un == car 3-2.9!=0.1 ...
+        Remaining[NextArrival] = Service[NextArrival];
+        NextArrival = NextArrival + 1;
+    }
+    #   le remaining 
+    if(!is.na(CurrentTask)) {
+        Remaining[CurrentTask] = Remaining[CurrentTask] - dt ;
+        if(Remaining[CurrentTask] <= 0) {
+            Completion[CurrentTask] = t;
+            Remaining[CurrentTask] = NA;
+        }
+        CurrentTask = NA;
+    }
+    #   et currentTask (politique d'ordonnancement: FIFO)
+    WaitingList=(1:N)[!is.na(Remaining)];
+    if(length(WaitingList)>0) {
+        CurrentTask = head(WaitingList,n=1);
+    }
+}
+print(Completion)
+```
+
+
+```{r TD2}
+
+```
