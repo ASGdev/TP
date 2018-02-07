@@ -118,34 +118,59 @@ PUBLIC void resume(struct process *proc)
  */
 PUBLIC void yield(void)
 {
-	if(do_we_re_init())
-		init_tab_prio();
+	struct process *p;    /* Working process.     */
+    struct process *next; /* Next process to run. */
 
-	int t = 0;
-	for (int i = 0 ; i < PROC_MAX; i++)
-	{
-		if(tab.validity[i] == TODO)
-			t++;
-		if(tab.validity[i] == INVALID)
-			break;
-	}
+    /* Re-schedule process for execution. */
+        if (curr_proc->state == PROC_RUNNING)
+                sched(curr_proc);
 
-	int randomed = rand()*t;
+        /* Remember this process. */
+        last_proc = curr_proc;
 
-	struct process* next = &(proctab[randomed]);
+        /* Check alarm. */
+        for (p = FIRST_PROC; p <= LAST_PROC; p++)
+        {
+                /* Skip invalid processes. */
+                if (!IS_VALID(p))
+                        continue;
 
-	/* Switch to next process. */
-    next->priority = PRIO_USER;
-    next->state = PROC_RUNNING;
-    next->counter = PROC_QUANTUM;
+                /* Alarm has expired. */
+                if ((p->alarm) && (p->alarm < ticks))
+                        p->alarm = 1, sndsig(p, SIGALRM);
+        }
 
-    tab.quantums_left[randomed]--;
-    if(tab.quantums_left[randomed] == 0){
-    	tab.validity[randomed] = DONE;
-    }
+        /* Choose a process to run next. */
+        next = IDLE;
+        for (p = FIRST_PROC; p <= LAST_PROC; p++)
+        {
+                /* Skip non-ready process. */
+                if (p->state != PROC_READY)
+                        continue;
 
+                /*
+                 * Process with higher
+                 * waiting time found.
+                 */
+                if (p->counter > next->counter)
+                {
+                        next->counter++;
+                        next = p;
+                }
 
-    switch_to(next);
+                /*
+                 * Increment waiting
+                 * time of process.
+                 */
+                else
+                        p->counter++;
+        }
+
+        /* Switch to next process. */
+        next->priority = PRIO_USER;
+        next->state = PROC_RUNNING;
+        next->counter = PROC_QUANTUM;
+        switch_to(next);
 
 }
 
