@@ -28,32 +28,19 @@
 
 #include <stdlib.h>
 //==================================ADDED BY THE SQUALE TEAM
-enum state
+struct tab_oldness
 {
-	TODO, 		//The process has still some validity it can use (tab_prio->quantums_left > 0)
-	DONE, 		//The process has used all of the validity it can use
-	INVALID 	//The process in proc_table is null
+	int oldness[PROC_MAX]; 	// The number of quantums remaining for one process
 };
-typedef enum state state;
+typedef struct tab_oldness tab_oldness;
 
-
-struct tab_prio
-{
-	int quantums_left[PROC_MAX]; 	// The number of quantums remaining for one process
-	state validity[PROC_MAX];		// The state of a process
-};
-typedef struct tab_prio tab_prio;
-
-PRIVATE struct tab_prio tab;
+PRIVATE struct tab_oldness tab;
 
 //Initiate the tab_prio tab with the processes in proctab
-PUBLIC void init_tab_prio();
+PUBLIC void init_tab_oldness();
 
 //Get the number of quantum according to the process priority
 PUBLIC int translate_priority(struct process p);
-
-//TODO shall be the yield function
-PUBLIC void processing ();
 
 //TODO -> check the return value if works correctly
 PUBLIC int translate_priority(struct process p)
@@ -69,21 +56,11 @@ PUBLIC void init_tab_prio()
 {
 	/*	At a point this will be set up to 1 which means that 
 	*	the following i in the loop will be null in the proctab
-	*/
-	int nextnull = 0; 
+	*/ 
 
 	for(int i = 0 ; i < PROC_MAX; i++)
 	{
-		if(!nextnull)
-		{
-			tab.quantums_left[i] = translate_priority(proctab[i]);
-			tab.validity[i] = TODO;
-			if(proctab[i].next == NULL)
-				nextnull = 1;		
-		}
-		else{
-			tab.validity[i] = INVALID;
-		}
+		
 	}
 }
 
@@ -92,10 +69,7 @@ PUBLIC int do_we_re_init ()
 	
 	for(int i = 0 ; i < PROC_MAX ;  i++)
 	{
-		if(tab.validity[i] == TODO)
-			return 1;
-		if(tab.validity[i] == INVALID)
-			return 0;
+		
 	}
 	return 0;
 }
