@@ -28,52 +28,20 @@
 
 #include <stdlib.h>
 //==================================ADDED BY THE SQUALE TEAM
-struct tab_oldness
+
+/*Return a priority value compute by adding oldness and niceness.
+**	Value take between 1 and 100
+** The oldness will be include between 1 and 1000. When a proc will be age more than 750,
+** his value of priority will be the higher possible.
+** Change this function in order to set a different scheduling between nicess and oldness
+*/
+PUBLIC int translate_priority(int n, int o)
 {
-	int oldness[PROC_MAX]; 	// The number of quantums remaining for one process
-};
-typedef struct tab_oldness tab_oldness;
-
-PRIVATE struct tab_oldness tab;
-
-//Initiate the tab_prio tab with the processes in proctab
-PUBLIC void init_tab_oldness();
-
-//Get the number of quantum according to the process priority
-PUBLIC int translate_priority(struct process p);
-
-//TODO -> check the return value if works correctly
-PUBLIC int translate_priority(struct process p)
-{
-	int niceness = p.nice; 	//number between 0 and 39
-
-	return (niceness/4)+1;	//The number of quantum is 1 + the rank in between niceness/4
-							//we have chosen 4 for the size of quantum 
+	if ((o)>= 750)
+		return 100;	 
+	else
+		return n;
 }
-
-
-PUBLIC void init_tab_prio()
-{
-	/*	At a point this will be set up to 1 which means that 
-	*	the following i in the loop will be null in the proctab
-	*/ 
-
-	for(int i = 0 ; i < PROC_MAX; i++)
-	{
-		
-	}
-}
-
-PUBLIC int do_we_re_init ()
-{
-	
-	for(int i = 0 ; i < PROC_MAX ;  i++)
-	{
-		
-	}
-	return 0;
-}
-
 
 //================================== SQUALE TEAM OVER
 
@@ -142,18 +110,22 @@ PUBLIC void yield(void)
 
         /* Choose a process to run next. */
         next = IDLE;
+		int nextprio =0;
         for (p = FIRST_PROC; p <= LAST_PROC; p++)
         {
+				nextprio = translate_priority(next->nice,next->counter); //avoid repeat calc for stats
                 /* Skip non-ready process. */
                 if (p->state != PROC_READY)
                         continue;
 
-                /*
-                 * Process with higher
-                 * waiting time found.
-                 */
-                if (p->counter > next->counter)
-                {
+				/*
+				*Computing the most prior process
+				* and age the other if it's more prior than the actual selected.
+				* In fact, it's a FIFO with a niceness and oldness sched : when two proc have the same
+				* prio, the first pick is keep.
+				*/
+				if(translate_priority(p->nice,p->counter)>nextprio)
+				{
                         next->counter++;
                         next = p;
                 }
